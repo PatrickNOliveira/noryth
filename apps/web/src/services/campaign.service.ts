@@ -26,9 +26,9 @@ export const campaignService = {
       form.append('coverImage', input.coverImage);
     }
 
-    const { data } = await api.post<Campaign>('/campaigns', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // No explicit Content-Type: axios sets multipart/form-data with the
+    // boundary automatically for FormData bodies.
+    const { data } = await api.post<Campaign>('/campaigns', form);
     return data;
   },
 

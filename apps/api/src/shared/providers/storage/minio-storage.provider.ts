@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'minio';
@@ -20,7 +21,7 @@ import {
  * cover images are reachable through their public URL in this initial story.
  */
 @Injectable()
-export class MinioStorageProvider implements StorageProvider {
+export class MinioStorageProvider implements StorageProvider, OnModuleInit {
   private readonly logger = new Logger(MinioStorageProvider.name);
   private readonly client: Client;
   private readonly bucket: string;
@@ -44,6 +45,22 @@ export class MinioStorageProvider implements StorageProvider {
       accessKey: config.get('MINIO_ACCESS_KEY', { infer: true }),
       secretKey: config.get('MINIO_SECRET_KEY', { infer: true }),
     });
+  }
+
+  /**
+   * Ensures the bucket exists and is publicly readable at startup, so cover
+   * images (including ones uploaded before this ran) are reachable. Best-effort
+   * — a missing/offline MinIO must not stop the app from booting.
+   */
+  async onModuleInit(): Promise<void> {
+    try {
+      await this.ensureBucket();
+    } catch (error) {
+      this.logger.warn(
+        `MinIO not ready at startup (${(error as Error).message}). ` +
+          `Bucket policy will be applied on first upload.`,
+      );
+    }
   }
 
   async upload(params: UploadFileParams): Promise<UploadedFile> {
@@ -78,18 +95,24 @@ export class MinioStorageProvider implements StorageProvider {
     return `${base.replace(/\/$/, '')}/${this.bucket}/${path}`;
   }
 
-  /** Creates the bucket and grants public read on first use. */
+  /**
+   * Ensures the bucket exists and carries a public-read policy. The policy is
+   * (re)applied whether or not the bucket already existed — otherwise a bucket
+   * created out-of-band (or before this policy code) would keep denying access.
+   * Idempotent and cached per process.
+   */
   private async ensureBucket(): Promise<void> {
     if (this.bucketReady) return;
     const exists = await this.client.bucketExists(this.bucket).catch(() => false);
     if (!exists) {
       await this.client.makeBucket(this.bucket);
-      await this.client.setBucketPolicy(
-        this.bucket,
-        JSON.stringify(publicReadPolicy(this.bucket)),
-      );
-      this.logger.log(`Created MinIO bucket "${this.bucket}" (public read)`);
+      this.logger.log(`Created MinIO bucket "${this.bucket}"`);
     }
+    await this.client.setBucketPolicy(
+      this.bucket,
+      JSON.stringify(publicReadPolicy(this.bucket)),
+    );
+    this.logger.log(`Applied public-read policy to bucket "${this.bucket}"`);
     this.bucketReady = true;
   }
 }

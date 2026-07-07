@@ -1,0 +1,29 @@
+# Build context is the repo root. Keep images small and never leak secrets.
+
+# dependencies & build output (reinstalled/rebuilt inside the image)
+**/node_modules
+**/dist
+**/build
+**/coverage
+*.tsbuildinfo
+
+# env & secrets — MUST NOT enter the image
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.production.example
+
+# vcs & tooling
+.git
+.github
+.gitignore
+**/.vscode
+**/.idea
+
+# docs & local infra not needed at build time
+docs
+docker-compose.yml
+
+# logs & os cruft
+**/*.log
+**/.DS_Store

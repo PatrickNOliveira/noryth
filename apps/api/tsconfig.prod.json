@@ -1,0 +1,10 @@
+{
+  "//": "Runtime-only path mapping for the COMPILED output (dist). Used via TS_NODE_PROJECT with tsconfig-paths/register so `require('@shared/..')` resolves to dist/shared/.. when running `node dist/main.js`. It is NOT a build config.",
+  "compilerOptions": {
+    "baseUrl": "./dist",
+    "paths": {
+      "@modules/*": ["modules/*"],
+      "@shared/*": ["shared/*"]
+    }
+  }
+}

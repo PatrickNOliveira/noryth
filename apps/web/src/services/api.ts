@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { store } from '../store';
 import { loggedOut } from '../store/slices/auth.slice';
+import { runtimeConfig } from '../config/runtimeConfig';
 
 /**
  * Single Axios client for the whole app. No screen or hook calls `fetch` or
@@ -8,9 +9,11 @@ import { loggedOut } from '../store/slices/auth.slice';
  * error handling live in one place.
  */
 export const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL ?? 'http://localhost:3333/api',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: runtimeConfig.apiUrl,
 });
+// Note: Content-Type is intentionally NOT forced here. Axios infers it per
+// request — `application/json` for plain objects, and `multipart/form-data`
+// with the correct boundary for FormData (cover image uploads).
 
 /**
  * Request interceptor: attach the persisted JWT and advertise the user's

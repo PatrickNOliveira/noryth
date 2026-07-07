@@ -6,7 +6,11 @@
       "Bash(npx tsc *)",
       "Bash(echo \"=== API typecheck exit: $? ===\")",
       "Bash(rm -rf apps/api/dist apps/web/build apps/api/*.tsbuildinfo && echo \"cleaned\"; echo \"--- tree \\(depth 3, no node_modules\\) ---\"; find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' | grep -v node_modules | sort | head -80)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(node -r ts-node/register -r tsconfig-paths/register -e \"require\\('./src/modules/users/entities/user.entity'\\); require\\('./src/modules/campaigns/entities/campaign.entity'\\); console.log\\('ALIAS RESOLUTION OK'\\);\")",
+      "Bash(node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/shared/config/data-source.ts)",
+      "Bash(node -e \"require\\('ts-node'\\).register\\(\\); require\\('./src/modules/campaigns/entities/campaign.entity'\\); require\\('./src/shared/config/data-source'\\); console.log\\('TS-NODE + tsconfig-paths OK \\(alias + data-source loaded\\)'\\);\")",
+      "Bash(TS_NODE_PROJECT=tsconfig.prod.json node -r tsconfig-paths/register -e \"require\\('./dist/modules/campaigns/entities/campaign.entity'\\); require\\('./dist/shared/config/data-source'\\); require\\('./dist/app.module'\\); console.log\\('PROD ALIAS RESOLUTION OK'\\);\")"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

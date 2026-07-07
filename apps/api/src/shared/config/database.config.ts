@@ -11,6 +11,7 @@ import { EnvironmentVariables } from './env.validation';
 export function buildTypeOrmOptions(
   config: ConfigService<EnvironmentVariables, true>,
 ): TypeOrmModuleOptions {
+  const isDev = config.get('NODE_ENV', { infer: true }) === 'development';
   return {
     type: 'postgres',
     host: config.get('DATABASE_HOST', { infer: true }),
@@ -21,6 +22,9 @@ export function buildTypeOrmOptions(
     autoLoadEntities: true,
     synchronize: false,
     migrations: [__dirname + '/../../migrations/*.{ts,js}'],
-    migrationsRun: true,
+    // Auto-run on boot only in development. In production, migrations are an
+    // explicit deploy step (see the deploy workflow / migration:run:prod) to
+    // avoid two processes racing to apply the same migration.
+    migrationsRun: isDev,
   };
 }
