@@ -10,7 +10,9 @@
       "Bash(node -r ts-node/register -r tsconfig-paths/register -e \"require\\('./src/modules/users/entities/user.entity'\\); require\\('./src/modules/campaigns/entities/campaign.entity'\\); console.log\\('ALIAS RESOLUTION OK'\\);\")",
       "Bash(node -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/shared/config/data-source.ts)",
       "Bash(node -e \"require\\('ts-node'\\).register\\(\\); require\\('./src/modules/campaigns/entities/campaign.entity'\\); require\\('./src/shared/config/data-source'\\); console.log\\('TS-NODE + tsconfig-paths OK \\(alias + data-source loaded\\)'\\);\")",
-      "Bash(TS_NODE_PROJECT=tsconfig.prod.json node -r tsconfig-paths/register -e \"require\\('./dist/modules/campaigns/entities/campaign.entity'\\); require\\('./dist/shared/config/data-source'\\); require\\('./dist/app.module'\\); console.log\\('PROD ALIAS RESOLUTION OK'\\);\")"
+      "Bash(TS_NODE_PROJECT=tsconfig.prod.json node -r tsconfig-paths/register -e \"require\\('./dist/modules/campaigns/entities/campaign.entity'\\); require\\('./dist/shared/config/data-source'\\); require\\('./dist/app.module'\\); console.log\\('PROD ALIAS RESOLUTION OK'\\);\")",
+      "Bash(python -c \"import yaml,sys; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")",
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

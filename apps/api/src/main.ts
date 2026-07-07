@@ -24,8 +24,15 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
 
+  // WEB_ORIGIN may hold one or several comma-separated origins, e.g.
+  // "https://noryth.io,https://www.noryth.io".
+  const origin = config
+    .get('WEB_ORIGIN', { infer: true })
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: config.get('WEB_ORIGIN', { infer: true }),
+    origin: origin.length === 1 ? origin[0] : origin,
     credentials: true,
   });
 
