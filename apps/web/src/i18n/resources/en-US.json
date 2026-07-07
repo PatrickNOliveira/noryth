@@ -1,0 +1,214 @@
+{
+  "language": {
+    "label": "Language",
+    "title": "Choose your language",
+    "description": "Select the language of your book."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "toggle": "Toggle theme"
+  },
+  "common": {
+    "soon": "Coming soon",
+    "close": "Close"
+  },
+  "app": {
+    "logout": "Sign out"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Password must be at least 8 characters"
+  },
+  "auth": {
+    "cover": {
+      "plate": "Campaign Journal",
+      "tagline": "Where game masters and players keep their stories.",
+      "volume": "Volume I"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "name": "What should we call you?",
+      "email": "you@email.com",
+      "passwordNew": "At least 8 characters"
+    },
+    "login": {
+      "title": "Open your book",
+      "subtitle": "Pick up your chronicle where you left off.",
+      "submit": "Sign in",
+      "noAccount": "Don't have a book yet?",
+      "createLink": "Start yours",
+      "error": "We couldn't sign you in"
+    },
+    "register": {
+      "title": "Begin a new book",
+      "subtitle": "Every legend has a first chapter.",
+      "submit": "Create account",
+      "haveAccount": "Already have a book?",
+      "loginLink": "Open it",
+      "error": "We couldn't create your account"
+    }
+  },
+  "dashboard": {
+    "kicker": "Campaign Book",
+    "welcome": "Welcome back.",
+    "welcomeNamed": "Welcome back, {{name}}.",
+    "opener": "The pages ahead are still blank. Open your first campaign and the world will begin to take shape, entry by entry.",
+    "recent": {
+      "eyebrow": "Where you left off",
+      "title": "Your most recent campaign",
+      "tomeKicker": "No campaign open",
+      "tomeTitle": "The first chapter awaits",
+      "tomeSubtitle": "Your shelf holds no volumes yet",
+      "tomeDescription": "Every great chronicle begins with a blank page. When you create a campaign, it will rest here — ready to be resumed at any moment of the session.",
+      "cta": "Begin a new book"
+    },
+    "campaigns": {
+      "eyebrow": "Register",
+      "title": "Your campaigns",
+      "empty": "No campaigns recorded yet. This book's index will fill in as you create your stories."
+    },
+    "characters": {
+      "eyebrow": "Dramatis personae",
+      "title": "Your characters",
+      "empty": "There are no sheets in this journal yet. Heroes and companions will earn their pages soon."
+    },
+    "world": {
+      "eyebrow": "Cartography & chronicle",
+      "title": "Your world",
+      "lead": "Each tome of your world will have its own voice — the same book, distinct chapters.",
+      "atlasTitle": "Cartographic Atlas",
+      "atlasMeta": "Maps, realms and regions",
+      "heraldryTitle": "Book of Heraldry",
+      "heraldryMeta": "Factions, orders and houses",
+      "diaryTitle": "Master's Diary",
+      "diaryMeta": "Sessions and chronicles"
+    }
+  },
+  "campaign": {
+    "new": {
+      "kicker": "New campaign",
+      "title": "Begin a new book",
+      "lead": "Shape your next chronicle. Every choice here becomes the first page of your book."
+    },
+    "sections": {
+      "identity": "Chapter I",
+      "identityTitle": "Identity",
+      "world": "Chapter II",
+      "worldTitle": "World",
+      "access": "Chapter III",
+      "accessTitle": "Access",
+      "cover": "Chapter IV",
+      "coverTitle": "Cover",
+      "review": "Chapter V",
+      "reviewTitle": "Review"
+    },
+    "fields": {
+      "name": "Campaign name",
+      "theme": "Theme",
+      "customTheme": "Custom theme",
+      "shortDescription": "Short description",
+      "premise": "Premise",
+      "tone": "Tone",
+      "customTone": "Custom tone",
+      "mainLanguage": "Main language",
+      "visibility": "Visibility",
+      "password": "Password",
+      "maxPlayers": "Player limit",
+      "cover": "Cover"
+    },
+    "placeholders": {
+      "name": "The name of your chronicle",
+      "customTheme": "Describe the theme of your world",
+      "shortDescription": "One line that sums up the campaign",
+      "premise": "How does it all begin? Write your story's premise…",
+      "customTone": "Describe the tone of your table",
+      "password": "Leave blank to require no password",
+      "maxPlayers": "e.g. 5"
+    },
+    "hints": {
+      "password": "Optional. At least 6 characters.",
+      "maxPlayers": "Optional. Between 1 and 50."
+    },
+    "form": {
+      "choose": "Choose…",
+      "submit": "Create campaign",
+      "error": "We couldn't create the campaign"
+    },
+    "validation": {
+      "nameRequired": "Give your campaign a name",
+      "nameMin": "The name must be at least 3 characters",
+      "nameMax": "The name must be at most 120 characters",
+      "themeRequired": "Choose a theme",
+      "customThemeRequired": "Describe the custom theme",
+      "shortDescriptionRequired": "Write a short description",
+      "shortDescriptionMax": "At most 280 characters",
+      "premiseRequired": "Write the premise",
+      "premiseMax": "At most 10000 characters",
+      "toneRequired": "Choose a tone",
+      "customToneRequired": "Describe the custom tone",
+      "passwordMin": "The password must be at least 6 characters",
+      "maxPlayers": "Enter a whole number between 1 and 50"
+    },
+    "theme": {
+      "dark-fantasy": "Dark Fantasy",
+      "high-fantasy": "High Fantasy",
+      "fantasy": "Fantasy",
+      "sci-fi": "Sci-Fi",
+      "cyberpunk": "Cyberpunk",
+      "steampunk": "Steampunk",
+      "post-apocalyptic": "Post-Apocalyptic",
+      "horror": "Horror",
+      "modern": "Modern",
+      "custom": "Custom"
+    },
+    "tone": {
+      "grim": "Grim",
+      "heroic": "Heroic",
+      "political": "Political",
+      "exploration": "Exploration",
+      "horror": "Horror",
+      "epic": "Epic",
+      "investigative": "Investigative",
+      "comedic": "Comedic",
+      "realistic": "Realistic",
+      "custom": "Custom"
+    },
+    "visibility": {
+      "private": "Private",
+      "unlisted": "Unlisted",
+      "public": "Public"
+    },
+    "status": {
+      "active": "Active",
+      "paused": "Paused",
+      "archived": "Archived"
+    },
+    "cover": {
+      "add": "Add cover",
+      "hint": "JPG, PNG or WEBP · up to 5MB",
+      "remove": "Remove image",
+      "previewAlt": "Cover preview",
+      "errorType": "Invalid format. Use JPG, PNG or WEBP.",
+      "errorSize": "The image must be at most 5MB."
+    },
+    "review": {
+      "noCover": "No cover"
+    },
+    "detail": {
+      "back": "Back to the book",
+      "loading": "Opening the campaign…",
+      "notFound": "Campaign not found.",
+      "premiseEyebrow": "Premise",
+      "premiseTitle": "How it all begins",
+      "maxPlayers": "Up to {{max}} players"
+    }
+  }
+}

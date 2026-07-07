@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"=== API typecheck exit: $? ===\")",
+      "Bash(rm -rf apps/api/dist apps/web/build apps/api/*.tsbuildinfo && echo \"cleaned\"; echo \"--- tree \\(depth 3, no node_modules\\) ---\"; find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' | grep -v node_modules | sort | head -80)",
+      "Bash(npm run *)"
+    ],
+    "additionalDirectories": [
+      "E:\\Noryth\\apps\\api"
+    ]
+  }
+}

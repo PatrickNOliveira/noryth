@@ -1,0 +1,214 @@
+{
+  "language": {
+    "label": "Taal",
+    "title": "Kies je taal",
+    "description": "Selecteer de taal van je boek."
+  },
+  "theme": {
+    "light": "Licht",
+    "dark": "Donker",
+    "toggle": "Thema wisselen"
+  },
+  "common": {
+    "soon": "Binnenkort",
+    "close": "Sluiten"
+  },
+  "app": {
+    "logout": "Uitloggen"
+  },
+  "validation": {
+    "nameRequired": "Naam is verplicht",
+    "emailRequired": "E-mail is verplicht",
+    "emailInvalid": "Ongeldige e-mail",
+    "passwordRequired": "Wachtwoord is verplicht",
+    "passwordMin": "Wachtwoord moet minstens 8 tekens bevatten"
+  },
+  "auth": {
+    "cover": {
+      "plate": "Campagneboek",
+      "tagline": "Waar spelleiders en spelers hun verhalen bewaren.",
+      "volume": "Deel I"
+    },
+    "fields": {
+      "name": "Naam",
+      "email": "E-mail",
+      "password": "Wachtwoord"
+    },
+    "placeholders": {
+      "name": "Hoe zullen we je noemen?",
+      "email": "jij@email.com",
+      "passwordNew": "Minstens 8 tekens"
+    },
+    "login": {
+      "title": "Open je boek",
+      "subtitle": "Hervat je kroniek waar je gebleven was.",
+      "submit": "Inloggen",
+      "noAccount": "Heb je nog geen boek?",
+      "createLink": "Begin het jouwe",
+      "error": "Inloggen is niet gelukt"
+    },
+    "register": {
+      "title": "Begin een nieuw boek",
+      "subtitle": "Elke legende heeft een eerste hoofdstuk.",
+      "submit": "Account aanmaken",
+      "haveAccount": "Heb je al een boek?",
+      "loginLink": "Open het",
+      "error": "Je account kon niet worden aangemaakt"
+    }
+  },
+  "dashboard": {
+    "kicker": "Campagneboek",
+    "welcome": "Welkom terug.",
+    "welcomeNamed": "Welkom terug, {{name}}.",
+    "opener": "De pagina's die volgen zijn nog leeg. Open je eerste campagne en de wereld begint vorm te krijgen, vermelding voor vermelding.",
+    "recent": {
+      "eyebrow": "Waar je gebleven was",
+      "title": "Je meest recente campagne",
+      "tomeKicker": "Geen campagne geopend",
+      "tomeTitle": "Het eerste hoofdstuk wacht",
+      "tomeSubtitle": "Je plank bevat nog geen delen",
+      "tomeDescription": "Elke grote kroniek begint met een lege pagina. Wanneer je een campagne aanmaakt, rust die hier — klaar om op elk moment aan tafel te worden hervat.",
+      "cta": "Begin een nieuw boek"
+    },
+    "campaigns": {
+      "eyebrow": "Register",
+      "title": "Je campagnes",
+      "empty": "Nog geen campagnes vastgelegd. De index van dit boek vult zich terwijl je je verhalen maakt."
+    },
+    "characters": {
+      "eyebrow": "Dramatis personae",
+      "title": "Je personages",
+      "empty": "Er staan nog geen bladen in dit boek. Helden en metgezellen krijgen binnenkort hun pagina's."
+    },
+    "world": {
+      "eyebrow": "Cartografie & kroniek",
+      "title": "Je wereld",
+      "lead": "Elk deel van je wereld krijgt zijn eigen stem — hetzelfde boek, aparte hoofdstukken.",
+      "atlasTitle": "Cartografische Atlas",
+      "atlasMeta": "Kaarten, rijken en regio's",
+      "heraldryTitle": "Boek der Heraldiek",
+      "heraldryMeta": "Facties, orden en huizen",
+      "diaryTitle": "Dagboek van de Spelleider",
+      "diaryMeta": "Sessies en kronieken"
+    }
+  },
+  "campaign": {
+    "new": {
+      "kicker": "Nieuwe campagne",
+      "title": "Begin een nieuw boek",
+      "lead": "Geef vorm aan je volgende kroniek. Elke keuze hier wordt de eerste pagina van je boek."
+    },
+    "sections": {
+      "identity": "Hoofdstuk I",
+      "identityTitle": "Identiteit",
+      "world": "Hoofdstuk II",
+      "worldTitle": "Wereld",
+      "access": "Hoofdstuk III",
+      "accessTitle": "Toegang",
+      "cover": "Hoofdstuk IV",
+      "coverTitle": "Omslag",
+      "review": "Hoofdstuk V",
+      "reviewTitle": "Overzicht"
+    },
+    "fields": {
+      "name": "Naam van de campagne",
+      "theme": "Thema",
+      "customTheme": "Aangepast thema",
+      "shortDescription": "Korte beschrijving",
+      "premise": "Uitgangspunt",
+      "tone": "Toon",
+      "customTone": "Aangepaste toon",
+      "mainLanguage": "Hoofdtaal",
+      "visibility": "Zichtbaarheid",
+      "password": "Wachtwoord",
+      "maxPlayers": "Spelerslimiet",
+      "cover": "Omslag"
+    },
+    "placeholders": {
+      "name": "De naam van je kroniek",
+      "customTheme": "Beschrijf het thema van je wereld",
+      "shortDescription": "Eén regel die de campagne samenvat",
+      "premise": "Hoe begint alles? Schrijf het uitgangspunt van je verhaal…",
+      "customTone": "Beschrijf de toon van je tafel",
+      "password": "Laat leeg om geen wachtwoord te vereisen",
+      "maxPlayers": "Bijv.: 5"
+    },
+    "hints": {
+      "password": "Optioneel. Minstens 6 tekens.",
+      "maxPlayers": "Optioneel. Tussen 1 en 50."
+    },
+    "form": {
+      "choose": "Kies…",
+      "submit": "Campagne aanmaken",
+      "error": "De campagne kon niet worden aangemaakt"
+    },
+    "validation": {
+      "nameRequired": "Geef je campagne een naam",
+      "nameMin": "De naam moet minstens 3 tekens bevatten",
+      "nameMax": "De naam mag maximaal 120 tekens bevatten",
+      "themeRequired": "Kies een thema",
+      "customThemeRequired": "Beschrijf het aangepaste thema",
+      "shortDescriptionRequired": "Schrijf een korte beschrijving",
+      "shortDescriptionMax": "Maximaal 280 tekens",
+      "premiseRequired": "Schrijf het uitgangspunt",
+      "premiseMax": "Maximaal 10000 tekens",
+      "toneRequired": "Kies een toon",
+      "customToneRequired": "Beschrijf de aangepaste toon",
+      "passwordMin": "Het wachtwoord moet minstens 6 tekens bevatten",
+      "maxPlayers": "Voer een geheel getal tussen 1 en 50 in"
+    },
+    "theme": {
+      "dark-fantasy": "Dark Fantasy",
+      "high-fantasy": "High Fantasy",
+      "fantasy": "Fantasy",
+      "sci-fi": "Sciencefiction",
+      "cyberpunk": "Cyberpunk",
+      "steampunk": "Steampunk",
+      "post-apocalyptic": "Post-apocalyptisch",
+      "horror": "Horror",
+      "modern": "Modern",
+      "custom": "Aangepast"
+    },
+    "tone": {
+      "grim": "Grimmig",
+      "heroic": "Heroïsch",
+      "political": "Politiek",
+      "exploration": "Verkenning",
+      "horror": "Terreur",
+      "epic": "Episch",
+      "investigative": "Onderzoekend",
+      "comedic": "Komisch",
+      "realistic": "Realistisch",
+      "custom": "Aangepast"
+    },
+    "visibility": {
+      "private": "Privé",
+      "unlisted": "Niet vermeld",
+      "public": "Openbaar"
+    },
+    "status": {
+      "active": "Actief",
+      "paused": "Gepauzeerd",
+      "archived": "Gearchiveerd"
+    },
+    "cover": {
+      "add": "Omslag toevoegen",
+      "hint": "JPG, PNG of WEBP · tot 5MB",
+      "remove": "Afbeelding verwijderen",
+      "previewAlt": "Voorbeeld van de omslag",
+      "errorType": "Ongeldig formaat. Gebruik JPG, PNG of WEBP.",
+      "errorSize": "De afbeelding mag maximaal 5MB zijn."
+    },
+    "review": {
+      "noCover": "Geen omslag"
+    },
+    "detail": {
+      "back": "Terug naar het boek",
+      "loading": "Campagne openen…",
+      "notFound": "Campagne niet gevonden.",
+      "premiseEyebrow": "Uitgangspunt",
+      "premiseTitle": "Hoe alles begint",
+      "maxPlayers": "Tot {{max}} spelers"
+    }
+  }
+}

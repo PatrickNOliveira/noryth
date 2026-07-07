@@ -1,0 +1,9 @@
+{
+  "short_name": "Noryth",
+  "name": "Noryth — Mesas de RPG",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#16130d",
+  "background_color": "#16130d"
+}

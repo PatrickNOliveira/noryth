@@ -1,0 +1,214 @@
+{
+  "language": {
+    "label": "Idioma",
+    "title": "Escolha o idioma",
+    "description": "Selecione o idioma do seu livro."
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "toggle": "Alternar tema"
+  },
+  "common": {
+    "soon": "Brevemente",
+    "close": "Fechar"
+  },
+  "app": {
+    "logout": "Terminar sessão"
+  },
+  "validation": {
+    "nameRequired": "O nome é obrigatório",
+    "emailRequired": "O e-mail é obrigatório",
+    "emailInvalid": "E-mail inválido",
+    "passwordRequired": "A palavra-passe é obrigatória",
+    "passwordMin": "A palavra-passe deve ter no mínimo 8 caracteres"
+  },
+  "auth": {
+    "cover": {
+      "plate": "Caderno de Campanha",
+      "tagline": "Onde mestres e jogadores guardam as suas histórias.",
+      "volume": "Volume I"
+    },
+    "fields": {
+      "name": "Nome",
+      "email": "E-mail",
+      "password": "Palavra-passe"
+    },
+    "placeholders": {
+      "name": "Como devemos tratá-lo?",
+      "email": "voce@email.com",
+      "passwordNew": "Mínimo de 8 caracteres"
+    },
+    "login": {
+      "title": "Abra o seu livro",
+      "subtitle": "Retome a sua crónica onde a deixou.",
+      "submit": "Entrar",
+      "noAccount": "Ainda não tem um livro?",
+      "createLink": "Comece o seu",
+      "error": "Não foi possível entrar"
+    },
+    "register": {
+      "title": "Comece um novo livro",
+      "subtitle": "Toda a lenda tem um primeiro capítulo.",
+      "submit": "Criar conta",
+      "haveAccount": "Já tem um livro?",
+      "loginLink": "Abra-o",
+      "error": "Não foi possível criar a conta"
+    }
+  },
+  "dashboard": {
+    "kicker": "Livro de Campanha",
+    "welcome": "Bem-vindo de volta.",
+    "welcomeNamed": "Bem-vindo de volta, {{name}}.",
+    "opener": "As páginas seguintes ainda estão em branco. Abra a sua primeira campanha e o mundo começará a ganhar forma, entrada a entrada.",
+    "recent": {
+      "eyebrow": "Onde ficou",
+      "title": "A sua campanha mais recente",
+      "tomeKicker": "Nenhuma campanha aberta",
+      "tomeTitle": "O primeiro capítulo aguarda",
+      "tomeSubtitle": "A sua estante ainda não guarda volumes",
+      "tomeDescription": "Toda a grande crónica começa com uma página em branco. Quando criar uma campanha, ela ficará aqui — pronta a ser retomada em qualquer momento da mesa.",
+      "cta": "Começar um novo livro"
+    },
+    "campaigns": {
+      "eyebrow": "Registo",
+      "title": "As suas campanhas",
+      "empty": "Nenhuma campanha registada. O índice deste livro será preenchido à medida que criar as suas histórias."
+    },
+    "characters": {
+      "eyebrow": "Dramatis personae",
+      "title": "As suas personagens",
+      "empty": "Ainda não há fichas neste caderno. Heróis e coadjuvantes ganharão as suas páginas em breve."
+    },
+    "world": {
+      "eyebrow": "Cartografia & crónica",
+      "title": "O seu mundo",
+      "lead": "Cada tomo do seu mundo terá a sua própria voz — o mesmo livro, capítulos distintos.",
+      "atlasTitle": "Atlas Cartográfico",
+      "atlasMeta": "Mapas, reinos e regiões",
+      "heraldryTitle": "Livro de Heráldica",
+      "heraldryMeta": "Fações, ordens e casas",
+      "diaryTitle": "Diário do Mestre",
+      "diaryMeta": "Sessões e crónicas"
+    }
+  },
+  "campaign": {
+    "new": {
+      "kicker": "Nova campanha",
+      "title": "Comece um novo livro",
+      "lead": "Dê forma à sua próxima crónica. Cada escolha aqui será a primeira página do seu livro."
+    },
+    "sections": {
+      "identity": "Capítulo I",
+      "identityTitle": "Identidade",
+      "world": "Capítulo II",
+      "worldTitle": "Mundo",
+      "access": "Capítulo III",
+      "accessTitle": "Acesso",
+      "cover": "Capítulo IV",
+      "coverTitle": "Capa",
+      "review": "Capítulo V",
+      "reviewTitle": "Revisão"
+    },
+    "fields": {
+      "name": "Nome da campanha",
+      "theme": "Tema",
+      "customTheme": "Tema personalizado",
+      "shortDescription": "Descrição curta",
+      "premise": "Premissa",
+      "tone": "Tom",
+      "customTone": "Tom personalizado",
+      "mainLanguage": "Idioma principal",
+      "visibility": "Visibilidade",
+      "password": "Palavra-passe",
+      "maxPlayers": "Limite de jogadores",
+      "cover": "Capa"
+    },
+    "placeholders": {
+      "name": "O nome da sua crónica",
+      "customTheme": "Descreva o tema do seu mundo",
+      "shortDescription": "Uma linha que resume a campanha",
+      "premise": "Como tudo começa? Escreva a premissa da sua história…",
+      "customTone": "Descreva o tom da mesa",
+      "password": "Deixe em branco para não exigir palavra-passe",
+      "maxPlayers": "Ex.: 5"
+    },
+    "hints": {
+      "password": "Opcional. Mínimo de 6 caracteres.",
+      "maxPlayers": "Opcional. Entre 1 e 50."
+    },
+    "form": {
+      "choose": "Escolha…",
+      "submit": "Criar campanha",
+      "error": "Não foi possível criar a campanha"
+    },
+    "validation": {
+      "nameRequired": "Dê um nome à sua campanha",
+      "nameMin": "O nome deve ter pelo menos 3 caracteres",
+      "nameMax": "O nome deve ter no máximo 120 caracteres",
+      "themeRequired": "Escolha um tema",
+      "customThemeRequired": "Descreva o tema personalizado",
+      "shortDescriptionRequired": "Escreva uma descrição curta",
+      "shortDescriptionMax": "Máximo de 280 caracteres",
+      "premiseRequired": "Escreva a premissa",
+      "premiseMax": "Máximo de 10000 caracteres",
+      "toneRequired": "Escolha um tom",
+      "customToneRequired": "Descreva o tom personalizado",
+      "passwordMin": "A palavra-passe deve ter pelo menos 6 caracteres",
+      "maxPlayers": "Introduza um número inteiro entre 1 e 50"
+    },
+    "theme": {
+      "dark-fantasy": "Fantasia Sombria",
+      "high-fantasy": "Alta Fantasia",
+      "fantasy": "Fantasia",
+      "sci-fi": "Ficção Científica",
+      "cyberpunk": "Cyberpunk",
+      "steampunk": "Steampunk",
+      "post-apocalyptic": "Pós-apocalíptico",
+      "horror": "Horror",
+      "modern": "Moderno",
+      "custom": "Personalizado"
+    },
+    "tone": {
+      "grim": "Sombrio",
+      "heroic": "Heroico",
+      "political": "Político",
+      "exploration": "Exploração",
+      "horror": "Terror",
+      "epic": "Épico",
+      "investigative": "Investigativo",
+      "comedic": "Cómico",
+      "realistic": "Realista",
+      "custom": "Personalizado"
+    },
+    "visibility": {
+      "private": "Privada",
+      "unlisted": "Não listada",
+      "public": "Pública"
+    },
+    "status": {
+      "active": "Ativa",
+      "paused": "Pausada",
+      "archived": "Arquivada"
+    },
+    "cover": {
+      "add": "Adicionar capa",
+      "hint": "JPG, PNG ou WEBP · até 5MB",
+      "remove": "Remover imagem",
+      "previewAlt": "Pré-visualização da capa",
+      "errorType": "Formato inválido. Use JPG, PNG ou WEBP.",
+      "errorSize": "A imagem deve ter no máximo 5MB."
+    },
+    "review": {
+      "noCover": "Sem capa"
+    },
+    "detail": {
+      "back": "Voltar ao livro",
+      "loading": "A abrir a campanha…",
+      "notFound": "Campanha não encontrada.",
+      "premiseEyebrow": "Premissa",
+      "premiseTitle": "Como tudo começa",
+      "maxPlayers": "Até {{max}} jogadores"
+    }
+  }
+}
