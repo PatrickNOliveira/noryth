@@ -12,7 +12,8 @@
       "Bash(node -e \"require\\('ts-node'\\).register\\(\\); require\\('./src/modules/campaigns/entities/campaign.entity'\\); require\\('./src/shared/config/data-source'\\); console.log\\('TS-NODE + tsconfig-paths OK \\(alias + data-source loaded\\)'\\);\")",
       "Bash(TS_NODE_PROJECT=tsconfig.prod.json node -r tsconfig-paths/register -e \"require\\('./dist/modules/campaigns/entities/campaign.entity'\\); require\\('./dist/shared/config/data-source'\\); require\\('./dist/app.module'\\); console.log\\('PROD ALIAS RESOLUTION OK'\\);\")",
       "Bash(python -c \"import yaml,sys; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")",
-      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")"
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")",
+      "Bash(bash -n /e/Noryth/scripts/vps/setup-nginx-https.sh)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

@@ -44,7 +44,9 @@ install_packages() {
   if [ -n "$need" ]; then
     log "installing packages:$need"
     $SUDO apt-get update -y
-    $SUDO DEBIAN_FRONTEND=noninteractive apt-get install -y $need
+    # `env` so the inline var works whether or not $SUDO is set — `sudo VAR=x cmd`
+    # would treat VAR=x as the command name.
+    $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y $need
   else
     log "nginx and certbot already installed"
   fi
