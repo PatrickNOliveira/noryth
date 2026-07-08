@@ -210,5 +210,121 @@
       "premiseTitle": "Como tudo começa",
       "maxPlayers": "Até {{max}} jogadores"
     }
+  },
+  "faction": {
+    "list": {
+      "back": "Voltar à campanha",
+      "new": "Nova fação",
+      "eyebrow": "Livro de Heráldica",
+      "title": "Fações",
+      "lead": "Reinos, ordens e casas que dão forma ao seu mundo.",
+      "loading": "A abrir o Livro de Heráldica…",
+      "emptyTitle": "O Livro de Heráldica está em branco",
+      "emptyDescription": "Ainda não há fações registadas. Crie a primeira e dê-lhe um brasão ou estandarte."
+    },
+    "new": {
+      "back": "Voltar às fações",
+      "eyebrow": "Livro de Heráldica",
+      "title": "Forjar uma fação",
+      "lead": "Descreva a fação com riqueza — o símbolo é criado a partir de todo este contexto.",
+      "submit": "Criar fação",
+      "error": "Não foi possível criar a fação",
+      "generationNote": "Ao criar, um brasão ou estandarte é gerado por IA a partir do contexto. Pode demorar alguns instantes."
+    },
+    "sections": {
+      "identity": "Capítulo I",
+      "identityTitle": "Identidade",
+      "lore": "Capítulo II",
+      "loreTitle": "Lore",
+      "symbol": "Capítulo III",
+      "symbolTitle": "Símbolo"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo",
+      "customType": "Tipo personalizado",
+      "description": "Descrição curta",
+      "history": "História",
+      "identity": "Identidade",
+      "memberTraits": "Características dos membros",
+      "values": "Valores",
+      "motto": "Lema",
+      "colors": "Cores",
+      "recurringElements": "Elementos recorrentes",
+      "symbolType": "Tipo de símbolo",
+      "symbolPrompt": "Ideia do símbolo"
+    },
+    "placeholders": {
+      "name": "O nome da fação",
+      "customType": "Descreva o tipo da fação",
+      "description": "Um resumo numa linha",
+      "history": "A origem e o percurso da fação…",
+      "identity": "Cultura, estética, roupas, arquitetura, costumes, atmosfera…",
+      "memberTraits": "Ex.: costumam ser ruivos ou loiros, altos e magros.",
+      "values": "Ex.: honra, lealdade, força, conhecimento.",
+      "motto": "Ex.: “Pela lua e pela lâmina.”",
+      "colors": "Ex.: preto, dourado e vinho.",
+      "recurringElements": "Ex.: corvos, lua crescente, prata, espinhos.",
+      "symbolPrompt": "Ex.: um corvo negro a segurar uma espada sobre fundo dourado."
+    },
+    "hints": {
+      "description": "Aparece nas listagens.",
+      "identity": "Campo livre para a identidade geral da fação.",
+      "memberTraits": "Influenciarão a criação de personagens ligadas à fação no futuro.",
+      "recurringElements": "Símbolos e motivos que se repetem na fação.",
+      "symbolPrompt": "A sua ideia básica; a IA considera todo o contexto da campanha e da fação."
+    },
+    "form": { "choose": "Escolha…" },
+    "validation": {
+      "nameRequired": "Dê um nome à fação",
+      "nameMin": "O nome deve ter pelo menos 3 caracteres",
+      "typeRequired": "Escolha um tipo"
+    },
+    "type": {
+      "kingdom": "Reino",
+      "empire": "Império",
+      "noble_house": "Casa nobre",
+      "clan": "Clã",
+      "guild": "Guilda",
+      "religious_order": "Ordem religiosa",
+      "military_order": "Ordem militar",
+      "mercenary_company": "Companhia mercenária",
+      "tribe": "Tribo",
+      "cult": "Culto",
+      "criminal_organization": "Organização criminosa",
+      "corporation": "Corporação",
+      "custom": "Personalizado"
+    },
+    "symbolType": {
+      "coat_of_arms": "Brasão",
+      "banner": "Estandarte"
+    },
+    "status": {
+      "draft": "Rascunho",
+      "generating_symbol": "A gerar símbolo",
+      "pending_approval": "A aguardar aprovação",
+      "active": "Ativa",
+      "generation_failed": "Falha na geração",
+      "archived": "Arquivada"
+    },
+    "detail": {
+      "back": "Voltar às fações",
+      "loading": "A abrir a fação…",
+      "notFound": "Fação não encontrada.",
+      "symbolEyebrow": "Heráldica",
+      "symbolTitle": "Símbolo",
+      "generating": "O brasão está a ser forjado…",
+      "generatingHint": "Pode demorar alguns instantes. A página atualiza-se sozinha.",
+      "failed": "Não foi possível gerar o símbolo.",
+      "retry": "Tentar novamente",
+      "noSymbol": "Esta fação ainda não tem um símbolo. Gere um brasão ou estandarte.",
+      "pendingHint": "Foi gerado um símbolo. Aprove, rejeite ou solicite ajustes.",
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "requestAdjustments": "Solicitar ajustes",
+      "regenerate": "Gerar novo símbolo",
+      "adjustPlaceholder": "Descreva os ajustes desejados (ex.: mais escuro, sem a coroa)…",
+      "historyLabel": "Histórico de símbolos"
+    }
   }
 }

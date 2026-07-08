@@ -9,8 +9,10 @@ import {
   Divider,
   Loading,
   Alert,
+  EntryList,
+  Entry,
 } from '../components/ui';
-import { BookIcon } from '../components/icons';
+import { BookIcon, ShieldIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCampaign, clearSelectedCampaign } from '../store/slices/campaigns.slice';
 import { themeLabelKey, toneLabelKey } from '../utils/campaignOptions';
@@ -173,6 +175,18 @@ export function CampaignDetailPage() {
       <Chapter>
         <ChapterHeading eyebrow={t('campaign.detail.premiseEyebrow')} title={t('campaign.detail.premiseTitle')} />
         <Prose>{c.premise}</Prose>
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading eyebrow={t('dashboard.world.eyebrow')} title={t('dashboard.world.title')} />
+        <EntryList>
+          <Entry
+            title={t('faction.list.title')}
+            icon={<ShieldIcon size={20} />}
+            meta={t('faction.list.lead')}
+            onClick={() => navigate(`/campaigns/${c.id}/factions`)}
+          />
+        </EntryList>
         <Divider variant="ornament" />
       </Chapter>
     </>

@@ -210,5 +210,121 @@
       "premiseTitle": "Come inizia tutto",
       "maxPlayers": "Fino a {{max}} giocatori"
     }
+  },
+  "faction": {
+    "list": {
+      "back": "Torna alla campagna",
+      "new": "Nuova fazione",
+      "eyebrow": "Libro di Araldica",
+      "title": "Fazioni",
+      "lead": "Regni, ordini e casate che danno forma al tuo mondo.",
+      "loading": "Apertura del Libro di Araldica…",
+      "emptyTitle": "Il Libro di Araldica è vuoto",
+      "emptyDescription": "Nessuna fazione registrata. Crea la prima e dalle uno stemma o uno stendardo."
+    },
+    "new": {
+      "back": "Torna alle fazioni",
+      "eyebrow": "Libro di Araldica",
+      "title": "Forgiare una fazione",
+      "lead": "Descrivi la fazione con ricchezza — il suo simbolo nasce da tutto questo contesto.",
+      "submit": "Crea fazione",
+      "error": "Impossibile creare la fazione",
+      "generationNote": "Alla creazione, uno stemma o uno stendardo viene generato dall'IA dal contesto. Può richiedere qualche istante."
+    },
+    "sections": {
+      "identity": "Capitolo I",
+      "identityTitle": "Identità",
+      "lore": "Capitolo II",
+      "loreTitle": "Lore",
+      "symbol": "Capitolo III",
+      "symbolTitle": "Simbolo"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo",
+      "customType": "Tipo personalizzato",
+      "description": "Descrizione breve",
+      "history": "Storia",
+      "identity": "Identità",
+      "memberTraits": "Tratti dei membri",
+      "values": "Valori",
+      "motto": "Motto",
+      "colors": "Colori",
+      "recurringElements": "Elementi ricorrenti",
+      "symbolType": "Tipo di simbolo",
+      "symbolPrompt": "Idea del simbolo"
+    },
+    "placeholders": {
+      "name": "Il nome della fazione",
+      "customType": "Descrivi il tipo della fazione",
+      "description": "Un riassunto in una riga",
+      "history": "L'origine e il percorso della fazione…",
+      "identity": "Cultura, estetica, abiti, architettura, costumi, atmosfera…",
+      "memberTraits": "Es.: spesso rossi o biondi, alti e snelli.",
+      "values": "Es.: onore, lealtà, forza, conoscenza.",
+      "motto": "Es.: «Per la luna e la lama».",
+      "colors": "Es.: nero, oro e vinaccia.",
+      "recurringElements": "Es.: corvi, luna crescente, argento, spine.",
+      "symbolPrompt": "Es.: un corvo nero che regge una spada su campo dorato."
+    },
+    "hints": {
+      "description": "Mostrata negli elenchi.",
+      "identity": "Campo libero per l'identità generale della fazione.",
+      "memberTraits": "Influenzeranno i personaggi legati alla fazione in seguito.",
+      "recurringElements": "Simboli e motivi che ricorrono nella fazione.",
+      "symbolPrompt": "La tua idea di base; l'IA considera tutto il contesto della campagna e della fazione."
+    },
+    "form": { "choose": "Scegli…" },
+    "validation": {
+      "nameRequired": "Dai un nome alla fazione",
+      "nameMin": "Il nome deve avere almeno 3 caratteri",
+      "typeRequired": "Scegli un tipo"
+    },
+    "type": {
+      "kingdom": "Regno",
+      "empire": "Impero",
+      "noble_house": "Casata nobile",
+      "clan": "Clan",
+      "guild": "Gilda",
+      "religious_order": "Ordine religioso",
+      "military_order": "Ordine militare",
+      "mercenary_company": "Compagnia mercenaria",
+      "tribe": "Tribù",
+      "cult": "Culto",
+      "criminal_organization": "Organizzazione criminale",
+      "corporation": "Corporazione",
+      "custom": "Personalizzato"
+    },
+    "symbolType": {
+      "coat_of_arms": "Stemma",
+      "banner": "Stendardo"
+    },
+    "status": {
+      "draft": "Bozza",
+      "generating_symbol": "Generazione del simbolo",
+      "pending_approval": "In attesa di approvazione",
+      "active": "Attiva",
+      "generation_failed": "Generazione fallita",
+      "archived": "Archiviata"
+    },
+    "detail": {
+      "back": "Torna alle fazioni",
+      "loading": "Apertura della fazione…",
+      "notFound": "Fazione non trovata.",
+      "symbolEyebrow": "Araldica",
+      "symbolTitle": "Simbolo",
+      "generating": "Lo stemma è in fase di forgiatura…",
+      "generatingHint": "Può richiedere qualche istante. La pagina si aggiorna da sola.",
+      "failed": "Impossibile generare il simbolo.",
+      "retry": "Riprova",
+      "noSymbol": "Questa fazione non ha ancora un simbolo. Genera uno stemma o uno stendardo.",
+      "pendingHint": "È stato generato un simbolo. Approva, rifiuta o richiedi modifiche.",
+      "approve": "Approva",
+      "reject": "Rifiuta",
+      "requestAdjustments": "Richiedi modifiche",
+      "regenerate": "Genera un nuovo simbolo",
+      "adjustPlaceholder": "Descrivi le modifiche desiderate (es.: più scuro, senza la corona)…",
+      "historyLabel": "Cronologia dei simboli"
+    }
   }
 }

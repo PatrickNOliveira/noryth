@@ -210,5 +210,121 @@
       "premiseTitle": "Comment tout commence",
       "maxPlayers": "Jusqu'à {{max}} joueurs"
     }
+  },
+  "faction": {
+    "list": {
+      "back": "Retour à la campagne",
+      "new": "Nouvelle faction",
+      "eyebrow": "Livre d'Héraldique",
+      "title": "Factions",
+      "lead": "Royaumes, ordres et maisons qui façonnent votre monde.",
+      "loading": "Ouverture du Livre d'Héraldique…",
+      "emptyTitle": "Le Livre d'Héraldique est vierge",
+      "emptyDescription": "Aucune faction enregistrée. Créez la première et donnez-lui un blason ou une bannière."
+    },
+    "new": {
+      "back": "Retour aux factions",
+      "eyebrow": "Livre d'Héraldique",
+      "title": "Forger une faction",
+      "lead": "Décrivez la faction en détail — son symbole est créé à partir de tout ce contexte.",
+      "submit": "Créer la faction",
+      "error": "Impossible de créer la faction",
+      "generationNote": "À la création, un blason ou une bannière est généré par l'IA à partir du contexte. Cela peut prendre quelques instants."
+    },
+    "sections": {
+      "identity": "Chapitre I",
+      "identityTitle": "Identité",
+      "lore": "Chapitre II",
+      "loreTitle": "Lore",
+      "symbol": "Chapitre III",
+      "symbolTitle": "Symbole"
+    },
+    "fields": {
+      "name": "Nom",
+      "type": "Type",
+      "customType": "Type personnalisé",
+      "description": "Description courte",
+      "history": "Histoire",
+      "identity": "Identité",
+      "memberTraits": "Traits des membres",
+      "values": "Valeurs",
+      "motto": "Devise",
+      "colors": "Couleurs",
+      "recurringElements": "Éléments récurrents",
+      "symbolType": "Type de symbole",
+      "symbolPrompt": "Idée du symbole"
+    },
+    "placeholders": {
+      "name": "Le nom de la faction",
+      "customType": "Décrivez le type de la faction",
+      "description": "Un résumé en une ligne",
+      "history": "L'origine et le parcours de la faction…",
+      "identity": "Culture, esthétique, vêtements, architecture, coutumes, atmosphère…",
+      "memberTraits": "Ex. : souvent roux ou blonds, grands et minces.",
+      "values": "Ex. : honneur, loyauté, force, savoir.",
+      "motto": "Ex. : « Par la lune et la lame ».",
+      "colors": "Ex. : noir, or et lie-de-vin.",
+      "recurringElements": "Ex. : corbeaux, croissant de lune, argent, épines.",
+      "symbolPrompt": "Ex. : un corbeau noir tenant une épée sur fond doré."
+    },
+    "hints": {
+      "description": "Affichée dans les listes.",
+      "identity": "Champ libre pour l'identité générale de la faction.",
+      "memberTraits": "Influenceront les personnages liés à la faction plus tard.",
+      "recurringElements": "Symboles et motifs qui reviennent dans la faction.",
+      "symbolPrompt": "Votre idée de base ; l'IA prend en compte tout le contexte de la campagne et de la faction."
+    },
+    "form": { "choose": "Choisir…" },
+    "validation": {
+      "nameRequired": "Donnez un nom à la faction",
+      "nameMin": "Le nom doit comporter au moins 3 caractères",
+      "typeRequired": "Choisissez un type"
+    },
+    "type": {
+      "kingdom": "Royaume",
+      "empire": "Empire",
+      "noble_house": "Maison noble",
+      "clan": "Clan",
+      "guild": "Guilde",
+      "religious_order": "Ordre religieux",
+      "military_order": "Ordre militaire",
+      "mercenary_company": "Compagnie mercenaire",
+      "tribe": "Tribu",
+      "cult": "Culte",
+      "criminal_organization": "Organisation criminelle",
+      "corporation": "Corporation",
+      "custom": "Personnalisé"
+    },
+    "symbolType": {
+      "coat_of_arms": "Blason",
+      "banner": "Bannière"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "generating_symbol": "Génération du symbole",
+      "pending_approval": "En attente d'approbation",
+      "active": "Active",
+      "generation_failed": "Échec de la génération",
+      "archived": "Archivée"
+    },
+    "detail": {
+      "back": "Retour aux factions",
+      "loading": "Ouverture de la faction…",
+      "notFound": "Faction introuvable.",
+      "symbolEyebrow": "Héraldique",
+      "symbolTitle": "Symbole",
+      "generating": "Le blason est en cours de forge…",
+      "generatingHint": "Cela peut prendre quelques instants. La page se met à jour automatiquement.",
+      "failed": "Le symbole n'a pas pu être généré.",
+      "retry": "Réessayer",
+      "noSymbol": "Cette faction n'a pas encore de symbole. Générez un blason ou une bannière.",
+      "pendingHint": "Un symbole a été généré. Approuvez, rejetez ou demandez des ajustements.",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "requestAdjustments": "Demander des ajustements",
+      "regenerate": "Générer un nouveau symbole",
+      "adjustPlaceholder": "Décrivez les ajustements souhaités (ex. : plus sombre, sans la couronne)…",
+      "historyLabel": "Historique des symboles"
+    }
   }
 }

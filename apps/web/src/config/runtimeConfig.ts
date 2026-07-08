@@ -27,6 +27,10 @@ function resolveApiUrl(): string {
   return 'http://localhost:3333/api';
 }
 
+const apiUrl = resolveApiUrl();
+
 export const runtimeConfig = {
-  apiUrl: resolveApiUrl(),
+  apiUrl,
+  /** Socket.IO connects to the API host root (strip the trailing "/api"). */
+  socketUrl: apiUrl.replace(/\/api\/?$/, ''),
 };

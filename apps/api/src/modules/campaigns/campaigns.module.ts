@@ -18,5 +18,6 @@ import { TypeOrmCampaignRepository } from './repositories/typeorm-campaign.repos
     CampaignsService,
     { provide: CAMPAIGNS_REPOSITORY, useClass: TypeOrmCampaignRepository },
   ],
+  exports: [CampaignsService],
 })
 export class CampaignsModule {}

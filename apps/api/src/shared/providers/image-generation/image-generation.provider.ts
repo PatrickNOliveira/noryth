@@ -1,21 +1,26 @@
 /**
  * ImageGenerationProvider — PORT for AI image generation.
  *
- * The concrete adapter (OpenAI / diffusion model) will be implemented in a
- * future story and bound to {@link IMAGE_GENERATION_PROVIDER}.
+ * Domain modules (e.g. Factions) depend ONLY on this interface and the
+ * {@link IMAGE_GENERATION_PROVIDER} token — never on OpenAI. The provider
+ * returns raw bytes so the caller can persist them through the StorageProvider.
  */
 export interface ImageGenerationRequest {
   prompt: string;
+  /** Things to avoid; folded into the prompt for providers without a native field. */
+  negativePrompt?: string;
   /** e.g. "1024x1024". */
   size?: string;
 }
 
 export interface GeneratedImage {
-  /** URL or storage key where the image can be retrieved. */
-  url: string;
+  buffer: Buffer;
+  contentType: string;
 }
 
 export interface ImageGenerationProvider {
+  /** Whether the provider is configured (API key present, etc.). */
+  isConfigured(): boolean;
   generateImage(request: ImageGenerationRequest): Promise<GeneratedImage>;
 }
 

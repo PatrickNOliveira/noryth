@@ -15,6 +15,7 @@ import themeReducer from './slices/theme.slice';
 import uiReducer from './slices/ui.slice';
 import languageReducer from './slices/language.slice';
 import campaignsReducer from './slices/campaigns.slice';
+import factionsReducer from './slices/factions.slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   language: languageReducer,
   campaigns: campaignsReducer,
+  factions: factionsReducer,
 });
 
 /**

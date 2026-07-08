@@ -52,7 +52,37 @@ token, jamais da implementação.
 | `RealtimeProvider`        | Comunicação em tempo real                 | Socket.IO      |
 | `CacheProvider`           | Cache de dados                            | Redis          |
 
-Nesta história apenas as **interfaces** existem — sem implementação.
+As implementações concretas são adicionadas conforme as histórias avançam
+(ver `ProvidersModule`).
+
+## Geração assíncrona (fila)
+
+Operações lentas/caras/sujeitas a falha (ex.: geração de brasão/estandarte de
+facção por IA) **não** rodam dentro do request HTTP. O domínio apenas
+**enfileira** um job pelo `QueueProvider`:
+
+```
+FactionsService ──► QueueProvider.enqueue(...) ──► BullMqQueueProvider ──► Redis
+                                                          │
+                              BullMqWorkerHost ◄──────────┘  (consome)
+                                     │
+                                     ▼
+                        QueueConsumerRegistry (handler do domínio)
+                                     │
+                                     ▼
+                        FactionsService.processGenerationJob(...)
+```
+
+- **BullMQ é a implementação inicial**; pode ser trocado por Kafka/SQS sem tocar
+  no domínio — basta um novo adapter atrás de `QUEUE_PROVIDER` + um worker host.
+- **Requer Redis** (externo, configurado por `REDIS_*`). Sem `REDIS_HOST`, os
+  jobs não rodam e a facção fica `generation_failed` (com "tentar novamente").
+- O **producer** (`BullMqQueueProvider`) e o **worker host** (`BullMqWorkerHost`)
+  vivem em `shared/providers/queue`. **Nenhum módulo de domínio importa BullMQ**:
+  o consumo é feito por um handler (`FactionSymbolHandler`) que só implementa a
+  interface `QueueJobHandler` e se registra no `QueueConsumerRegistry`.
+- O worker roda no mesmo processo por ora, mas a separação (registry + host)
+  permite extrair um processo worker dedicado no futuro.
 
 ## Domain Events
 

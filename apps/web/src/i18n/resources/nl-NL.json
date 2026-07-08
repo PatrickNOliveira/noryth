@@ -210,5 +210,121 @@
       "premiseTitle": "Hoe alles begint",
       "maxPlayers": "Tot {{max}} spelers"
     }
+  },
+  "faction": {
+    "list": {
+      "back": "Terug naar de campagne",
+      "new": "Nieuwe factie",
+      "eyebrow": "Boek der Heraldiek",
+      "title": "Facties",
+      "lead": "Koninkrijken, orden en huizen die je wereld vormgeven.",
+      "loading": "Boek der Heraldiek openen…",
+      "emptyTitle": "Het Boek der Heraldiek is leeg",
+      "emptyDescription": "Nog geen facties vastgelegd. Maak de eerste en geef die een wapenschild of een banier."
+    },
+    "new": {
+      "back": "Terug naar facties",
+      "eyebrow": "Boek der Heraldiek",
+      "title": "Een factie smeden",
+      "lead": "Beschrijf de factie rijk — haar symbool wordt uit al deze context gemaakt.",
+      "submit": "Factie aanmaken",
+      "error": "De factie kon niet worden aangemaakt",
+      "generationNote": "Bij het aanmaken genereert de AI een wapenschild of banier op basis van de context. Dit kan even duren."
+    },
+    "sections": {
+      "identity": "Hoofdstuk I",
+      "identityTitle": "Identiteit",
+      "lore": "Hoofdstuk II",
+      "loreTitle": "Lore",
+      "symbol": "Hoofdstuk III",
+      "symbolTitle": "Symbool"
+    },
+    "fields": {
+      "name": "Naam",
+      "type": "Type",
+      "customType": "Aangepast type",
+      "description": "Korte beschrijving",
+      "history": "Geschiedenis",
+      "identity": "Identiteit",
+      "memberTraits": "Kenmerken van leden",
+      "values": "Waarden",
+      "motto": "Motto",
+      "colors": "Kleuren",
+      "recurringElements": "Terugkerende elementen",
+      "symbolType": "Symbooltype",
+      "symbolPrompt": "Symboolidee"
+    },
+    "placeholders": {
+      "name": "De naam van de factie",
+      "customType": "Beschrijf het type van de factie",
+      "description": "Een samenvatting in één regel",
+      "history": "De oorsprong en het verloop van de factie…",
+      "identity": "Cultuur, esthetiek, kleding, architectuur, gewoonten, sfeer…",
+      "memberTraits": "Bijv.: vaak roodharig of blond, lang en slank.",
+      "values": "Bijv.: eer, trouw, kracht, kennis.",
+      "motto": "Bijv.: “Bij maan en kling.”",
+      "colors": "Bijv.: zwart, goud en wijnrood.",
+      "recurringElements": "Bijv.: raven, wassende maan, zilver, doornen.",
+      "symbolPrompt": "Bijv.: een zwarte raaf met een zwaard op een gouden veld."
+    },
+    "hints": {
+      "description": "Wordt getoond in lijsten.",
+      "identity": "Vrij veld voor de algemene identiteit van de factie.",
+      "memberTraits": "Zullen later personages beïnvloeden die aan de factie zijn verbonden.",
+      "recurringElements": "Symbolen en motieven die in de factie terugkeren.",
+      "symbolPrompt": "Je basisidee; de AI houdt rekening met de volledige context van campagne en factie."
+    },
+    "form": { "choose": "Kies…" },
+    "validation": {
+      "nameRequired": "Geef de factie een naam",
+      "nameMin": "De naam moet minstens 3 tekens bevatten",
+      "typeRequired": "Kies een type"
+    },
+    "type": {
+      "kingdom": "Koninkrijk",
+      "empire": "Rijk",
+      "noble_house": "Adellijk huis",
+      "clan": "Clan",
+      "guild": "Gilde",
+      "religious_order": "Religieuze orde",
+      "military_order": "Militaire orde",
+      "mercenary_company": "Huurlingencompagnie",
+      "tribe": "Stam",
+      "cult": "Sekte",
+      "criminal_organization": "Criminele organisatie",
+      "corporation": "Corporatie",
+      "custom": "Aangepast"
+    },
+    "symbolType": {
+      "coat_of_arms": "Wapenschild",
+      "banner": "Banier"
+    },
+    "status": {
+      "draft": "Concept",
+      "generating_symbol": "Symbool genereren",
+      "pending_approval": "Wacht op goedkeuring",
+      "active": "Actief",
+      "generation_failed": "Generatie mislukt",
+      "archived": "Gearchiveerd"
+    },
+    "detail": {
+      "back": "Terug naar facties",
+      "loading": "Factie openen…",
+      "notFound": "Factie niet gevonden.",
+      "symbolEyebrow": "Heraldiek",
+      "symbolTitle": "Symbool",
+      "generating": "Het wapen wordt gesmeed…",
+      "generatingHint": "Dit kan even duren. De pagina wordt automatisch bijgewerkt.",
+      "failed": "Het symbool kon niet worden gegenereerd.",
+      "retry": "Opnieuw proberen",
+      "noSymbol": "Deze factie heeft nog geen symbool. Genereer een wapenschild of banier.",
+      "pendingHint": "Er is een symbool gegenereerd. Keur goed, wijs af of vraag aanpassingen.",
+      "approve": "Goedkeuren",
+      "reject": "Afwijzen",
+      "requestAdjustments": "Aanpassingen vragen",
+      "regenerate": "Nieuw symbool genereren",
+      "adjustPlaceholder": "Beschrijf de gewenste aanpassingen (bijv.: donkerder, zonder de kroon)…",
+      "historyLabel": "Symboolgeschiedenis"
+    }
   }
 }

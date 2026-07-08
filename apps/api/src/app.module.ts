@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UsersModule } from '@modules/users/users.module';
 import { CampaignsModule } from '@modules/campaigns/campaigns.module';
+import { FactionsModule } from '@modules/factions/factions.module';
 
 /**
  * Composition root. Wires global infrastructure (config, database, events,
@@ -30,6 +31,7 @@ import { CampaignsModule } from '@modules/campaigns/campaigns.module';
     UsersModule,
     AuthModule,
     CampaignsModule,
+    FactionsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

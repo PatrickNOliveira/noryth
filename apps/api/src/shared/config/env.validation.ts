@@ -89,6 +89,38 @@ export class EnvironmentVariables {
   /** Public base URL for objects (e.g. behind a CDN/proxy). Empty = derive. */
   @IsString()
   MINIO_PUBLIC_URL = '';
+
+  // ── AI image generation (OpenAI) ───────────────────────────
+  /** Empty = image generation disabled (factions saved without a symbol). */
+  @IsString()
+  OPENAI_API_KEY = '';
+
+  @IsString()
+  OPENAI_IMAGE_MODEL = 'gpt-image-1';
+
+  @IsString()
+  OPENAI_IMAGE_SIZE = '1024x1024';
+
+  /** Chat model used by the FactionSymbolAgent to turn lore into a visual prompt. */
+  @IsString()
+  OPENAI_TEXT_MODEL = 'gpt-4o-mini';
+
+  // ── Queue (Redis / BullMQ) ─────────────────────────────────
+  /** Empty = queue disabled (async jobs won't run). BullMQ requires Redis. */
+  @IsString()
+  REDIS_HOST = '';
+
+  @IsInt()
+  @Min(0)
+  @Max(65535)
+  REDIS_PORT = 6379;
+
+  @IsString()
+  REDIS_PASSWORD = '';
+
+  @IsInt()
+  @Min(0)
+  REDIS_DB = 0;
 }
 
 const TRUE_VALUES = new Set(['true', '1', 'yes']);
@@ -105,6 +137,8 @@ export function validateEnv(config: Record<string, unknown>): EnvironmentVariabl
       DATABASE_PORT: toNumber(config.DATABASE_PORT, 5432),
       MINIO_PORT: toNumber(config.MINIO_PORT, 9000),
       MINIO_USE_SSL: TRUE_VALUES.has(String(config.MINIO_USE_SSL ?? 'false')),
+      REDIS_PORT: toNumber(config.REDIS_PORT, 6379),
+      REDIS_DB: toNumber(config.REDIS_DB, 0),
     },
     { enableImplicitConversion: false },
   );
