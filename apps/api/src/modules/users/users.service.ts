@@ -51,4 +51,9 @@ export class UsersService {
     }
     return user;
   }
+
+  /** Batch lookup used to hydrate participant lists with names/emails. */
+  findByIds(ids: string[]): Promise<User[]> {
+    return this.users.findByIds(ids);
+  }
 }

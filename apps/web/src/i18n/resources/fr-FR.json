@@ -90,6 +90,14 @@
       "heraldryMeta": "Factions, ordres et maisons",
       "diaryTitle": "Journal du Meneur",
       "diaryMeta": "Séances et chroniques"
+    },
+    "discover": {
+      "eyebrow": "Tables ouvertes",
+      "title": "Rejoindre une campagne",
+      "lead": "Campagnes publiques d'autres maîtres du jeu. Entrez et prenez place.",
+      "empty": "Aucune campagne publique ouverte pour le moment.",
+      "locked": "Mot de passe",
+      "full": "Complète"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Règles de la table",
       "title": "Feuille de personnage"
+    },
+    "session": {
+      "eyebrow": "À la table",
+      "title": "Joueurs et session"
+    },
+    "share": {
+      "cta": "Partager la campagne",
+      "copied": "Lien pour rejoindre copié dans le presse-papiers.",
+      "error": "Impossible de copier le lien."
+    },
+    "join": {
+      "back": "Retour",
+      "eyebrow": "Table ouverte",
+      "title": "Rejoindre la campagne",
+      "loading": "Ouverture de l'invitation…",
+      "notFound": "Cette campagne est introuvable.",
+      "open": "Ouvrir la campagne",
+      "full": "Cette table a atteint sa limite de joueurs.",
+      "protected": "Mot de passe",
+      "passwordLabel": "Mot de passe de la table",
+      "passwordPlaceholder": "Saisissez le mot de passe",
+      "cta": "Rejoindre",
+      "error": "Impossible de rejoindre la campagne.",
+      "players": "{{current}}/{{max}} joueurs"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Générer un nouveau symbole",
       "adjustPlaceholder": "Décrivez les ajustements souhaités (ex. : plus sombre, sans la couronne)…",
       "historyLabel": "Historique des symboles"
+    }
+  },
+  "participant": {
+    "back": "Retour à la table",
+    "eyebrow": "Joueurs et session",
+    "title": "Participants",
+    "lead": "Toute la table — propriétaire, maître du jeu et joueurs — et qui est en ligne maintenant.",
+    "loading": "Rassemblement de la table…",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "makeMaster": "Nommer maître",
+    "hubMeta": "Propriétaire, maître du jeu, joueurs et présence en ligne.",
+    "role": {
+      "OWNER_MASTER": "Propriétaire · Maître",
+      "OWNER": "Propriétaire",
+      "MASTER": "Maître",
+      "PLAYER": "Joueur"
     }
   }
 }

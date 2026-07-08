@@ -11,6 +11,8 @@ import { BullMqWorkerHost } from './queue/bullmq-worker.host';
 import { QueueConsumerRegistry } from './queue/queue-consumer';
 import { REALTIME_PROVIDER } from './realtime/realtime.provider';
 import { SocketIoRealtimeGateway } from './realtime/socketio-realtime.gateway';
+import { PRESENCE_PROVIDER } from './presence/presence.provider';
+import { InMemoryPresenceProvider } from './presence/in-memory-presence.provider';
 
 /**
  * Central place where technology adapters are bound to their provider PORTS.
@@ -24,6 +26,7 @@ import { SocketIoRealtimeGateway } from './realtime/socketio-realtime.gateway';
  *   TEXT_GENERATION_PROVIDER  → OpenAITextGenerationProvider
  *   QUEUE_PROVIDER            → BullMqQueueProvider (+ BullMqWorkerHost consumer)
  *   REALTIME_PROVIDER         → SocketIoRealtimeGateway
+ *   PRESENCE_PROVIDER         → InMemoryPresenceProvider (swap for Redis to scale)
  *
  * Still pending future stories: CACHE (Redis).
  */
@@ -36,6 +39,7 @@ const adapters: Provider[] = [
   BullMqWorkerHost,
   SocketIoRealtimeGateway,
   { provide: REALTIME_PROVIDER, useExisting: SocketIoRealtimeGateway },
+  { provide: PRESENCE_PROVIDER, useClass: InMemoryPresenceProvider },
 ];
 
 @Global()
@@ -48,6 +52,7 @@ const adapters: Provider[] = [
     QUEUE_PROVIDER,
     QueueConsumerRegistry,
     REALTIME_PROVIDER,
+    PRESENCE_PROVIDER,
   ],
 })
 export class ProvidersModule {}

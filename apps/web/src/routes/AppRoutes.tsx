@@ -9,7 +9,9 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { NewCampaignPage } from '../pages/NewCampaignPage';
 import { CampaignDetailPage } from '../pages/CampaignDetailPage';
+import { CampaignJoinPage } from '../pages/CampaignJoinPage';
 import { CampaignAttributesPage } from '../pages/CampaignAttributesPage';
+import { CampaignParticipantsPage } from '../pages/CampaignParticipantsPage';
 import { FactionsListPage } from '../pages/FactionsListPage';
 import { NewFactionPage } from '../pages/NewFactionPage';
 import { FactionDetailPage } from '../pages/FactionDetailPage';
@@ -41,7 +43,9 @@ export function AppRoutes() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/campaigns/new" element={<NewCampaignPage />} />
           <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
+          <Route path="/campaigns/:id/join" element={<CampaignJoinPage />} />
           <Route path="/campaigns/:id/attributes" element={<CampaignAttributesPage />} />
+          <Route path="/campaigns/:id/participants" element={<CampaignParticipantsPage />} />
           <Route path="/campaigns/:campaignId/factions" element={<FactionsListPage />} />
           <Route path="/campaigns/:campaignId/factions/new" element={<NewFactionPage />} />
           <Route path="/campaigns/:campaignId/factions/:factionId" element={<FactionDetailPage />} />

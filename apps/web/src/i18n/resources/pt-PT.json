@@ -90,6 +90,14 @@
       "heraldryMeta": "Fações, ordens e casas",
       "diaryTitle": "Diário do Mestre",
       "diaryMeta": "Sessões e crónicas"
+    },
+    "discover": {
+      "eyebrow": "Mesas abertas",
+      "title": "Entrar numa campanha",
+      "lead": "Campanhas públicas de outros mestres. Entra e ocupa um lugar.",
+      "empty": "Nenhuma campanha pública aberta de momento.",
+      "locked": "Senha",
+      "full": "Cheia"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Regras da mesa",
       "title": "Ficha de personagem"
+    },
+    "session": {
+      "eyebrow": "Na mesa",
+      "title": "Jogadores & sessão"
+    },
+    "share": {
+      "cta": "Partilhar campanha",
+      "copied": "Ligação de entrada copiada para a área de transferência.",
+      "error": "Não foi possível copiar a ligação."
+    },
+    "join": {
+      "back": "Voltar",
+      "eyebrow": "Mesa aberta",
+      "title": "Entrar na campanha",
+      "loading": "A abrir o convite…",
+      "notFound": "Esta campanha não foi encontrada.",
+      "open": "Abrir campanha",
+      "full": "Esta mesa atingiu o limite de jogadores.",
+      "protected": "Senha",
+      "passwordLabel": "Senha da mesa",
+      "passwordPlaceholder": "Introduz a senha",
+      "cta": "Entrar",
+      "error": "Não foi possível entrar na campanha.",
+      "players": "{{current}}/{{max}} jogadores"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Gerar novo símbolo",
       "adjustPlaceholder": "Descreva os ajustes desejados (ex.: mais escuro, sem a coroa)…",
       "historyLabel": "Histórico de símbolos"
+    }
+  },
+  "participant": {
+    "back": "Voltar para a mesa",
+    "eyebrow": "Jogadores & sessão",
+    "title": "Participantes",
+    "lead": "Todos na mesa — dono, mestre e jogadores — e quem está online agora.",
+    "loading": "A reunir a mesa…",
+    "online": "Online",
+    "offline": "Offline",
+    "makeMaster": "Tornar mestre",
+    "hubMeta": "Dono, mestre, jogadores e quem está online.",
+    "role": {
+      "OWNER_MASTER": "Dono · Mestre",
+      "OWNER": "Dono",
+      "MASTER": "Mestre",
+      "PLAYER": "Jogador"
     }
   }
 }

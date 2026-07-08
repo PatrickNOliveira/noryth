@@ -9,6 +9,10 @@ export interface CampaignsRepository {
   save(campaign: Campaign): Promise<Campaign>;
   findById(id: string): Promise<Campaign | null>;
   findByOwner(ownerId: string): Promise<Campaign[]>;
+  /** Campaigns the user takes part in (owner, master or player) — no dups. */
+  findByParticipant(userId: string): Promise<Campaign[]>;
+  /** Public, non-archived campaigns for discovery. */
+  findPublic(): Promise<Campaign[]>;
 }
 
 /** DI token used to inject a {@link CampaignsRepository}. */

@@ -18,6 +18,10 @@ import {
 import { CampaignsService } from '../services/campaigns.service';
 import { CreateCampaignDto } from '../dto/create-campaign.dto';
 import { CampaignDto, toCampaignDto } from '../dto/campaign.dto';
+import {
+  CampaignSummaryDto,
+  toCampaignSummaryDto,
+} from '../dto/campaign-summary.dto';
 import { COVER_ALLOWED_MIME, COVER_MAX_BYTES } from '../campaign.constants';
 
 /** Multer filter accepting only the allowed image types. */
@@ -66,12 +70,32 @@ export class CampaignsController {
     return list.map(toCampaignDto);
   }
 
+  /** Public campaigns anyone may discover and join. */
+  @Get('public')
+  async findPublic(): Promise<CampaignSummaryDto[]> {
+    const list = await this.campaigns.findPublic();
+    return list.map((campaign) =>
+      toCampaignSummaryDto(campaign, { isParticipant: false, playerCount: 0 }),
+    );
+  }
+
+  /** Minimal join info for any authenticated user (share link / join screen). */
+  @Get(':id/summary')
+  async summary(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', new ParseUUIDPipe()) id: string,
+  ): Promise<CampaignSummaryDto> {
+    const { campaign, isParticipant, playerCount } =
+      await this.campaigns.getSummary(user.id, id);
+    return toCampaignSummaryDto(campaign, { isParticipant, playerCount });
+  }
+
   @Get(':id')
   async findOne(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<CampaignDto> {
-    const campaign = await this.campaigns.findOwnedOrFail(user.id, id);
+    const campaign = await this.campaigns.findForMemberOrFail(user.id, id);
     return toCampaignDto(campaign);
   }
 }

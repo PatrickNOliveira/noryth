@@ -14,6 +14,7 @@ export interface CreateUserData {
 export interface UsersRepository {
   create(data: CreateUserData): Promise<User>;
   findById(id: string): Promise<User | null>;
+  findByIds(ids: string[]): Promise<User[]>;
   findByEmail(email: string): Promise<User | null>;
   existsByEmail(email: string): Promise<boolean>;
 }

@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { campaignService } from '../../services/campaign.service';
-import { Campaign, CreateCampaignInput } from '../../types/campaign';
+import {
+  Campaign,
+  CampaignSummary,
+  CreateCampaignInput,
+} from '../../types/campaign';
 import { ApiError } from '../../services/api';
 
 export interface CampaignsState {
   myCampaigns: Campaign[];
+  publicCampaigns: CampaignSummary[];
   selectedCampaign: Campaign | null;
   loading: boolean;
   error: string | null;
@@ -12,6 +17,7 @@ export interface CampaignsState {
 
 const initialState: CampaignsState = {
   myCampaigns: [],
+  publicCampaigns: [],
   selectedCampaign: null,
   loading: false,
   error: null,
@@ -19,6 +25,11 @@ const initialState: CampaignsState = {
 
 export const fetchMyCampaigns = createAsyncThunk('campaigns/fetchMine', () =>
   campaignService.listMine(),
+);
+
+export const fetchPublicCampaigns = createAsyncThunk(
+  'campaigns/fetchPublic',
+  () => campaignService.listPublic(),
 );
 
 export const fetchCampaign = createAsyncThunk('campaigns/fetchOne', (id: string) =>
@@ -55,6 +66,12 @@ const campaignsSlice = createSlice({
         state.loading = false;
         state.error = message(action.error, 'failed');
       })
+      .addCase(
+        fetchPublicCampaigns.fulfilled,
+        (state, action: PayloadAction<CampaignSummary[]>) => {
+          state.publicCampaigns = action.payload;
+        },
+      )
       .addCase(fetchCampaign.pending, (state) => {
         state.loading = true;
         state.error = null;

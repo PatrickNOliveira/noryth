@@ -21,6 +21,26 @@ export interface Campaign {
   updatedAt: string;
 }
 
+/**
+ * Minimal campaign view for discovery and the join screen — reachable by any
+ * authenticated user (never exposes the premise or password).
+ */
+export interface CampaignSummary {
+  id: string;
+  name: string;
+  shortDescription: string;
+  theme: string;
+  tone: string;
+  coverImageUrl: string | null;
+  visibility: CampaignVisibility;
+  status: CampaignStatus;
+  hasPassword: boolean;
+  maxPlayers: number | null;
+  playerCount: number;
+  isParticipant: boolean;
+  isFull: boolean;
+}
+
 /** Everything the create form collects. `coverImage` is a File, never base64. */
 export interface CreateCampaignInput {
   name: string;

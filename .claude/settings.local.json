@@ -21,7 +21,9 @@
       "Bash(node -e \"const j=require\\('./i18n/resources/en-US.json'\\); console.log\\('common:', JSON.stringify\\(j.common\\)\\); console.log\\('faction.list:', JSON.stringify\\(j.faction.list\\)\\); console.log\\('faction.validation:', JSON.stringify\\(j.faction.validation\\)\\);\")",
       "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,1\\)\\)\")",
       "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('i18next:', \\(p.dependencies||{}\\).i18next, '| react-i18next:', \\(p.dependencies||{}\\)['react-i18next']\\);\")",
-      "Bash(node inject-attrs-nav-i18n.js)"
+      "Bash(node inject-attrs-nav-i18n.js)",
+      "Bash(node inject-participants-i18n.js)",
+      "Bash(node inject-join-i18n.js)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

@@ -16,6 +16,10 @@ import {
   CAMPAIGNS_REPOSITORY,
   CampaignsRepository,
 } from '../repositories/campaigns.repository';
+import {
+  CAMPAIGN_PARTICIPANTS_REPOSITORY,
+  CampaignParticipantsRepository,
+} from '../repositories/campaign-participants.repository';
 
 /** Minimal shape of the uploaded cover file (Multer). */
 export interface UploadedCover {
@@ -33,6 +37,8 @@ export class CampaignsService {
   constructor(
     @Inject(CAMPAIGNS_REPOSITORY)
     private readonly campaigns: CampaignsRepository,
+    @Inject(CAMPAIGN_PARTICIPANTS_REPOSITORY)
+    private readonly participants: CampaignParticipantsRepository,
     @Inject(STORAGE_PROVIDER)
     private readonly storage: StorageProvider,
   ) {}
@@ -64,6 +70,12 @@ export class CampaignsService {
 
     let saved = await this.campaigns.save(campaign);
 
+    // The creator is owner AND initial master, and must appear in the
+    // participant list — so they get a membership row like everyone else.
+    await this.participants.save(
+      this.participants.createEntity({ campaignId: saved.id, userId }),
+    );
+
     if (cover) {
       const ext = COVER_ALLOWED_EXT[cover.mimetype] ?? 'bin';
       const path = `campaigns/${saved.id}/cover/cover.${ext}`;
@@ -80,18 +92,61 @@ export class CampaignsService {
     return saved;
   }
 
+  /** Campaigns the user takes part in — owner, master OR player (no dups). */
   findMine(userId: string): Promise<Campaign[]> {
-    return this.campaigns.findByOwner(userId);
+    return this.campaigns.findByParticipant(userId);
   }
 
-  async findOwnedOrFail(userId: string, id: string): Promise<Campaign> {
+  async findByIdOrFail(id: string): Promise<Campaign> {
     const campaign = await this.campaigns.findById(id);
     if (!campaign) {
       throw new NotFoundException('Campanha não encontrada');
     }
+    return campaign;
+  }
+
+  /** Public campaigns anyone may discover and join. */
+  findPublic(): Promise<Campaign[]> {
+    return this.campaigns.findPublic();
+  }
+
+  /**
+   * Minimal join info for any authenticated user (used by discovery and the
+   * share/join screen). Computes membership and the current player count.
+   */
+  async getSummary(
+    userId: string,
+    id: string,
+  ): Promise<{ campaign: Campaign; isParticipant: boolean; playerCount: number }> {
+    const campaign = await this.findByIdOrFail(id);
+    const rows = await this.participants.findByCampaign(id);
+    const isParticipant = rows.some((r) => r.userId === userId);
+    const playerCount = rows.filter(
+      (r) => r.userId !== campaign.ownerId && r.userId !== campaign.masterId,
+    ).length;
+    return { campaign, isParticipant, playerCount };
+  }
+
+  async findOwnedOrFail(userId: string, id: string): Promise<Campaign> {
+    const campaign = await this.findByIdOrFail(id);
     if (campaign.ownerId !== userId) {
       throw new ForbiddenException('Você não tem acesso a esta campanha');
     }
     return campaign;
+  }
+
+  /** Any participant (owner, master or player) may open the campaign. */
+  async findForMemberOrFail(userId: string, id: string): Promise<Campaign> {
+    const campaign = await this.findByIdOrFail(id);
+    if (!(await this.participants.exists(id, userId))) {
+      throw new ForbiddenException('Você não participa desta campanha');
+    }
+    return campaign;
+  }
+
+  /** Persists a new master for the campaign. Authorization is the caller's job. */
+  async updateMaster(campaign: Campaign, masterId: string): Promise<Campaign> {
+    campaign.masterId = masterId;
+    return this.campaigns.save(campaign);
   }
 }

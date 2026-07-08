@@ -90,6 +90,14 @@
       "heraldryMeta": "Facciones, órdenes y casas",
       "diaryTitle": "Diario del Máster",
       "diaryMeta": "Sesiones y crónicas"
+    },
+    "discover": {
+      "eyebrow": "Mesas abiertas",
+      "title": "Unirse a una campaña",
+      "lead": "Campañas públicas de otros másters. Entra y toma asiento.",
+      "empty": "No hay campañas públicas abiertas ahora mismo.",
+      "locked": "Contraseña",
+      "full": "Llena"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Reglas de la mesa",
       "title": "Hoja de personaje"
+    },
+    "session": {
+      "eyebrow": "En la mesa",
+      "title": "Jugadores y sesión"
+    },
+    "share": {
+      "cta": "Compartir campaña",
+      "copied": "Enlace de acceso copiado al portapapeles.",
+      "error": "No se pudo copiar el enlace."
+    },
+    "join": {
+      "back": "Volver",
+      "eyebrow": "Mesa abierta",
+      "title": "Unirse a la campaña",
+      "loading": "Abriendo la invitación…",
+      "notFound": "No se encontró esta campaña.",
+      "open": "Abrir campaña",
+      "full": "Esta mesa alcanzó el límite de jugadores.",
+      "protected": "Contraseña",
+      "passwordLabel": "Contraseña de la mesa",
+      "passwordPlaceholder": "Escribe la contraseña",
+      "cta": "Unirse",
+      "error": "No se pudo unir a la campaña.",
+      "players": "{{current}}/{{max}} jugadores"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Generar un nuevo símbolo",
       "adjustPlaceholder": "Describe los ajustes que quieres (ej.: más oscuro, sin la corona)…",
       "historyLabel": "Historial de símbolos"
+    }
+  },
+  "participant": {
+    "back": "Volver a la mesa",
+    "eyebrow": "Jugadores y sesión",
+    "title": "Participantes",
+    "lead": "Todos en la mesa: dueño, máster y jugadores, y quién está en línea ahora.",
+    "loading": "Reuniendo a la mesa…",
+    "online": "En línea",
+    "offline": "Desconectado",
+    "makeMaster": "Hacer máster",
+    "hubMeta": "Dueño, máster, jugadores y quién está en línea.",
+    "role": {
+      "OWNER_MASTER": "Dueño · Máster",
+      "OWNER": "Dueño",
+      "MASTER": "Máster",
+      "PLAYER": "Jugador"
     }
   }
 }

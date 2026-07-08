@@ -50,6 +50,42 @@ export const CAMPAIGN_LANGUAGES = [
 ] as const;
 export type CampaignLanguage = (typeof CAMPAIGN_LANGUAGES)[number];
 
+/**
+ * Derived participant role. Owner and master are single authoritative concepts
+ * on the campaign; a participant may be both (creator), one, or a plain player.
+ */
+export type ParticipantRole = 'OWNER_MASTER' | 'OWNER' | 'MASTER' | 'PLAYER';
+
+export function participantRole(
+  userId: string,
+  ownerId: string,
+  masterId: string,
+): ParticipantRole {
+  const isOwner = userId === ownerId;
+  const isMaster = userId === masterId;
+  if (isOwner && isMaster) return 'OWNER_MASTER';
+  if (isOwner) return 'OWNER';
+  if (isMaster) return 'MASTER';
+  return 'PLAYER';
+}
+
+/** Realtime room for a campaign (presence + campaign-scoped events). */
+export const campaignRoom = (campaignId: string): string =>
+  `campaign:${campaignId}`;
+
+/** Client → server messages for campaign presence. */
+export const CAMPAIGN_PRESENCE_MESSAGES = {
+  join: 'campaign:presence:join',
+  leave: 'campaign:presence:leave',
+} as const;
+
+/** Server → client presence events. */
+export const CAMPAIGN_PRESENCE_EVENTS = {
+  online: 'campaign.participant.online',
+  offline: 'campaign.participant.offline',
+  snapshot: 'campaign.participants.presence',
+} as const;
+
 /** Cover image upload constraints. */
 export const COVER_MAX_BYTES = 5 * 1024 * 1024; // 5MB
 export const COVER_ALLOWED_MIME = [

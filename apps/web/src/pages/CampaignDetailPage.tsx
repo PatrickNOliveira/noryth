@@ -11,8 +11,9 @@ import {
   Alert,
   EntryList,
   Entry,
+  useToast,
 } from '../components/ui';
-import { BookIcon, ShieldIcon, DiceIcon } from '../components/icons';
+import { BookIcon, ShieldIcon, DiceIcon, CompassIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCampaign, clearSelectedCampaign } from '../store/slices/campaigns.slice';
 import {
@@ -103,8 +104,29 @@ const Prose = styled.p`
 `;
 
 const BackRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing.sm};
   margin-bottom: ${({ theme }) => theme.spacing.lg};
 `;
+
+/** Copies text to the clipboard with a fallback for insecure contexts. */
+async function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.style.position = 'fixed';
+  area.style.opacity = '0';
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand('copy');
+  document.body.removeChild(area);
+}
 
 export function CampaignDetailPage() {
   const { t } = useTranslation();
@@ -113,6 +135,17 @@ export function CampaignDetailPage() {
   const dispatch = useAppDispatch();
   const { selectedCampaign, loading, error } = useAppSelector((s) => s.campaigns);
   const attributes = useAppSelector((s) => s.campaignAttributes.list);
+  const { notify } = useToast();
+
+  const share = async (campaignId: string) => {
+    const link = `${window.location.origin}/campaigns/${campaignId}/join`;
+    try {
+      await copyToClipboard(link);
+      notify(t('campaign.share.copied'), { variant: 'success' });
+    } catch {
+      notify(t('campaign.share.error'), { variant: 'error' });
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -155,6 +188,9 @@ export function CampaignDetailPage() {
       <BackRow>
         <Button variant="ghost" size="sm" onClick={() => navigate('/dashboard')}>
           {t('campaign.detail.back')}
+        </Button>
+        <Button variant="secondary" size="sm" onClick={() => share(c.id)}>
+          {t('campaign.share.cta')}
         </Button>
       </BackRow>
 
@@ -205,6 +241,22 @@ export function CampaignDetailPage() {
               ) : undefined
             }
             onClick={() => navigate(`/campaigns/${c.id}/attributes`)}
+          />
+        </EntryList>
+        <Divider variant="ornament" />
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading
+          eyebrow={t('campaign.session.eyebrow')}
+          title={t('campaign.session.title')}
+        />
+        <EntryList>
+          <Entry
+            title={t('participant.title')}
+            icon={<CompassIcon size={20} />}
+            meta={t('participant.hubMeta')}
+            onClick={() => navigate(`/campaigns/${c.id}/participants`)}
           />
         </EntryList>
         <Divider variant="ornament" />

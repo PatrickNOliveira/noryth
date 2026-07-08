@@ -90,6 +90,14 @@
       "heraldryMeta": "Fazioni, ordini e casate",
       "diaryTitle": "Diario del Master",
       "diaryMeta": "Sessioni e cronache"
+    },
+    "discover": {
+      "eyebrow": "Tavoli aperti",
+      "title": "Unisciti a una campagna",
+      "lead": "Campagne pubbliche di altri master. Entra e prendi posto.",
+      "empty": "Nessuna campagna pubblica aperta al momento.",
+      "locked": "Password",
+      "full": "Al completo"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Regole del tavolo",
       "title": "Scheda del personaggio"
+    },
+    "session": {
+      "eyebrow": "Al tavolo",
+      "title": "Giocatori e sessione"
+    },
+    "share": {
+      "cta": "Condividi campagna",
+      "copied": "Link per unirti copiato negli appunti.",
+      "error": "Impossibile copiare il link."
+    },
+    "join": {
+      "back": "Indietro",
+      "eyebrow": "Tavolo aperto",
+      "title": "Unisciti alla campagna",
+      "loading": "Apertura dell'invito…",
+      "notFound": "Impossibile trovare questa campagna.",
+      "open": "Apri campagna",
+      "full": "Questo tavolo ha raggiunto il limite di giocatori.",
+      "protected": "Password",
+      "passwordLabel": "Password del tavolo",
+      "passwordPlaceholder": "Inserisci la password",
+      "cta": "Unisciti",
+      "error": "Impossibile unirsi alla campagna.",
+      "players": "{{current}}/{{max}} giocatori"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Genera un nuovo simbolo",
       "adjustPlaceholder": "Descrivi le modifiche desiderate (es.: più scuro, senza la corona)…",
       "historyLabel": "Cronologia dei simboli"
+    }
+  },
+  "participant": {
+    "back": "Torna al tavolo",
+    "eyebrow": "Giocatori e sessione",
+    "title": "Partecipanti",
+    "lead": "Tutti al tavolo — proprietario, master e giocatori — e chi è online adesso.",
+    "loading": "Radunando il tavolo…",
+    "online": "Online",
+    "offline": "Offline",
+    "makeMaster": "Rendi master",
+    "hubMeta": "Proprietario, master, giocatori e chi è online.",
+    "role": {
+      "OWNER_MASTER": "Proprietario · Master",
+      "OWNER": "Proprietario",
+      "MASTER": "Master",
+      "PLAYER": "Giocatore"
     }
   }
 }

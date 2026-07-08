@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, Not, Repository } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignsRepository } from './campaigns.repository';
 
@@ -27,6 +27,26 @@ export class TypeOrmCampaignRepository implements CampaignsRepository {
   findByOwner(ownerId: string): Promise<Campaign[]> {
     return this.repo.find({
       where: { ownerId },
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  findByParticipant(userId: string): Promise<Campaign[]> {
+    return this.repo
+      .createQueryBuilder('campaign')
+      .innerJoin(
+        'campaign_participants',
+        'cp',
+        'cp.campaign_id = campaign.id AND cp.user_id = :userId',
+        { userId },
+      )
+      .orderBy('campaign.created_at', 'DESC')
+      .getMany();
+  }
+
+  findPublic(): Promise<Campaign[]> {
+    return this.repo.find({
+      where: { visibility: 'public', status: Not('archived') },
       order: { createdAt: 'DESC' },
     });
   }

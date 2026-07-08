@@ -90,6 +90,14 @@
       "heraldryMeta": "Facties, orden en huizen",
       "diaryTitle": "Dagboek van de Spelleider",
       "diaryMeta": "Sessies en kronieken"
+    },
+    "discover": {
+      "eyebrow": "Open tafels",
+      "title": "Neem deel aan een campagne",
+      "lead": "Openbare campagnes van andere spelleiders. Stap in en neem plaats.",
+      "empty": "Er zijn nu geen openbare campagnes open.",
+      "locked": "Wachtwoord",
+      "full": "Vol"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Spelregels",
       "title": "Personageblad"
+    },
+    "session": {
+      "eyebrow": "Aan tafel",
+      "title": "Spelers & sessie"
+    },
+    "share": {
+      "cta": "Campagne delen",
+      "copied": "Deelnamelink gekopieerd naar het klembord.",
+      "error": "Kon de link niet kopiëren."
+    },
+    "join": {
+      "back": "Terug",
+      "eyebrow": "Open tafel",
+      "title": "Neem deel aan de campagne",
+      "loading": "De uitnodiging openen…",
+      "notFound": "Deze campagne kon niet worden gevonden.",
+      "open": "Campagne openen",
+      "full": "Deze tafel heeft de spelerslimiet bereikt.",
+      "protected": "Wachtwoord",
+      "passwordLabel": "Wachtwoord van de tafel",
+      "passwordPlaceholder": "Voer het wachtwoord in",
+      "cta": "Deelnemen",
+      "error": "Kon niet deelnemen aan de campagne.",
+      "players": "{{current}}/{{max}} spelers"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Nieuw symbool genereren",
       "adjustPlaceholder": "Beschrijf de gewenste aanpassingen (bijv.: donkerder, zonder de kroon)…",
       "historyLabel": "Symboolgeschiedenis"
+    }
+  },
+  "participant": {
+    "back": "Terug naar de tafel",
+    "eyebrow": "Spelers & sessie",
+    "title": "Deelnemers",
+    "lead": "Iedereen aan tafel — eigenaar, spelleider en spelers — en wie er nu online is.",
+    "loading": "De tafel verzamelen…",
+    "online": "Online",
+    "offline": "Offline",
+    "makeMaster": "Maak spelleider",
+    "hubMeta": "Eigenaar, spelleider, spelers en wie er online is.",
+    "role": {
+      "OWNER_MASTER": "Eigenaar · Spelleider",
+      "OWNER": "Eigenaar",
+      "MASTER": "Spelleider",
+      "PLAYER": "Speler"
     }
   }
 }

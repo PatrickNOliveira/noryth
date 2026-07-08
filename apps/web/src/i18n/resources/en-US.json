@@ -90,6 +90,14 @@
       "heraldryMeta": "Factions, orders and houses",
       "diaryTitle": "Master's Diary",
       "diaryMeta": "Sessions and chronicles"
+    },
+    "discover": {
+      "eyebrow": "Open tables",
+      "title": "Join a campaign",
+      "lead": "Public campaigns from other masters. Step in and take a seat.",
+      "empty": "No public campaigns are open right now.",
+      "locked": "Password",
+      "full": "Full"
     }
   },
   "campaign": {
@@ -249,6 +257,30 @@
     "sheet": {
       "eyebrow": "Rules of play",
       "title": "Character sheet"
+    },
+    "session": {
+      "eyebrow": "At the table",
+      "title": "Players & session"
+    },
+    "share": {
+      "cta": "Share campaign",
+      "copied": "Join link copied to the clipboard.",
+      "error": "Could not copy the link."
+    },
+    "join": {
+      "back": "Back",
+      "eyebrow": "Open table",
+      "title": "Join the campaign",
+      "loading": "Opening the invitation…",
+      "notFound": "This campaign could not be found.",
+      "open": "Open campaign",
+      "full": "This campaign has reached its player limit.",
+      "protected": "Password",
+      "passwordLabel": "Campaign password",
+      "passwordPlaceholder": "Enter the password",
+      "cta": "Join",
+      "error": "Could not join the campaign.",
+      "players": "{{current}}/{{max}} players"
     }
   },
   "faction": {
@@ -367,6 +399,23 @@
       "regenerate": "Generate a new symbol",
       "adjustPlaceholder": "Describe the adjustments you want (e.g. darker, without the crown)…",
       "historyLabel": "Symbol history"
+    }
+  },
+  "participant": {
+    "back": "Back to the campaign",
+    "eyebrow": "Players & session",
+    "title": "Participants",
+    "lead": "Everyone at the table — owner, master and players — and who's online right now.",
+    "loading": "Gathering the party…",
+    "online": "Online",
+    "offline": "Offline",
+    "makeMaster": "Make master",
+    "hubMeta": "Owner, master, players and who's online.",
+    "role": {
+      "OWNER_MASTER": "Owner · Master",
+      "OWNER": "Owner",
+      "MASTER": "Master",
+      "PLAYER": "Player"
     }
   }
 }

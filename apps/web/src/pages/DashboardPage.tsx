@@ -13,10 +13,13 @@ import {
 } from '../components/ui';
 import { CampaignVolume } from '../components/CampaignVolume';
 import { withModuleAccent, ModuleAccent } from '../theme/themes';
-import { PlusIcon, MapIcon, ShieldIcon, DiceIcon } from '../components/icons';
+import { PlusIcon, MapIcon, ShieldIcon, DiceIcon, BookIcon } from '../components/icons';
 import { useAuth } from '../hooks/useAuth';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchMyCampaigns } from '../store/slices/campaigns.slice';
+import {
+  fetchMyCampaigns,
+  fetchPublicCampaigns,
+} from '../store/slices/campaigns.slice';
 import { media } from '../styles/media';
 
 const Book = styled.div`
@@ -122,16 +125,21 @@ export function DashboardPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { myCampaigns } = useAppSelector((s) => s.campaigns);
+  const { myCampaigns, publicCampaigns } = useAppSelector((s) => s.campaigns);
   const firstName = user?.name?.split(' ')[0] ?? '';
   const hasCampaigns = myCampaigns.length > 0;
 
   useEffect(() => {
     dispatch(fetchMyCampaigns());
+    dispatch(fetchPublicCampaigns());
   }, [dispatch]);
 
   const openCampaign = (id: string) => navigate(`/campaigns/${id}`);
   const startNew = () => navigate('/campaigns/new');
+
+  // Discover: public campaigns the reader hasn't joined yet.
+  const mineIds = new Set(myCampaigns.map((c) => c.id));
+  const discover = publicCampaigns.filter((c) => !mineIds.has(c.id));
 
   return (
     <Book>
@@ -184,6 +192,36 @@ export function DashboardPage() {
           </>
         ) : (
           <Blankleaf>{t('dashboard.campaigns.empty')}</Blankleaf>
+        )}
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading
+          eyebrow={t('dashboard.discover.eyebrow')}
+          title={t('dashboard.discover.title')}
+          lead={t('dashboard.discover.lead')}
+        />
+        {discover.length > 0 ? (
+          <EntryList>
+            {discover.map((c) => (
+              <Entry
+                key={c.id}
+                title={c.name}
+                icon={<BookIcon size={20} />}
+                meta={c.shortDescription}
+                trailing={
+                  c.hasPassword ? (
+                    <Badge $tone="warning">{t('dashboard.discover.locked')}</Badge>
+                  ) : c.isFull ? (
+                    <Badge $tone="neutral">{t('dashboard.discover.full')}</Badge>
+                  ) : undefined
+                }
+                onClick={() => navigate(`/campaigns/${c.id}/join`)}
+              />
+            ))}
+          </EntryList>
+        ) : (
+          <Blankleaf>{t('dashboard.discover.empty')}</Blankleaf>
         )}
       </Chapter>
 

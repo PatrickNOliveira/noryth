@@ -1,5 +1,9 @@
 import { api } from './api';
-import { Campaign, CreateCampaignInput } from '../types/campaign';
+import {
+  Campaign,
+  CampaignSummary,
+  CreateCampaignInput,
+} from '../types/campaign';
 
 /** Appends a value only when it is meaningfully present. */
 function appendIf(form: FormData, key: string, value: unknown): void {
@@ -39,6 +43,18 @@ export const campaignService = {
 
   async getById(id: string): Promise<Campaign> {
     const { data } = await api.get<Campaign>(`/campaigns/${id}`);
+    return data;
+  },
+
+  /** Public campaigns anyone may discover and join. */
+  async listPublic(): Promise<CampaignSummary[]> {
+    const { data } = await api.get<CampaignSummary[]>('/campaigns/public');
+    return data;
+  },
+
+  /** Minimal join info for the share/join screen. */
+  async getSummary(id: string): Promise<CampaignSummary> {
+    const { data } = await api.get<CampaignSummary>(`/campaigns/${id}/summary`);
     return data;
   },
 };
