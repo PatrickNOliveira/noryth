@@ -91,7 +91,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
-          envs: API_IMAGE,WEB_IMAGE,IMAGE_SHA,GHCR_USERNAME,GHCR_TOKEN,API_ENV_FILE,WEB_ENV_FILE,APP_DOMAIN,API_DOMAIN,ENABLE_HTTPS,LETSENCRYPT_EMAIL
+          envs: API_IMAGE,WEB_IMAGE,IMAGE_SHA,GHCR_USERNAME,GHCR_TOKEN,API_ENV_FILE,WEB_ENV_FILE,APP_DOMAIN,API_DOMAIN,ASSETS_DOMAIN,ENABLE_HTTPS,LETSENCRYPT_EMAIL
           script_stop: true
           script: |
             set -e
@@ -137,6 +137,7 @@ jobs:
             chmod +x "$APP_DIR/scripts/vps/setup-nginx-https.sh"
             APP_DOMAIN="$APP_DOMAIN" \
             API_DOMAIN="$API_DOMAIN" \
+            ASSETS_DOMAIN="$ASSETS_DOMAIN" \
             ENABLE_HTTPS="$ENABLE_HTTPS" \
             LETSENCRYPT_EMAIL="$LETSENCRYPT_EMAIL" \
             bash "$APP_DIR/scripts/vps/setup-nginx-https.sh"
@@ -164,5 +165,6 @@ jobs:
           WEB_ENV_FILE: ${{ secrets.WEB_ENV_FILE }}
           APP_DOMAIN: ${{ vars.APP_DOMAIN || 'noryth.io' }}
           API_DOMAIN: ${{ vars.API_DOMAIN || 'api.noryth.io' }}
+          ASSETS_DOMAIN: ${{ vars.ASSETS_DOMAIN || 'assets.noryth.io' }}
           ENABLE_HTTPS: ${{ vars.ENABLE_HTTPS || 'false' }}
           LETSENCRYPT_EMAIL: ${{ secrets.LETSENCRYPT_EMAIL }}
