@@ -209,6 +209,46 @@
       "premiseEyebrow": "Premise",
       "premiseTitle": "How it all begins",
       "maxPlayers": "Up to {{max}} players"
+    },
+    "attributes": {
+      "eyebrow": "Character sheet",
+      "title": "Character attributes",
+      "lead": "Define the attributes every character in this campaign will use — players, NPCs, allies and monsters alike.",
+      "loading": "Gathering the attributes…",
+      "emptyTitle": "No attributes yet",
+      "emptyDescription": "Add the first attribute to shape how characters are measured in this campaign.",
+      "addEyebrow": "New attribute",
+      "addTitle": "Add an attribute",
+      "range": "{{min}} to {{max}}",
+      "confirmRemove": "Remove this attribute?",
+      "fields": {
+        "name": "Name",
+        "min": "Minimum",
+        "max": "Maximum"
+      },
+      "placeholders": {
+        "name": "e.g. Strength"
+      },
+      "validation": {
+        "nameRequired": "Give the attribute a name",
+        "range": "Minimum cannot exceed maximum"
+      },
+      "actions": {
+        "add": "Add attribute",
+        "edit": "Edit",
+        "remove": "Remove",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirmYes": "Remove",
+        "confirmNo": "Keep"
+      },
+      "back": "Back to the campaign",
+      "configured_one": "{{count}} attribute configured",
+      "configured_other": "{{count}} attributes configured"
+    },
+    "sheet": {
+      "eyebrow": "Rules of play",
+      "title": "Character sheet"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Symbols and motifs that repeat across the faction.",
       "symbolPrompt": "Your basic idea; the AI considers the whole campaign and faction context."
     },
-    "form": { "choose": "Choose…" },
+    "form": {
+      "choose": "Choose…"
+    },
     "validation": {
       "nameRequired": "Give the faction a name",
       "nameMin": "The name must be at least 3 characters",

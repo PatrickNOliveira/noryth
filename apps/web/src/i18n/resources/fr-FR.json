@@ -209,6 +209,46 @@
       "premiseEyebrow": "Prémisse",
       "premiseTitle": "Comment tout commence",
       "maxPlayers": "Jusqu'à {{max}} joueurs"
+    },
+    "attributes": {
+      "eyebrow": "Feuille de personnage",
+      "title": "Attributs des personnages",
+      "lead": "Définissez les attributs que tous les personnages de cette table utiliseront : joueurs, PNJ, alliés et monstres.",
+      "loading": "Rassemblement des attributs…",
+      "emptyTitle": "Aucun attribut pour l’instant",
+      "emptyDescription": "Ajoutez le premier attribut pour définir comment les personnages sont mesurés dans cette table.",
+      "addEyebrow": "Nouvel attribut",
+      "addTitle": "Ajouter un attribut",
+      "range": "{{min}} à {{max}}",
+      "confirmRemove": "Supprimer cet attribut ?",
+      "fields": {
+        "name": "Nom",
+        "min": "Minimum",
+        "max": "Maximum"
+      },
+      "placeholders": {
+        "name": "ex. : Force"
+      },
+      "validation": {
+        "nameRequired": "Donnez un nom à l’attribut",
+        "range": "Le minimum ne peut pas dépasser le maximum"
+      },
+      "actions": {
+        "add": "Ajouter l’attribut",
+        "edit": "Modifier",
+        "remove": "Supprimer",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "confirmYes": "Supprimer",
+        "confirmNo": "Conserver"
+      },
+      "back": "Retour à la table",
+      "configured_one": "{{count}} attribut configuré",
+      "configured_other": "{{count}} attributs configurés"
+    },
+    "sheet": {
+      "eyebrow": "Règles de la table",
+      "title": "Feuille de personnage"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Symboles et motifs qui reviennent dans la faction.",
       "symbolPrompt": "Votre idée de base ; l'IA prend en compte tout le contexte de la campagne et de la faction."
     },
-    "form": { "choose": "Choisir…" },
+    "form": {
+      "choose": "Choisir…"
+    },
     "validation": {
       "nameRequired": "Donnez un nom à la faction",
       "nameMin": "Le nom doit comporter au moins 3 caractères",

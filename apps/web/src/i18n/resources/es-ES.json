@@ -209,6 +209,46 @@
       "premiseEyebrow": "Premisa",
       "premiseTitle": "Cómo comienza todo",
       "maxPlayers": "Hasta {{max}} jugadores"
+    },
+    "attributes": {
+      "eyebrow": "Hoja de personaje",
+      "title": "Atributos de los personajes",
+      "lead": "Define los atributos que usarán todos los personajes de esta mesa: jugadores, PNJ, aliados y monstruos.",
+      "loading": "Reuniendo los atributos…",
+      "emptyTitle": "Aún no hay atributos",
+      "emptyDescription": "Añade el primer atributo para definir cómo se miden los personajes en esta mesa.",
+      "addEyebrow": "Nuevo atributo",
+      "addTitle": "Añadir atributo",
+      "range": "{{min}} a {{max}}",
+      "confirmRemove": "¿Eliminar este atributo?",
+      "fields": {
+        "name": "Nombre",
+        "min": "Mínimo",
+        "max": "Máximo"
+      },
+      "placeholders": {
+        "name": "p. ej.: Fuerza"
+      },
+      "validation": {
+        "nameRequired": "Ponle un nombre al atributo",
+        "range": "El mínimo no puede ser mayor que el máximo"
+      },
+      "actions": {
+        "add": "Añadir atributo",
+        "edit": "Editar",
+        "remove": "Eliminar",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "confirmYes": "Eliminar",
+        "confirmNo": "Conservar"
+      },
+      "back": "Volver a la mesa",
+      "configured_one": "{{count}} atributo configurado",
+      "configured_other": "{{count}} atributos configurados"
+    },
+    "sheet": {
+      "eyebrow": "Reglas de la mesa",
+      "title": "Hoja de personaje"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Símbolos y motivos que se repiten en la facción.",
       "symbolPrompt": "Tu idea básica; la IA considera todo el contexto de la campaña y la facción."
     },
-    "form": { "choose": "Elige…" },
+    "form": {
+      "choose": "Elige…"
+    },
     "validation": {
       "nameRequired": "Dale un nombre a la facción",
       "nameMin": "El nombre debe tener al menos 3 caracteres",

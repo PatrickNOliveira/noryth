@@ -209,6 +209,46 @@
       "premiseEyebrow": "Premessa",
       "premiseTitle": "Come inizia tutto",
       "maxPlayers": "Fino a {{max}} giocatori"
+    },
+    "attributes": {
+      "eyebrow": "Scheda del personaggio",
+      "title": "Attributi dei personaggi",
+      "lead": "Definisci gli attributi che useranno tutti i personaggi di questo tavolo: giocatori, PNG, alleati e mostri.",
+      "loading": "Raccolta degli attributi…",
+      "emptyTitle": "Ancora nessun attributo",
+      "emptyDescription": "Aggiungi il primo attributo per definire come vengono misurati i personaggi in questo tavolo.",
+      "addEyebrow": "Nuovo attributo",
+      "addTitle": "Aggiungi attributo",
+      "range": "da {{min}} a {{max}}",
+      "confirmRemove": "Rimuovere questo attributo?",
+      "fields": {
+        "name": "Nome",
+        "min": "Minimo",
+        "max": "Massimo"
+      },
+      "placeholders": {
+        "name": "es.: Forza"
+      },
+      "validation": {
+        "nameRequired": "Dai un nome all’attributo",
+        "range": "Il minimo non può superare il massimo"
+      },
+      "actions": {
+        "add": "Aggiungi attributo",
+        "edit": "Modifica",
+        "remove": "Rimuovi",
+        "save": "Salva",
+        "cancel": "Annulla",
+        "confirmYes": "Rimuovi",
+        "confirmNo": "Mantieni"
+      },
+      "back": "Torna al tavolo",
+      "configured_one": "{{count}} attributo configurato",
+      "configured_other": "{{count}} attributi configurati"
+    },
+    "sheet": {
+      "eyebrow": "Regole del tavolo",
+      "title": "Scheda del personaggio"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Simboli e motivi che ricorrono nella fazione.",
       "symbolPrompt": "La tua idea di base; l'IA considera tutto il contesto della campagna e della fazione."
     },
-    "form": { "choose": "Scegli…" },
+    "form": {
+      "choose": "Scegli…"
+    },
     "validation": {
       "nameRequired": "Dai un nome alla fazione",
       "nameMin": "Il nome deve avere almeno 3 caratteri",

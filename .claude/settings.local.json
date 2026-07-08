@@ -13,7 +13,15 @@
       "Bash(TS_NODE_PROJECT=tsconfig.prod.json node -r tsconfig-paths/register -e \"require\\('./dist/modules/campaigns/entities/campaign.entity'\\); require\\('./dist/shared/config/data-source'\\); require\\('./dist/app.module'\\); console.log\\('PROD ALIAS RESOLUTION OK'\\);\")",
       "Bash(python -c \"import yaml,sys; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")",
       "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\); print\\('deploy.yml: YAML OK'\\)\")",
-      "Bash(bash -n /e/Noryth/scripts/vps/setup-nginx-https.sh)"
+      "Bash(bash -n /e/Noryth/scripts/vps/setup-nginx-https.sh)",
+      "Bash(cd apps/api/src/modules/campaigns && find . -type f | sort && echo \"=== MIGRATIONS ===\" && ls ../../migrations/)",
+      "Read(//e//**)",
+      "Bash(node -e \"const j=require\\('./i18n/resources/en-US.json'\\); console.log\\(Object.keys\\(j\\)\\); console.log\\('--- campaign keys ---'\\); console.log\\(Object.keys\\(j.campaign||{}\\)\\); console.log\\('--- faction keys ---'\\); console.log\\(Object.keys\\(j.faction||{}\\)\\);\")",
+      "Bash(node -e \"const j=require\\('./i18n/resources/en-US.json'\\); console.log\\(JSON.stringify\\(j.campaign.detail,null,1\\)\\);\")",
+      "Bash(node -e \"const j=require\\('./i18n/resources/en-US.json'\\); console.log\\('common:', JSON.stringify\\(j.common\\)\\); console.log\\('faction.list:', JSON.stringify\\(j.faction.list\\)\\); console.log\\('faction.validation:', JSON.stringify\\(j.faction.validation\\)\\);\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,1\\)\\)\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('i18next:', \\(p.dependencies||{}\\).i18next, '| react-i18next:', \\(p.dependencies||{}\\)['react-i18next']\\);\")",
+      "Bash(node inject-attrs-nav-i18n.js)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

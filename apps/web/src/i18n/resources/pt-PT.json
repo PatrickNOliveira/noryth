@@ -209,6 +209,46 @@
       "premiseEyebrow": "Premissa",
       "premiseTitle": "Como tudo começa",
       "maxPlayers": "Até {{max}} jogadores"
+    },
+    "attributes": {
+      "eyebrow": "Ficha de personagem",
+      "title": "Atributos das personagens",
+      "lead": "Defina os atributos que todas as personagens desta mesa vão usar — jogadores, NPCs, aliados e monstros.",
+      "loading": "A reunir os atributos…",
+      "emptyTitle": "Ainda sem atributos",
+      "emptyDescription": "Adicione o primeiro atributo para definir como as personagens são medidas nesta mesa.",
+      "addEyebrow": "Novo atributo",
+      "addTitle": "Adicionar atributo",
+      "range": "{{min}} a {{max}}",
+      "confirmRemove": "Remover este atributo?",
+      "fields": {
+        "name": "Nome",
+        "min": "Mínimo",
+        "max": "Máximo"
+      },
+      "placeholders": {
+        "name": "ex.: Força"
+      },
+      "validation": {
+        "nameRequired": "Dê um nome ao atributo",
+        "range": "O mínimo não pode ser maior do que o máximo"
+      },
+      "actions": {
+        "add": "Adicionar atributo",
+        "edit": "Editar",
+        "remove": "Remover",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "confirmYes": "Remover",
+        "confirmNo": "Manter"
+      },
+      "back": "Voltar para a mesa",
+      "configured_one": "{{count}} atributo configurado",
+      "configured_other": "{{count}} atributos configurados"
+    },
+    "sheet": {
+      "eyebrow": "Regras da mesa",
+      "title": "Ficha de personagem"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Símbolos e motivos que se repetem na fação.",
       "symbolPrompt": "A sua ideia básica; a IA considera todo o contexto da campanha e da fação."
     },
-    "form": { "choose": "Escolha…" },
+    "form": {
+      "choose": "Escolha…"
+    },
     "validation": {
       "nameRequired": "Dê um nome à fação",
       "nameMin": "O nome deve ter pelo menos 3 caracteres",

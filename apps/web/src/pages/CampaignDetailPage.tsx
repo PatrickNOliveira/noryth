@@ -12,9 +12,13 @@ import {
   EntryList,
   Entry,
 } from '../components/ui';
-import { BookIcon, ShieldIcon } from '../components/icons';
+import { BookIcon, ShieldIcon, DiceIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCampaign, clearSelectedCampaign } from '../store/slices/campaigns.slice';
+import {
+  fetchAttributes,
+  clearAttributes,
+} from '../store/slices/campaignAttributes.slice';
 import { themeLabelKey, toneLabelKey } from '../utils/campaignOptions';
 import { SUPPORTED_LANGUAGES } from '../i18n/supportedLanguages';
 import { media } from '../styles/media';
@@ -108,11 +112,16 @@ export function CampaignDetailPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { selectedCampaign, loading, error } = useAppSelector((s) => s.campaigns);
+  const attributes = useAppSelector((s) => s.campaignAttributes.list);
 
   useEffect(() => {
-    if (id) dispatch(fetchCampaign(id));
+    if (id) {
+      dispatch(fetchCampaign(id));
+      dispatch(fetchAttributes(id));
+    }
     return () => {
       dispatch(clearSelectedCampaign());
+      dispatch(clearAttributes());
     };
   }, [id, dispatch]);
 
@@ -136,6 +145,7 @@ export function CampaignDetailPage() {
   const c = selectedCampaign;
   if (!c) return null;
 
+  const attrCount = attributes.filter((a) => a.campaignId === c.id).length;
   const themeKey = themeLabelKey(c.theme);
   const toneKey = toneLabelKey(c.tone);
   const langLabel = SUPPORTED_LANGUAGES.find((l) => l.code === c.mainLanguage)?.label ?? c.mainLanguage;
@@ -175,6 +185,29 @@ export function CampaignDetailPage() {
       <Chapter>
         <ChapterHeading eyebrow={t('campaign.detail.premiseEyebrow')} title={t('campaign.detail.premiseTitle')} />
         <Prose>{c.premise}</Prose>
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading
+          eyebrow={t('campaign.sheet.eyebrow')}
+          title={t('campaign.sheet.title')}
+        />
+        <EntryList>
+          <Entry
+            title={t('campaign.attributes.title')}
+            icon={<DiceIcon size={20} />}
+            meta={t('campaign.attributes.lead')}
+            trailing={
+              attrCount > 0 ? (
+                <Badge $tone="neutral">
+                  {t('campaign.attributes.configured', { count: attrCount })}
+                </Badge>
+              ) : undefined
+            }
+            onClick={() => navigate(`/campaigns/${c.id}/attributes`)}
+          />
+        </EntryList>
+        <Divider variant="ornament" />
       </Chapter>
 
       <Chapter>

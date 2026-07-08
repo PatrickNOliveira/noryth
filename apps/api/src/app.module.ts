@@ -11,6 +11,7 @@ import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UsersModule } from '@modules/users/users.module';
 import { CampaignsModule } from '@modules/campaigns/campaigns.module';
+import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-attributes.module';
 import { FactionsModule } from '@modules/factions/factions.module';
 
 /**
@@ -31,6 +32,7 @@ import { FactionsModule } from '@modules/factions/factions.module';
     UsersModule,
     AuthModule,
     CampaignsModule,
+    CampaignAttributesModule,
     FactionsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],

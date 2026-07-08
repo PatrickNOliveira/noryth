@@ -209,6 +209,46 @@
       "premiseEyebrow": "Uitgangspunt",
       "premiseTitle": "Hoe alles begint",
       "maxPlayers": "Tot {{max}} spelers"
+    },
+    "attributes": {
+      "eyebrow": "Personageblad",
+      "title": "Kenmerken van personages",
+      "lead": "Bepaal de kenmerken die alle personages in deze tafel gebruiken: spelers, NPC's, bondgenoten en monsters.",
+      "loading": "Kenmerken verzamelen…",
+      "emptyTitle": "Nog geen kenmerken",
+      "emptyDescription": "Voeg het eerste kenmerk toe om te bepalen hoe personages in deze tafel gemeten worden.",
+      "addEyebrow": "Nieuw kenmerk",
+      "addTitle": "Kenmerk toevoegen",
+      "range": "{{min}} tot {{max}}",
+      "confirmRemove": "Dit kenmerk verwijderen?",
+      "fields": {
+        "name": "Naam",
+        "min": "Minimum",
+        "max": "Maximum"
+      },
+      "placeholders": {
+        "name": "bijv.: Kracht"
+      },
+      "validation": {
+        "nameRequired": "Geef het kenmerk een naam",
+        "range": "Het minimum mag niet groter zijn dan het maximum"
+      },
+      "actions": {
+        "add": "Kenmerk toevoegen",
+        "edit": "Bewerken",
+        "remove": "Verwijderen",
+        "save": "Opslaan",
+        "cancel": "Annuleren",
+        "confirmYes": "Verwijderen",
+        "confirmNo": "Behouden"
+      },
+      "back": "Terug naar de tafel",
+      "configured_one": "{{count}} kenmerk ingesteld",
+      "configured_other": "{{count}} kenmerken ingesteld"
+    },
+    "sheet": {
+      "eyebrow": "Spelregels",
+      "title": "Personageblad"
     }
   },
   "faction": {
@@ -274,7 +314,9 @@
       "recurringElements": "Symbolen en motieven die in de factie terugkeren.",
       "symbolPrompt": "Je basisidee; de AI houdt rekening met de volledige context van campagne en factie."
     },
-    "form": { "choose": "Kies…" },
+    "form": {
+      "choose": "Kies…"
+    },
     "validation": {
       "nameRequired": "Geef de factie een naam",
       "nameMin": "De naam moet minstens 3 tekens bevatten",
