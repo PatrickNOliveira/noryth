@@ -518,5 +518,132 @@
       "clear": "Effacer",
       "loading": "Ouverture de la direction artistique…"
     }
+  },
+  "map": {
+    "hubMeta": "Créez des régions, villes, donjons et lieux importants de la campagne.",
+    "list": {
+      "back": "Retour à la table",
+      "new": "Nouvelle carte",
+      "artDirection": "Direction artistique",
+      "title": "Cartes",
+      "eyebrow": "Cartographie",
+      "lead": "Régions, villes, donjons et lieux de votre monde, en hiérarchie.",
+      "loading": "Déroulement des cartes…",
+      "emptyTitle": "Aucune carte",
+      "emptyDescription": "Dessinez la première région, ville ou lieu de votre campagne."
+    },
+    "new": {
+      "eyebrow": "Nouvelle carte",
+      "title": "Créer une carte",
+      "lead": "Un lieu de la campagne, à toute échelle — monde, ville, donjon ou une seule salle."
+    },
+    "edit": {
+      "eyebrow": "Carte",
+      "title": "Modifier la carte"
+    },
+    "detail": {
+      "loading": "Ouverture de la carte…",
+      "back": "Retour aux cartes",
+      "notFound": "Carte introuvable.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "generate": "Générer la carte",
+      "requestChange": "Demander une modification",
+      "generateVersion": "Générer une nouvelle version",
+      "adjustHelp": "Décrivez ce que vous voulez changer sur la carte. Le système essaiera de préserver le concept du lieu et d’appliquer vos changements.",
+      "adjustPlaceholder": "Décrivez les changements de la carte…",
+      "makePublic": "Rendre visible",
+      "makePrivate": "Rendre privé"
+    },
+    "form": {
+      "back": "Retour",
+      "create": "Créer la carte",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "fields": {
+      "name": "Nom",
+      "type": "Type / échelle",
+      "noType": "Sans type",
+      "parent": "Carte parente",
+      "parentHint": "Placez cette carte sous une autre",
+      "noParent": "Sans parent (racine)",
+      "shortDescription": "Description courte",
+      "description": "Description",
+      "history": "Histoire / contexte",
+      "notes": "Notes du maître",
+      "artDirection": "Direction artistique spécifique",
+      "visible": "Visible par les joueurs",
+      "generateImage": "Générer une image maintenant",
+      "ignoreArtDirection": "Ignorer la direction artistique globale des cartes",
+      "includeLabels": "Ajouter des noms sur la carte"
+    },
+    "hints": {
+      "masterOnly": "Vous seul (le maître) voyez ceci.",
+      "artDirection": "Complète la direction artistique globale des cartes de la campagne."
+    },
+    "validation": {
+      "nameRequired": "Donnez un nom à la carte"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privé"
+    },
+    "imageStatus": {
+      "none": "Sans image",
+      "pending": "En file",
+      "processing": "Génération…",
+      "completed": "Prêt",
+      "failed": "Échec"
+    },
+    "type": {
+      "WORLD": "Monde",
+      "CONTINENT": "Continent",
+      "KINGDOM": "Royaume",
+      "REGION": "Région",
+      "CITY": "Ville",
+      "DISTRICT": "Quartier",
+      "BUILDING": "Bâtiment",
+      "DUNGEON": "Donjon",
+      "ROOM": "Salle",
+      "BATTLEFIELD": "Champ de bataille",
+      "OTHER": "Autre"
+    },
+    "art": {
+      "back": "Retour aux cartes",
+      "eyebrow": "Style visuel",
+      "title": "Direction artistique des cartes",
+      "lead": "Définissez le style visuel qui guide les images des cartes de cette campagne.",
+      "help": "Ces instructions servent de base visuelle à toutes les cartes de la campagne, sauf si une génération demande explicitement de les ignorer.",
+      "fieldLabel": "Direction artistique des cartes",
+      "placeholder": "Ex. : Cartes sur parchemin ancien, monochromes, encre noire, bordures médiévales ornées, cartographie dark fantasy…",
+      "save": "Enregistrer la direction artistique",
+      "clear": "Effacer",
+      "loading": "Ouverture de la direction artistique…"
+    },
+    "point": {
+      "eyebrow": "Sur la carte",
+      "title": "Points d’intérêt",
+      "new": "Ajouter un point",
+      "add": "Ajouter",
+      "edit": "Modifier",
+      "save": "Enregistrer",
+      "remove": "Supprimer",
+      "emptyTitle": "Aucun point d’intérêt",
+      "emptyDescription": "Ajoutez des repères, secrets et marqueurs à cette carte.",
+      "emptyPlayers": "Aucun point visible sur cette carte.",
+      "typePlaceholder": "ex. : SECRET, PORTE, TOUR",
+      "fields": {
+        "name": "Nom",
+        "type": "Type",
+        "description": "Description",
+        "notes": "Notes du maître",
+        "x": "X (%)",
+        "y": "Y (%)",
+        "visible": "Visible par les joueurs",
+        "showLabel": "Afficher le nom sur la carte"
+      }
+    }
   }
 }

@@ -518,5 +518,132 @@
       "clear": "Cancella",
       "loading": "Apertura della direzione artistica…"
     }
+  },
+  "map": {
+    "hubMeta": "Crea regioni, città, dungeon e luoghi importanti della campagna.",
+    "list": {
+      "back": "Torna al tavolo",
+      "new": "Nuova mappa",
+      "artDirection": "Direzione artistica",
+      "title": "Mappe",
+      "eyebrow": "Cartografia",
+      "lead": "Regioni, città, dungeon e luoghi del tuo mondo, in gerarchia.",
+      "loading": "Srotolando le mappe…",
+      "emptyTitle": "Ancora nessuna mappa",
+      "emptyDescription": "Disegna la prima regione, città o luogo della tua campagna."
+    },
+    "new": {
+      "eyebrow": "Nuova mappa",
+      "title": "Crea una mappa",
+      "lead": "Un luogo della campagna, a qualsiasi scala — mondo, città, dungeon o una singola stanza."
+    },
+    "edit": {
+      "eyebrow": "Mappa",
+      "title": "Modifica mappa"
+    },
+    "detail": {
+      "loading": "Apertura della mappa…",
+      "back": "Torna alle mappe",
+      "notFound": "Mappa non trovata.",
+      "edit": "Modifica",
+      "delete": "Rimuovi",
+      "confirmDelete": "Conferma rimozione",
+      "generate": "Genera mappa",
+      "requestChange": "Richiedi una modifica",
+      "generateVersion": "Genera nuova versione",
+      "adjustHelp": "Descrivi cosa vuoi cambiare nella mappa. Il sistema cercherà di preservare il concetto del luogo e applicare le modifiche.",
+      "adjustPlaceholder": "Descrivi le modifiche alla mappa…",
+      "makePublic": "Rendi visibile",
+      "makePrivate": "Rendi privato"
+    },
+    "form": {
+      "back": "Indietro",
+      "create": "Crea mappa",
+      "save": "Salva",
+      "cancel": "Annulla"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo / scala",
+      "noType": "Nessun tipo",
+      "parent": "Mappa madre",
+      "parentHint": "Metti questa mappa dentro un’altra",
+      "noParent": "Nessuna madre (radice)",
+      "shortDescription": "Descrizione breve",
+      "description": "Descrizione",
+      "history": "Storia / contesto",
+      "notes": "Note del master",
+      "artDirection": "Direzione artistica specifica",
+      "visible": "Visibile ai giocatori",
+      "generateImage": "Genera un’immagine ora",
+      "ignoreArtDirection": "Ignora la direzione artistica globale delle mappe",
+      "includeLabels": "Aggiungi nomi sulla mappa"
+    },
+    "hints": {
+      "masterOnly": "Solo tu (il master) puoi vederlo.",
+      "artDirection": "Completa la direzione artistica globale delle mappe della campagna."
+    },
+    "validation": {
+      "nameRequired": "Dai un nome alla mappa"
+    },
+    "visibility": {
+      "public": "Visibile",
+      "private": "Privato"
+    },
+    "imageStatus": {
+      "none": "Nessuna immagine",
+      "pending": "In coda",
+      "processing": "Generazione…",
+      "completed": "Pronto",
+      "failed": "Fallito"
+    },
+    "type": {
+      "WORLD": "Mondo",
+      "CONTINENT": "Continente",
+      "KINGDOM": "Regno",
+      "REGION": "Regione",
+      "CITY": "Città",
+      "DISTRICT": "Quartiere",
+      "BUILDING": "Edificio",
+      "DUNGEON": "Dungeon",
+      "ROOM": "Stanza",
+      "BATTLEFIELD": "Campo di battaglia",
+      "OTHER": "Altro"
+    },
+    "art": {
+      "back": "Torna alle mappe",
+      "eyebrow": "Stile visivo",
+      "title": "Direzione artistica delle mappe",
+      "lead": "Definisci lo stile visivo che guida le immagini delle mappe di questa campagna.",
+      "help": "Queste istruzioni sono usate come base visiva per tutte le mappe della campagna, a meno che una generazione non chieda esplicitamente di ignorarle.",
+      "fieldLabel": "Direzione artistica delle mappe",
+      "placeholder": "Es.: Mappe su pergamena antica, monocromatiche, inchiostro nero, bordi medievali ornati, cartografia dark fantasy…",
+      "save": "Salva direzione artistica",
+      "clear": "Cancella",
+      "loading": "Apertura della direzione artistica…"
+    },
+    "point": {
+      "eyebrow": "Sulla mappa",
+      "title": "Punti di interesse",
+      "new": "Aggiungi punto",
+      "add": "Aggiungi",
+      "edit": "Modifica",
+      "save": "Salva",
+      "remove": "Rimuovi",
+      "emptyTitle": "Nessun punto di interesse",
+      "emptyDescription": "Aggiungi luoghi, segreti e indicatori a questa mappa.",
+      "emptyPlayers": "Nessun punto visibile su questa mappa.",
+      "typePlaceholder": "es.: SEGRETO, CANCELLO, TORRE",
+      "fields": {
+        "name": "Nome",
+        "type": "Tipo",
+        "description": "Descrizione",
+        "notes": "Note del master",
+        "x": "X (%)",
+        "y": "Y (%)",
+        "visible": "Visibile ai giocatori",
+        "showLabel": "Mostra il nome sulla mappa"
+      }
+    }
   }
 }

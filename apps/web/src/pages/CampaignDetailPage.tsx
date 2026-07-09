@@ -13,7 +13,7 @@ import {
   Entry,
   useToast,
 } from '../components/ui';
-import { BookIcon, ShieldIcon, DiceIcon, CompassIcon } from '../components/icons';
+import { BookIcon, ShieldIcon, DiceIcon, CompassIcon, MapIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCampaign, clearSelectedCampaign } from '../store/slices/campaigns.slice';
 import {
@@ -280,6 +280,12 @@ export function CampaignDetailPage() {
             icon={<CompassIcon size={20} />}
             meta={t('character.hubMeta')}
             onClick={() => navigate(`/campaigns/${c.id}/characters`)}
+          />
+          <Entry
+            title={t('map.list.title')}
+            icon={<MapIcon size={20} />}
+            meta={t('map.hubMeta')}
+            onClick={() => navigate(`/campaigns/${c.id}/maps`)}
           />
         </EntryList>
         <Divider variant="ornament" />

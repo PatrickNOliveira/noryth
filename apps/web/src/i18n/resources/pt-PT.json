@@ -518,5 +518,132 @@
       "clear": "Limpar",
       "loading": "A abrir a direção de arte…"
     }
+  },
+  "map": {
+    "hubMeta": "Cria regiões, cidades, masmorras e lugares importantes da campanha.",
+    "list": {
+      "back": "Voltar para a mesa",
+      "new": "Novo mapa",
+      "artDirection": "Direção de arte",
+      "title": "Mapas",
+      "eyebrow": "Cartografia",
+      "lead": "Regiões, cidades, masmorras e lugares do teu mundo, em hierarquia.",
+      "loading": "A desenrolar os mapas…",
+      "emptyTitle": "Ainda sem mapas",
+      "emptyDescription": "Desenha a primeira região, cidade ou lugar da tua campanha."
+    },
+    "new": {
+      "eyebrow": "Novo mapa",
+      "title": "Criar mapa",
+      "lead": "Um lugar da campanha, em qualquer escala — mundo, cidade, masmorra ou uma única sala."
+    },
+    "edit": {
+      "eyebrow": "Mapa",
+      "title": "Editar mapa"
+    },
+    "detail": {
+      "loading": "A abrir o mapa…",
+      "back": "Voltar aos mapas",
+      "notFound": "Mapa não encontrado.",
+      "edit": "Editar",
+      "delete": "Remover",
+      "confirmDelete": "Confirmar remoção",
+      "generate": "Gerar mapa",
+      "requestChange": "Pedir alteração",
+      "generateVersion": "Gerar nova versão",
+      "adjustHelp": "Descreve o que queres mudar no mapa. O sistema tentará preservar o conceito do local e aplicar as alterações pedidas.",
+      "adjustPlaceholder": "Descreve as alterações no mapa…",
+      "makePublic": "Tornar visível",
+      "makePrivate": "Tornar privado"
+    },
+    "form": {
+      "back": "Voltar",
+      "create": "Criar mapa",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo / escala",
+      "noType": "Sem tipo",
+      "parent": "Mapa pai",
+      "parentHint": "Coloca este mapa dentro de outro",
+      "noParent": "Sem pai (raiz)",
+      "shortDescription": "Descrição curta",
+      "description": "Descrição",
+      "history": "História / contexto",
+      "notes": "Notas do mestre",
+      "artDirection": "Direção de arte específica",
+      "visible": "Visível para jogadores",
+      "generateImage": "Gerar uma imagem agora",
+      "ignoreArtDirection": "Ignorar direção de arte global de mapas",
+      "includeLabels": "Adicionar nomes no mapa"
+    },
+    "hints": {
+      "masterOnly": "Apenas tu (o mestre) vês isto.",
+      "artDirection": "Complementa a direção de arte global de mapas da campanha."
+    },
+    "validation": {
+      "nameRequired": "Dá um nome ao mapa"
+    },
+    "visibility": {
+      "public": "Visível",
+      "private": "Privado"
+    },
+    "imageStatus": {
+      "none": "Sem imagem",
+      "pending": "Na fila",
+      "processing": "A gerar…",
+      "completed": "Pronto",
+      "failed": "Falhou"
+    },
+    "type": {
+      "WORLD": "Mundo",
+      "CONTINENT": "Continente",
+      "KINGDOM": "Reino",
+      "REGION": "Região",
+      "CITY": "Cidade",
+      "DISTRICT": "Bairro",
+      "BUILDING": "Construção",
+      "DUNGEON": "Masmorra",
+      "ROOM": "Sala",
+      "BATTLEFIELD": "Campo de batalha",
+      "OTHER": "Outro"
+    },
+    "art": {
+      "back": "Voltar aos mapas",
+      "eyebrow": "Estilo visual",
+      "title": "Direção de arte dos mapas",
+      "lead": "Define o estilo visual que deve guiar as imagens dos mapas desta campanha.",
+      "help": "Estas instruções serão usadas como base visual para todos os mapas da campanha, a menos que uma geração peça explicitamente para as ignorar.",
+      "fieldLabel": "Direção de arte dos mapas",
+      "placeholder": "Ex.: Mapas em pergaminho antigo, monocromáticos, tinta preta, bordas medievais ornamentadas, cartografia dark fantasy…",
+      "save": "Guardar direção de arte",
+      "clear": "Limpar",
+      "loading": "A abrir a direção de arte…"
+    },
+    "point": {
+      "eyebrow": "No mapa",
+      "title": "Pontos de interesse",
+      "new": "Adicionar ponto",
+      "add": "Adicionar",
+      "edit": "Editar",
+      "save": "Guardar",
+      "remove": "Remover",
+      "emptyTitle": "Nenhum ponto de interesse",
+      "emptyDescription": "Adiciona marcos, segredos e marcações neste mapa.",
+      "emptyPlayers": "Nenhum ponto visível neste mapa.",
+      "typePlaceholder": "ex.: SEGREDO, PORTÃO, TORRE",
+      "fields": {
+        "name": "Nome",
+        "type": "Tipo",
+        "description": "Descrição",
+        "notes": "Notas do mestre",
+        "x": "X (%)",
+        "y": "Y (%)",
+        "visible": "Visível para jogadores",
+        "showLabel": "Mostrar nome no mapa"
+      }
+    }
   }
 }

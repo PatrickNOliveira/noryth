@@ -60,6 +60,13 @@ export const CHARACTER_IMAGE_EVENTS = {
   failed: 'character.image.failed',
 } as const;
 
+/** Event names emitted by the API for map image generation. */
+export const MAP_IMAGE_EVENTS = {
+  processing: 'map.image.processing',
+  completed: 'map.image.completed',
+  failed: 'map.image.failed',
+} as const;
+
 /** Client → server messages for campaign presence. */
 export const CAMPAIGN_PRESENCE_MESSAGES = {
   join: 'campaign:presence:join',

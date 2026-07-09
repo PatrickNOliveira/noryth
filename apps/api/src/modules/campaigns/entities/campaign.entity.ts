@@ -63,4 +63,8 @@ export class Campaign extends BaseEntity {
    */
   @Column({ name: 'character_art_direction', type: 'text', default: '' })
   characterArtDirection!: string;
+
+  /** Global art direction for this campaign's maps (master-only). */
+  @Column({ name: 'map_art_direction', type: 'text', default: '' })
+  mapArtDirection!: string;
 }

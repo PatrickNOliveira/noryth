@@ -174,4 +174,13 @@ export class CampaignsService {
     campaign.characterArtDirection = value;
     return this.campaigns.save(campaign);
   }
+
+  /** Persists the campaign's map art direction. Authorization is the caller's job. */
+  async saveMapArtDirection(
+    campaign: Campaign,
+    value: string,
+  ): Promise<Campaign> {
+    campaign.mapArtDirection = value;
+    return this.campaigns.save(campaign);
+  }
 }

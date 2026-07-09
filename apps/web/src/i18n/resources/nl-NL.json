@@ -518,5 +518,132 @@
       "clear": "Wissen",
       "loading": "Artistieke richting openen…"
     }
+  },
+  "map": {
+    "hubMeta": "Maak regio’s, steden, kerkers en belangrijke plaatsen van de campagne.",
+    "list": {
+      "back": "Terug naar de tafel",
+      "new": "Nieuwe kaart",
+      "artDirection": "Artistieke richting",
+      "title": "Kaarten",
+      "eyebrow": "Cartografie",
+      "lead": "Regio’s, steden, kerkers en plaatsen van je wereld, in hiërarchie.",
+      "loading": "Kaarten uitrollen…",
+      "emptyTitle": "Nog geen kaarten",
+      "emptyDescription": "Teken de eerste regio, stad of plaats van je campagne."
+    },
+    "new": {
+      "eyebrow": "Nieuwe kaart",
+      "title": "Kaart maken",
+      "lead": "Een plaats van de campagne, op elke schaal — wereld, stad, kerker of één kamer."
+    },
+    "edit": {
+      "eyebrow": "Kaart",
+      "title": "Kaart bewerken"
+    },
+    "detail": {
+      "loading": "Kaart openen…",
+      "back": "Terug naar de kaarten",
+      "notFound": "Kaart niet gevonden.",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "confirmDelete": "Verwijderen bevestigen",
+      "generate": "Kaart genereren",
+      "requestChange": "Wijziging aanvragen",
+      "generateVersion": "Nieuwe versie genereren",
+      "adjustHelp": "Beschrijf wat je op de kaart wilt veranderen. Het systeem probeert het concept van de plek te behouden en je wijzigingen toe te passen.",
+      "adjustPlaceholder": "Beschrijf de wijzigingen aan de kaart…",
+      "makePublic": "Zichtbaar maken",
+      "makePrivate": "Privé maken"
+    },
+    "form": {
+      "back": "Terug",
+      "create": "Kaart maken",
+      "save": "Opslaan",
+      "cancel": "Annuleren"
+    },
+    "fields": {
+      "name": "Naam",
+      "type": "Type / schaal",
+      "noType": "Geen type",
+      "parent": "Bovenliggende kaart",
+      "parentHint": "Plaats deze kaart onder een andere",
+      "noParent": "Geen ouder (root)",
+      "shortDescription": "Korte beschrijving",
+      "description": "Beschrijving",
+      "history": "Geschiedenis / context",
+      "notes": "Notities van de spelleider",
+      "artDirection": "Specifieke artistieke richting",
+      "visible": "Zichtbaar voor spelers",
+      "generateImage": "Nu een afbeelding genereren",
+      "ignoreArtDirection": "Negeer de globale artistieke richting van kaarten",
+      "includeLabels": "Namen op de kaart toevoegen"
+    },
+    "hints": {
+      "masterOnly": "Alleen jij (de spelleider) ziet dit.",
+      "artDirection": "Vult de campagnebrede artistieke richting van kaarten aan."
+    },
+    "validation": {
+      "nameRequired": "Geef de kaart een naam"
+    },
+    "visibility": {
+      "public": "Zichtbaar",
+      "private": "Privé"
+    },
+    "imageStatus": {
+      "none": "Geen afbeelding",
+      "pending": "In wachtrij",
+      "processing": "Genereren…",
+      "completed": "Klaar",
+      "failed": "Mislukt"
+    },
+    "type": {
+      "WORLD": "Wereld",
+      "CONTINENT": "Continent",
+      "KINGDOM": "Koninkrijk",
+      "REGION": "Regio",
+      "CITY": "Stad",
+      "DISTRICT": "Wijk",
+      "BUILDING": "Gebouw",
+      "DUNGEON": "Kerker",
+      "ROOM": "Kamer",
+      "BATTLEFIELD": "Slagveld",
+      "OTHER": "Overig"
+    },
+    "art": {
+      "back": "Terug naar de kaarten",
+      "eyebrow": "Visuele stijl",
+      "title": "Artistieke richting van kaarten",
+      "lead": "Bepaal de visuele stijl die alle kaartafbeeldingen in deze campagne stuurt.",
+      "help": "Deze instructies vormen de visuele basis voor alle kaarten in de campagne, tenzij een generatie ze expliciet negeert.",
+      "fieldLabel": "Artistieke richting van kaarten",
+      "placeholder": "Bijv.: Kaarten op oud perkament, monochroom, zwarte inkt, sierlijke middeleeuwse randen, dark fantasy-cartografie…",
+      "save": "Artistieke richting opslaan",
+      "clear": "Wissen",
+      "loading": "Artistieke richting openen…"
+    },
+    "point": {
+      "eyebrow": "Op de kaart",
+      "title": "Bezienswaardigheden",
+      "new": "Punt toevoegen",
+      "add": "Toevoegen",
+      "edit": "Bewerken",
+      "save": "Opslaan",
+      "remove": "Verwijderen",
+      "emptyTitle": "Geen bezienswaardigheden",
+      "emptyDescription": "Voeg oriëntatiepunten, geheimen en markeringen toe aan deze kaart.",
+      "emptyPlayers": "Geen zichtbare punten op deze kaart.",
+      "typePlaceholder": "bijv.: GEHEIM, POORT, TOREN",
+      "fields": {
+        "name": "Naam",
+        "type": "Type",
+        "description": "Beschrijving",
+        "notes": "Notities van de spelleider",
+        "x": "X (%)",
+        "y": "Y (%)",
+        "visible": "Zichtbaar voor spelers",
+        "showLabel": "Naam op de kaart tonen"
+      }
+    }
   }
 }

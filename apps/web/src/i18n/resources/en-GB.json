@@ -518,5 +518,132 @@
       "clear": "Clear",
       "loading": "Opening the art direction…"
     }
+  },
+  "map": {
+    "hubMeta": "Create regions, cities, dungeons and important places of the campaign.",
+    "list": {
+      "back": "Back to the campaign",
+      "new": "New map",
+      "artDirection": "Art direction",
+      "title": "Maps",
+      "eyebrow": "Cartography",
+      "lead": "Regions, cities, dungeons and places of your world, in a hierarchy.",
+      "loading": "Unrolling the maps…",
+      "emptyTitle": "No maps yet",
+      "emptyDescription": "Draw the first region, city or place of your campaign."
+    },
+    "new": {
+      "eyebrow": "New map",
+      "title": "Create a map",
+      "lead": "A place of the campaign, at any scale — world, city, dungeon or a single room."
+    },
+    "edit": {
+      "eyebrow": "Map",
+      "title": "Edit map"
+    },
+    "detail": {
+      "loading": "Opening the map…",
+      "back": "Back to the maps",
+      "notFound": "Map not found.",
+      "edit": "Edit",
+      "delete": "Remove",
+      "confirmDelete": "Confirm removal",
+      "generate": "Generate map",
+      "requestChange": "Request a change",
+      "generateVersion": "Generate new version",
+      "adjustHelp": "Describe what you want to change in the map. The system will try to preserve the concept of the place and apply your changes.",
+      "adjustPlaceholder": "Describe the changes to the map…",
+      "makePublic": "Make visible",
+      "makePrivate": "Make private"
+    },
+    "form": {
+      "back": "Back",
+      "create": "Create map",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Type / scale",
+      "noType": "No type",
+      "parent": "Parent map",
+      "parentHint": "Place this map under another",
+      "noParent": "No parent (root)",
+      "shortDescription": "Short description",
+      "description": "Description",
+      "history": "History / context",
+      "notes": "Master notes",
+      "artDirection": "Specific art direction",
+      "visible": "Visible to players",
+      "generateImage": "Generate an image now",
+      "ignoreArtDirection": "Ignore global map art direction",
+      "includeLabels": "Add names on the map"
+    },
+    "hints": {
+      "masterOnly": "Only you (the master) can see this.",
+      "artDirection": "Complements the campaign-wide map art direction."
+    },
+    "validation": {
+      "nameRequired": "Give the map a name"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Private"
+    },
+    "imageStatus": {
+      "none": "No image",
+      "pending": "Queued",
+      "processing": "Generating…",
+      "completed": "Ready",
+      "failed": "Failed"
+    },
+    "type": {
+      "WORLD": "World",
+      "CONTINENT": "Continent",
+      "KINGDOM": "Kingdom",
+      "REGION": "Region",
+      "CITY": "City",
+      "DISTRICT": "District",
+      "BUILDING": "Building",
+      "DUNGEON": "Dungeon",
+      "ROOM": "Room",
+      "BATTLEFIELD": "Battlefield",
+      "OTHER": "Other"
+    },
+    "art": {
+      "back": "Back to the maps",
+      "eyebrow": "Visual style",
+      "title": "Map art direction",
+      "lead": "Define the visual style that guides every map image in this campaign.",
+      "help": "These instructions are used as the visual base for all maps in the campaign, unless a generation explicitly ignores them.",
+      "fieldLabel": "Map art direction",
+      "placeholder": "e.g. Antique parchment maps, monochrome, black ink, ornate medieval borders, dark fantasy cartography…",
+      "save": "Save art direction",
+      "clear": "Clear",
+      "loading": "Opening the art direction…"
+    },
+    "point": {
+      "eyebrow": "On the map",
+      "title": "Points of interest",
+      "new": "Add point",
+      "add": "Add",
+      "edit": "Edit",
+      "save": "Save",
+      "remove": "Remove",
+      "emptyTitle": "No points of interest",
+      "emptyDescription": "Add landmarks, secrets and markers to this map.",
+      "emptyPlayers": "No visible points on this map.",
+      "typePlaceholder": "e.g. SECRET, GATE, TOWER",
+      "fields": {
+        "name": "Name",
+        "type": "Type",
+        "description": "Description",
+        "notes": "Master notes",
+        "x": "X (%)",
+        "y": "Y (%)",
+        "visible": "Visible to players",
+        "showLabel": "Show name on the map"
+      }
+    }
   }
 }
