@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button } from '../components/ui';
 import { CampaignAttributesSection } from '../components/CampaignAttributesSection';
+import { useCampaignMaster } from '../hooks/useIsCampaignMaster';
 
 const Page = styled.div`
   display: flex;
@@ -25,6 +27,12 @@ export function CampaignAttributesPage() {
   const { id = '' } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  // Attributes are a master-only area — send everyone else back to the hub.
+  const { isMaster, resolved } = useCampaignMaster(id);
+  useEffect(() => {
+    if (resolved && !isMaster) navigate(`/campaigns/${id}`, { replace: true });
+  }, [resolved, isMaster, id, navigate]);
+
   return (
     <Page>
       <BackRow>
@@ -37,7 +45,7 @@ export function CampaignAttributesPage() {
         </Button>
       </BackRow>
 
-      <CampaignAttributesSection campaignId={id} />
+      <CampaignAttributesSection campaignId={id} canManage={isMaster} />
     </Page>
   );
 }

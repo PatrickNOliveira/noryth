@@ -417,5 +417,106 @@
       "MASTER": "Maître",
       "PLAYER": "Joueur"
     }
+  },
+  "character": {
+    "hubMeta": "Créez et gérez les PNJ, créatures et figures clés de votre histoire.",
+    "list": {
+      "back": "Retour à la table",
+      "new": "Nouveau personnage",
+      "title": "Personnages",
+      "eyebrow": "La distribution",
+      "lead": "PNJ, créatures et figures façonnés par le maître du jeu.",
+      "search": "Rechercher par nom…",
+      "loading": "Rassemblement de la distribution…",
+      "emptyTitle": "Aucun personnage",
+      "emptyDescription": "Créez le premier PNJ, créature ou figure de votre histoire.",
+      "artDirection": "Direction artistique"
+    },
+    "new": {
+      "eyebrow": "Nouveau personnage",
+      "title": "Créer un personnage",
+      "lead": "Une figure narrative de la campagne — allié, monstre ou mystère, selon l'histoire."
+    },
+    "edit": {
+      "eyebrow": "Personnage",
+      "title": "Modifier le personnage"
+    },
+    "detail": {
+      "loading": "Ouverture du personnage…",
+      "back": "Retour à la distribution",
+      "notFound": "Personnage introuvable.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "generate": "Générer le portrait",
+      "regenerate": "Régénérer le portrait",
+      "makePublic": "Rendre visible",
+      "makePrivate": "Rendre privé",
+      "attributesEyebrow": "Fiche",
+      "attributesTitle": "Attributs",
+      "requestChange": "Demander une modification",
+      "generateVersion": "Générer une nouvelle version",
+      "adjustHelp": "Décrivez ce que vous voulez changer. Le système essaiera de préserver l'identité du personnage et d'appliquer vos changements.",
+      "adjustPlaceholder": "Décrivez les changements du portrait…",
+      "adjustExample1": "Rendez-le plus âgé, avec des vêtements plus nobles.",
+      "adjustExample2": "Retirez l'épée et rendez l'expression plus fatiguée.",
+      "adjustExample3": "Rendez-le moins coloré et plus réaliste."
+    },
+    "form": {
+      "back": "Retour",
+      "create": "Créer le personnage",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "fields": {
+      "name": "Nom",
+      "title": "Titre / surnom",
+      "shortDescription": "Description courte",
+      "description": "Description",
+      "history": "Histoire",
+      "appearance": "Apparence",
+      "personality": "Personnalité",
+      "motivations": "Motivations",
+      "secrets": "Secrets",
+      "notes": "Notes du maître",
+      "faction": "Faction",
+      "noFaction": "Aucune faction",
+      "visible": "Visible par les joueurs",
+      "generateImage": "Générer un portrait maintenant",
+      "ignoreArtDirection": "Ignorer la direction artistique de la campagne"
+    },
+    "placeholders": {
+      "title": "ex. : L’Héritier Tordu"
+    },
+    "hints": {
+      "masterOnly": "Vous seul (le maître) voyez ceci."
+    },
+    "validation": {
+      "nameRequired": "Donnez un nom au personnage",
+      "attrRange": "Doit être entre {{min}} et {{max}}"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privé"
+    },
+    "imageStatus": {
+      "none": "Sans portrait",
+      "pending": "En file",
+      "processing": "Génération…",
+      "completed": "Prêt",
+      "failed": "Échec"
+    },
+    "art": {
+      "back": "Retour à la distribution",
+      "eyebrow": "Style visuel",
+      "title": "Direction artistique des personnages",
+      "lead": "Définissez le style visuel qui guide les portraits des personnages de cette campagne.",
+      "help": "Ces instructions servent de base visuelle à tous les personnages de la campagne, sauf si un personnage demande explicitement de les ignorer.",
+      "fieldLabel": "Direction artistique",
+      "placeholder": "Ex. : Dark fantasy réaliste, tons froids, vêtements médiévaux usés, fond neutre, sans anime, sans couleurs vives…",
+      "save": "Enregistrer la direction artistique",
+      "clear": "Effacer",
+      "loading": "Ouverture de la direction artistique…"
+    }
   }
 }

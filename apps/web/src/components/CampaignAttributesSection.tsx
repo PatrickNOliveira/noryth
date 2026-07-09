@@ -137,6 +137,8 @@ function parseDraft(draft: Draft): {
 
 interface Props {
   campaignId: string;
+  /** Whether the viewer is the master and may create/edit/remove. */
+  canManage?: boolean;
 }
 
 /**
@@ -144,7 +146,10 @@ interface Props {
  * character attributes (name + min/max). Create, edit and remove inline. The
  * attributes belong to the table, not to any character.
  */
-export function CampaignAttributesSection({ campaignId }: Props) {
+export function CampaignAttributesSection({
+  campaignId,
+  canManage = false,
+}: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { list, loading, saving, error } = useAppSelector(
@@ -332,8 +337,9 @@ export function CampaignAttributesSection({ campaignId }: Props) {
                     })}
                   </Badge>
                 </RowMain>
-                {confirmId === attr.id ? (
-                  <Actions>
+                {canManage &&
+                  (confirmId === attr.id ? (
+                    <Actions>
                     <span>{t('campaign.attributes.confirmRemove')}</span>
                     <Button
                       size="sm"
@@ -371,34 +377,38 @@ export function CampaignAttributesSection({ campaignId }: Props) {
                       {t('campaign.attributes.actions.remove')}
                     </Button>
                   </Actions>
-                )}
+                ))}
               </Row>
             ),
           )}
         </Rows>
       )}
 
-      <Divider variant="ornament" />
+      {canManage && (
+        <>
+          <Divider variant="ornament" />
 
-      <ChapterHeading
-        eyebrow={t('campaign.attributes.addEyebrow')}
-        title={t('campaign.attributes.addTitle')}
-      />
-      <Row as="div">
-        {renderDraftFields(addDraft, setAddDraft, addState)}
-        <Actions>
-          <Button
-            size="sm"
-            variant="primary"
-            leftIcon={<PlusIcon size={16} />}
-            loading={saving && editingId === null && confirmId === null}
-            disabled={!addState.valid}
-            onClick={submitAdd}
-          >
-            {t('campaign.attributes.actions.add')}
-          </Button>
-        </Actions>
-      </Row>
+          <ChapterHeading
+            eyebrow={t('campaign.attributes.addEyebrow')}
+            title={t('campaign.attributes.addTitle')}
+          />
+          <Row as="div">
+            {renderDraftFields(addDraft, setAddDraft, addState)}
+            <Actions>
+              <Button
+                size="sm"
+                variant="primary"
+                leftIcon={<PlusIcon size={16} />}
+                loading={saving && editingId === null && confirmId === null}
+                disabled={!addState.valid}
+                onClick={submitAdd}
+              >
+                {t('campaign.attributes.actions.add')}
+              </Button>
+            </Actions>
+          </Row>
+        </>
+      )}
     </Section>
   );
 }

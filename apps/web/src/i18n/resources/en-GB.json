@@ -417,5 +417,106 @@
       "MASTER": "Master",
       "PLAYER": "Player"
     }
+  },
+  "character": {
+    "hubMeta": "Create and manage NPCs, creatures and key figures of your story.",
+    "list": {
+      "back": "Back to the campaign",
+      "new": "New character",
+      "title": "Characters",
+      "eyebrow": "The cast",
+      "lead": "NPCs, creatures and figures shaped by the master.",
+      "search": "Search by name…",
+      "loading": "Gathering the cast…",
+      "emptyTitle": "No characters yet",
+      "emptyDescription": "Create the first NPC, creature or figure of your story.",
+      "artDirection": "Art direction"
+    },
+    "new": {
+      "eyebrow": "New character",
+      "title": "Create a character",
+      "lead": "A narrative figure of the campaign — ally, monster or mystery, as the story decides."
+    },
+    "edit": {
+      "eyebrow": "Character",
+      "title": "Edit character"
+    },
+    "detail": {
+      "loading": "Opening the character…",
+      "back": "Back to the cast",
+      "notFound": "Character not found.",
+      "edit": "Edit",
+      "delete": "Remove",
+      "confirmDelete": "Confirm removal",
+      "generate": "Generate portrait",
+      "regenerate": "Regenerate portrait",
+      "makePublic": "Make visible",
+      "makePrivate": "Make private",
+      "attributesEyebrow": "Sheet",
+      "attributesTitle": "Attributes",
+      "requestChange": "Request a change",
+      "generateVersion": "Generate new version",
+      "adjustHelp": "Describe what you want to change. The system will try to preserve the character's identity and apply your changes.",
+      "adjustPlaceholder": "Describe the changes to the portrait…",
+      "adjustExample1": "Make him older, with more noble clothing.",
+      "adjustExample2": "Remove the sword and make the expression wearier.",
+      "adjustExample3": "Make it less colorful and more realistic."
+    },
+    "form": {
+      "back": "Back",
+      "create": "Create character",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "name": "Name",
+      "title": "Title / epithet",
+      "shortDescription": "Short description",
+      "description": "Description",
+      "history": "History",
+      "appearance": "Appearance",
+      "personality": "Personality",
+      "motivations": "Motivations",
+      "secrets": "Secrets",
+      "notes": "Master notes",
+      "faction": "Faction",
+      "noFaction": "No faction",
+      "visible": "Visible to players",
+      "generateImage": "Generate a portrait now",
+      "ignoreArtDirection": "Ignore campaign art direction"
+    },
+    "placeholders": {
+      "title": "e.g. The Crooked Heir"
+    },
+    "hints": {
+      "masterOnly": "Only you (the master) can see this."
+    },
+    "validation": {
+      "nameRequired": "Give the character a name",
+      "attrRange": "Must be between {{min}} and {{max}}"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Private"
+    },
+    "imageStatus": {
+      "none": "No portrait",
+      "pending": "Queued",
+      "processing": "Generating…",
+      "completed": "Ready",
+      "failed": "Failed"
+    },
+    "art": {
+      "back": "Back to the cast",
+      "eyebrow": "Visual style",
+      "title": "Character art direction",
+      "lead": "Define the visual style that guides every character portrait in this campaign.",
+      "help": "These instructions are used as the visual base for all characters in the campaign, unless a character explicitly asks to ignore them.",
+      "fieldLabel": "Art direction",
+      "placeholder": "e.g. Realistic dark fantasy, cold tones, worn medieval clothing, neutral background, no anime, no vibrant colors…",
+      "save": "Save art direction",
+      "clear": "Clear",
+      "loading": "Opening the art direction…"
+    }
   }
 }

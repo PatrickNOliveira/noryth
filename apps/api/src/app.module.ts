@@ -13,6 +13,7 @@ import { UsersModule } from '@modules/users/users.module';
 import { CampaignsModule } from '@modules/campaigns/campaigns.module';
 import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-attributes.module';
 import { FactionsModule } from '@modules/factions/factions.module';
+import { CharactersModule } from '@modules/characters/characters.module';
 
 /**
  * Composition root. Wires global infrastructure (config, database, events,
@@ -34,6 +35,7 @@ import { FactionsModule } from '@modules/factions/factions.module';
     CampaignsModule,
     CampaignAttributesModule,
     FactionsModule,
+    CharactersModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

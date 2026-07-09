@@ -17,10 +17,11 @@ import {
 /**
  * Application service for per-campaign character attributes.
  *
- * Owns the invariants: only the campaign owner/master manages attributes,
- * names are unique per campaign (case-insensitively), minValue <= maxValue,
- * and a missing displayOrder appends to the end. Ownership is delegated to
- * {@link CampaignsService.findOwnedOrFail}, which throws Not Found / Forbidden.
+ * Owns the invariants: only the current MASTER may create/edit/remove attributes
+ * (reads are open to any participant), names are unique per campaign
+ * (case-insensitively), minValue <= maxValue, and a missing displayOrder appends
+ * to the end. Permission is delegated to CampaignsService
+ * ({@link CampaignsService.findForMasterOrFail} / findForMemberOrFail).
  */
 @Injectable()
 export class CampaignAttributesService {
@@ -31,7 +32,16 @@ export class CampaignAttributesService {
   ) {}
 
   async list(userId: string, campaignId: string): Promise<CampaignAttribute[]> {
-    await this.campaigns.findOwnedOrFail(userId, campaignId);
+    // Read is open to any participant (owner, master or player).
+    await this.campaigns.findForMemberOrFail(userId, campaignId);
+    return this.repository.findByCampaign(campaignId);
+  }
+
+  /**
+   * Raw lookup (NO permission check) for other modules — e.g. validating
+   * character attribute values against the campaign's configured attributes.
+   */
+  getForCampaign(campaignId: string): Promise<CampaignAttribute[]> {
     return this.repository.findByCampaign(campaignId);
   }
 
@@ -40,7 +50,7 @@ export class CampaignAttributesService {
     campaignId: string,
     dto: CreateCampaignAttributeDto,
   ): Promise<CampaignAttribute> {
-    await this.campaigns.findOwnedOrFail(userId, campaignId);
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
 
     const name = dto.name.trim();
     this.assertRange(dto.minValue, dto.maxValue);
@@ -65,7 +75,7 @@ export class CampaignAttributesService {
     attributeId: string,
     dto: UpdateCampaignAttributeDto,
   ): Promise<CampaignAttribute> {
-    await this.campaigns.findOwnedOrFail(userId, campaignId);
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
     const attribute = await this.getOwnedAttribute(campaignId, attributeId);
 
     if (dto.name !== undefined) {
@@ -93,7 +103,7 @@ export class CampaignAttributesService {
     campaignId: string,
     attributeId: string,
   ): Promise<void> {
-    await this.campaigns.findOwnedOrFail(userId, campaignId);
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
     const attribute = await this.getOwnedAttribute(campaignId, attributeId);
 
     if (await this.repository.isReferencedByCharacters(attribute.id)) {

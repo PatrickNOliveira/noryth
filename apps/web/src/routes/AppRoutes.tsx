@@ -15,6 +15,11 @@ import { CampaignParticipantsPage } from '../pages/CampaignParticipantsPage';
 import { FactionsListPage } from '../pages/FactionsListPage';
 import { NewFactionPage } from '../pages/NewFactionPage';
 import { FactionDetailPage } from '../pages/FactionDetailPage';
+import { CharactersListPage } from '../pages/CharactersListPage';
+import { CharacterArtDirectionPage } from '../pages/CharacterArtDirectionPage';
+import { NewCharacterPage } from '../pages/NewCharacterPage';
+import { CharacterDetailPage } from '../pages/CharacterDetailPage';
+import { CharacterEditPage } from '../pages/CharacterEditPage';
 
 /**
  * Route table.
@@ -49,6 +54,11 @@ export function AppRoutes() {
           <Route path="/campaigns/:campaignId/factions" element={<FactionsListPage />} />
           <Route path="/campaigns/:campaignId/factions/new" element={<NewFactionPage />} />
           <Route path="/campaigns/:campaignId/factions/:factionId" element={<FactionDetailPage />} />
+          <Route path="/campaigns/:campaignId/characters" element={<CharactersListPage />} />
+          <Route path="/campaigns/:campaignId/characters/art-direction" element={<CharacterArtDirectionPage />} />
+          <Route path="/campaigns/:campaignId/characters/new" element={<NewCharacterPage />} />
+          <Route path="/campaigns/:campaignId/characters/:characterId" element={<CharacterDetailPage />} />
+          <Route path="/campaigns/:campaignId/characters/:characterId/edit" element={<CharacterEditPage />} />
         </Route>
       </Route>
 

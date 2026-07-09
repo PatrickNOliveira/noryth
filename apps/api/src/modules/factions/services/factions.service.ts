@@ -74,7 +74,7 @@ export class FactionsService {
     campaignId: string,
     dto: CreateFactionDto,
   ): Promise<FactionResult> {
-    await this.campaigns.findOwnedOrFail(userId, campaignId);
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
     const type = dto.type === 'custom' && dto.customType ? dto.customType : dto.type;
 
     const faction = await this.factions.saveFaction(
@@ -107,7 +107,7 @@ export class FactionsService {
 
   listByCampaign(userId: string, campaignId: string): Promise<Faction[]> {
     return this.campaigns
-      .findOwnedOrFail(userId, campaignId)
+      .findForMemberOrFail(userId, campaignId)
       .then(() => this.factions.findByCampaign(campaignId));
   }
 
@@ -116,8 +116,23 @@ export class FactionsService {
     campaignId: string,
     factionId: string,
   ): Promise<FactionResult> {
-    const { faction } = await this.getOwnedContext(userId, campaignId, factionId);
+    // Read is open to any participant.
+    await this.campaigns.findForMemberOrFail(userId, campaignId);
+    const faction = await this.loadFactionOrFail(campaignId, factionId);
     return this.buildResult(faction.id);
+  }
+
+  /**
+   * Raw lookup (NO permission check) for other modules to validate a link, e.g.
+   * a character pointing at a faction. Returns null when it doesn't belong to
+   * the campaign.
+   */
+  async findInCampaign(
+    campaignId: string,
+    factionId: string,
+  ): Promise<Faction | null> {
+    const faction = await this.factions.findFactionById(factionId);
+    return faction && faction.campaignId === campaignId ? faction : null;
   }
 
   /** Reject-with-adjustments / retry — also asynchronous. */
@@ -127,7 +142,7 @@ export class FactionsService {
     factionId: string,
     notes?: string,
   ): Promise<FactionResult> {
-    const { faction } = await this.getOwnedContext(userId, campaignId, factionId);
+    const faction = await this.getMasterFactionContext(userId, campaignId, factionId);
     const image = await this.newQueuedImage(faction.id, notes);
     faction.status = 'generating_symbol';
     await this.factions.saveFaction(faction);
@@ -140,7 +155,7 @@ export class FactionsService {
     campaignId: string,
     factionId: string,
   ): Promise<FactionResult> {
-    const { faction } = await this.getOwnedContext(userId, campaignId, factionId);
+    const faction = await this.getMasterFactionContext(userId, campaignId, factionId);
     const latest = await this.factions.findLatestImage(faction.id);
     if (!latest || latest.status !== 'completed') {
       throw new BadRequestException('Não há símbolo concluído para aprovar.');
@@ -163,7 +178,7 @@ export class FactionsService {
     campaignId: string,
     factionId: string,
   ): Promise<FactionResult> {
-    const { faction } = await this.getOwnedContext(userId, campaignId, factionId);
+    const faction = await this.getMasterFactionContext(userId, campaignId, factionId);
     const latest = await this.factions.findLatestImage(faction.id);
     if (latest) {
       latest.status = 'rejected';
@@ -189,12 +204,14 @@ export class FactionsService {
 
     let campaign: Campaign;
     try {
-      campaign = await this.campaigns.findOwnedOrFail(
+      campaign = await this.campaigns.findForMasterOrFail(
         payload.requestedBy,
         faction.campaignId,
       );
     } catch {
-      this.logger.warn(`Job requester no longer owns campaign ${faction.campaignId}`);
+      this.logger.warn(
+        `Job requester is no longer the master of campaign ${faction.campaignId}`,
+      );
       return;
     }
 
@@ -382,16 +399,29 @@ export class FactionsService {
     return { faction, images };
   }
 
-  private async getOwnedContext(
-    userId: string,
+  /** Loads a faction and validates it belongs to the campaign (no auth check). */
+  private async loadFactionOrFail(
     campaignId: string,
     factionId: string,
-  ): Promise<{ faction: Faction; campaign: Campaign }> {
+  ): Promise<Faction> {
     const faction = await this.factions.findFactionById(factionId);
     if (!faction || faction.campaignId !== campaignId) {
       throw new NotFoundException('Facção não encontrada');
     }
-    const campaign = await this.campaigns.findOwnedOrFail(userId, faction.campaignId);
-    return { faction, campaign };
+    return faction;
+  }
+
+  /**
+   * Loads a faction for a WRITE operation: the caller must be the campaign's
+   * current master (owner-only is not enough). Centralized in
+   * {@link CampaignsService.findForMasterOrFail}.
+   */
+  private async getMasterFactionContext(
+    userId: string,
+    campaignId: string,
+    factionId: string,
+  ): Promise<Faction> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    return this.loadFactionOrFail(campaignId, factionId);
   }
 }

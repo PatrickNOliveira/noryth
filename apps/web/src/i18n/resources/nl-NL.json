@@ -417,5 +417,106 @@
       "MASTER": "Spelleider",
       "PLAYER": "Speler"
     }
+  },
+  "character": {
+    "hubMeta": "Maak en beheer NPCs, wezens en sleutelfiguren van je verhaal.",
+    "list": {
+      "back": "Terug naar de tafel",
+      "new": "Nieuw personage",
+      "title": "Personages",
+      "eyebrow": "De cast",
+      "lead": "NPCs, wezens en figuren gevormd door de spelleider.",
+      "search": "Zoek op naam…",
+      "loading": "De cast verzamelen…",
+      "emptyTitle": "Nog geen personages",
+      "emptyDescription": "Maak de eerste NPC, wezen of figuur van je verhaal.",
+      "artDirection": "Artistieke richting"
+    },
+    "new": {
+      "eyebrow": "Nieuw personage",
+      "title": "Personage maken",
+      "lead": "Een verhaalfiguur van de campagne — bondgenoot, monster of mysterie, zoals het verhaal beslist."
+    },
+    "edit": {
+      "eyebrow": "Personage",
+      "title": "Personage bewerken"
+    },
+    "detail": {
+      "loading": "Personage openen…",
+      "back": "Terug naar de cast",
+      "notFound": "Personage niet gevonden.",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "confirmDelete": "Verwijderen bevestigen",
+      "generate": "Portret genereren",
+      "regenerate": "Portret opnieuw genereren",
+      "makePublic": "Zichtbaar maken",
+      "makePrivate": "Privé maken",
+      "attributesEyebrow": "Blad",
+      "attributesTitle": "Kenmerken",
+      "requestChange": "Wijziging aanvragen",
+      "generateVersion": "Nieuwe versie genereren",
+      "adjustHelp": "Beschrijf wat je wilt veranderen. Het systeem probeert de identiteit van het personage te behouden en je wijzigingen toe te passen.",
+      "adjustPlaceholder": "Beschrijf de wijzigingen aan het portret…",
+      "adjustExample1": "Maak hem ouder, met edelere kleding.",
+      "adjustExample2": "Verwijder het zwaard en maak de uitdrukking vermoeider.",
+      "adjustExample3": "Maak het minder kleurrijk en realistischer."
+    },
+    "form": {
+      "back": "Terug",
+      "create": "Personage maken",
+      "save": "Opslaan",
+      "cancel": "Annuleren"
+    },
+    "fields": {
+      "name": "Naam",
+      "title": "Titel / bijnaam",
+      "shortDescription": "Korte beschrijving",
+      "description": "Beschrijving",
+      "history": "Geschiedenis",
+      "appearance": "Uiterlijk",
+      "personality": "Persoonlijkheid",
+      "motivations": "Motivaties",
+      "secrets": "Geheimen",
+      "notes": "Notities van de spelleider",
+      "faction": "Factie",
+      "noFaction": "Geen factie",
+      "visible": "Zichtbaar voor spelers",
+      "generateImage": "Nu een portret genereren",
+      "ignoreArtDirection": "Negeer de artistieke richting van de campagne"
+    },
+    "placeholders": {
+      "title": "bijv.: De Kromme Erfgenaam"
+    },
+    "hints": {
+      "masterOnly": "Alleen jij (de spelleider) ziet dit."
+    },
+    "validation": {
+      "nameRequired": "Geef het personage een naam",
+      "attrRange": "Moet tussen {{min}} en {{max}} liggen"
+    },
+    "visibility": {
+      "public": "Zichtbaar",
+      "private": "Privé"
+    },
+    "imageStatus": {
+      "none": "Geen portret",
+      "pending": "In wachtrij",
+      "processing": "Genereren…",
+      "completed": "Klaar",
+      "failed": "Mislukt"
+    },
+    "art": {
+      "back": "Terug naar de cast",
+      "eyebrow": "Visuele stijl",
+      "title": "Artistieke richting van personages",
+      "lead": "Bepaal de visuele stijl die alle personageportretten in deze campagne stuurt.",
+      "help": "Deze instructies vormen de visuele basis voor alle personages in de campagne, tenzij een personage expliciet vraagt ze te negeren.",
+      "fieldLabel": "Artistieke richting",
+      "placeholder": "Bijv.: Realistische dark fantasy, koele tinten, versleten middeleeuwse kleding, neutrale achtergrond, geen anime, geen felle kleuren…",
+      "save": "Artistieke richting opslaan",
+      "clear": "Wissen",
+      "loading": "Artistieke richting openen…"
+    }
   }
 }

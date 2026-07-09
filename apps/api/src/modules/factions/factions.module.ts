@@ -24,5 +24,6 @@ import { TypeOrmFactionsRepository } from './repositories/typeorm-factions.repos
     FactionSymbolHandler,
     { provide: FACTIONS_REPOSITORY, useClass: TypeOrmFactionsRepository },
   ],
+  exports: [FactionsService],
 })
 export class FactionsModule {}

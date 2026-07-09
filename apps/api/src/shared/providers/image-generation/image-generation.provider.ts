@@ -18,10 +18,29 @@ export interface GeneratedImage {
   contentType: string;
 }
 
+/**
+ * Image-to-image edit request: a base image (by URL, so the provider fetches it)
+ * plus a prompt describing the desired changes.
+ */
+export interface ImageEditRequest {
+  prompt: string;
+  negativePrompt?: string;
+  baseImageUrl: string;
+  size?: string;
+}
+
 export interface ImageGenerationProvider {
   /** Whether the provider is configured (API key present, etc.). */
   isConfigured(): boolean;
   generateImage(request: ImageGenerationRequest): Promise<GeneratedImage>;
+  /**
+   * Whether this provider can edit from a base image (image-to-image). When
+   * false, callers fall back to {@link generateImage} with a rebuilt prompt —
+   * so this limitation stays isolated in the provider, never in domain code.
+   */
+  supportsImageToImage(): boolean;
+  /** Only valid when {@link supportsImageToImage} returns true. */
+  editImage(request: ImageEditRequest): Promise<GeneratedImage>;
 }
 
 /** DI token used to inject an {@link ImageGenerationProvider}. */

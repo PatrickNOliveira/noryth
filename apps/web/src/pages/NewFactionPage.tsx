@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import {
 } from '../components/ui';
 import { useAppDispatch } from '../store/hooks';
 import { createFaction } from '../store/slices/factions.slice';
+import { useCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { FACTION_TYPE_OPTIONS, FACTION_SYMBOL_TYPE_OPTIONS } from '../utils/factionOptions';
 import { FactionSymbolType } from '../types/faction';
 import { ApiError } from '../services/api';
@@ -68,6 +69,14 @@ export function NewFactionPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Only the master may create factions. Redirect others once we're sure.
+  const { isMaster, resolved } = useCampaignMaster(campaignId);
+  useEffect(() => {
+    if (resolved && !isMaster) {
+      navigate(`/campaigns/${campaignId}/factions`, { replace: true });
+    }
+  }, [resolved, isMaster, campaignId, navigate]);
 
   const {
     register,

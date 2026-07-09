@@ -417,5 +417,106 @@
       "MASTER": "Máster",
       "PLAYER": "Jugador"
     }
+  },
+  "character": {
+    "hubMeta": "Crea y gestiona PNJ, criaturas y figuras clave de tu historia.",
+    "list": {
+      "back": "Volver a la mesa",
+      "new": "Nuevo personaje",
+      "title": "Personajes",
+      "eyebrow": "El elenco",
+      "lead": "PNJ, criaturas y figuras moldeadas por el máster.",
+      "search": "Buscar por nombre…",
+      "loading": "Reuniendo el elenco…",
+      "emptyTitle": "Aún no hay personajes",
+      "emptyDescription": "Crea el primer PNJ, criatura o figura de tu historia.",
+      "artDirection": "Dirección de arte"
+    },
+    "new": {
+      "eyebrow": "Nuevo personaje",
+      "title": "Crear personaje",
+      "lead": "Una figura narrativa de la campaña: aliado, monstruo o misterio, según decida la historia."
+    },
+    "edit": {
+      "eyebrow": "Personaje",
+      "title": "Editar personaje"
+    },
+    "detail": {
+      "loading": "Abriendo el personaje…",
+      "back": "Volver al elenco",
+      "notFound": "Personaje no encontrado.",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "confirmDelete": "Confirmar eliminación",
+      "generate": "Generar retrato",
+      "regenerate": "Regenerar retrato",
+      "makePublic": "Hacer visible",
+      "makePrivate": "Hacer privado",
+      "attributesEyebrow": "Hoja",
+      "attributesTitle": "Atributos",
+      "requestChange": "Pedir un cambio",
+      "generateVersion": "Generar nueva versión",
+      "adjustHelp": "Describe lo que quieres cambiar. El sistema intentará preservar la identidad del personaje y aplicar tus cambios.",
+      "adjustPlaceholder": "Describe los cambios del retrato…",
+      "adjustExample1": "Hazlo más viejo, con ropa más noble.",
+      "adjustExample2": "Quita la espada y deja la expresión más cansada.",
+      "adjustExample3": "Hazlo menos colorido y más realista."
+    },
+    "form": {
+      "back": "Volver",
+      "create": "Crear personaje",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "fields": {
+      "name": "Nombre",
+      "title": "Título / apodo",
+      "shortDescription": "Descripción breve",
+      "description": "Descripción",
+      "history": "Historia",
+      "appearance": "Apariencia",
+      "personality": "Personalidad",
+      "motivations": "Motivaciones",
+      "secrets": "Secretos",
+      "notes": "Notas del máster",
+      "faction": "Facción",
+      "noFaction": "Sin facción",
+      "visible": "Visible para jugadores",
+      "generateImage": "Generar un retrato ahora",
+      "ignoreArtDirection": "Ignorar la dirección de arte de la campaña"
+    },
+    "placeholders": {
+      "title": "p. ej.: El Heredero Torcido"
+    },
+    "hints": {
+      "masterOnly": "Solo tú (el máster) puedes ver esto."
+    },
+    "validation": {
+      "nameRequired": "Ponle un nombre al personaje",
+      "attrRange": "Debe estar entre {{min}} y {{max}}"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privado"
+    },
+    "imageStatus": {
+      "none": "Sin retrato",
+      "pending": "En cola",
+      "processing": "Generando…",
+      "completed": "Listo",
+      "failed": "Falló"
+    },
+    "art": {
+      "back": "Volver al elenco",
+      "eyebrow": "Estilo visual",
+      "title": "Dirección de arte de los personajes",
+      "lead": "Define el estilo visual que debe guiar las imágenes de los personajes de esta campaña.",
+      "help": "Estas instrucciones se usan como base visual para todos los personajes de la campaña, salvo que un personaje pida explícitamente ignorarlas.",
+      "fieldLabel": "Dirección de arte",
+      "placeholder": "Ej.: Dark fantasy realista, tonos fríos, ropa medieval gastada, fondo neutro, sin anime, sin colores vibrantes…",
+      "save": "Guardar dirección de arte",
+      "clear": "Limpiar",
+      "loading": "Abriendo la dirección de arte…"
+    }
   }
 }

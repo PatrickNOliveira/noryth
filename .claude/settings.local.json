@@ -23,7 +23,9 @@
       "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('i18next:', \\(p.dependencies||{}\\).i18next, '| react-i18next:', \\(p.dependencies||{}\\)['react-i18next']\\);\")",
       "Bash(node inject-attrs-nav-i18n.js)",
       "Bash(node inject-participants-i18n.js)",
-      "Bash(node inject-join-i18n.js)"
+      "Bash(node inject-join-i18n.js)",
+      "Bash(node inject-characters-i18n.js)",
+      "Bash(node inject-artdirection-i18n.js)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

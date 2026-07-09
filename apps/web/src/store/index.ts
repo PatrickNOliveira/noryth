@@ -18,6 +18,7 @@ import campaignsReducer from './slices/campaigns.slice';
 import campaignAttributesReducer from './slices/campaignAttributes.slice';
 import participantsReducer from './slices/participants.slice';
 import factionsReducer from './slices/factions.slice';
+import charactersReducer from './slices/characters.slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   campaignAttributes: campaignAttributesReducer,
   participants: participantsReducer,
   factions: factionsReducer,
+  characters: charactersReducer,
 });
 
 /**

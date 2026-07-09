@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '@shared/config/env.validation';
 import {
   GeneratedImage,
+  ImageEditRequest,
   ImageGenerationProvider,
   ImageGenerationRequest,
 } from './image-generation.provider';
@@ -34,6 +35,22 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
 
   isConfigured(): boolean {
     return this.apiKey.length > 0;
+  }
+
+  /**
+   * This adapter uses the text-to-image endpoint only. Image-to-image is not
+   * enabled, so callers rebuild a coherent prompt and regenerate instead. A
+   * future provider can flip this on without any domain change.
+   */
+  supportsImageToImage(): boolean {
+    return false;
+  }
+
+  editImage(_request: ImageEditRequest): Promise<GeneratedImage> {
+    // Never called while supportsImageToImage() is false.
+    throw new ServiceUnavailableException(
+      'Edição de imagem (image-to-image) não é suportada por este provider.',
+    );
   }
 
   async generateImage(request: ImageGenerationRequest): Promise<GeneratedImage> {

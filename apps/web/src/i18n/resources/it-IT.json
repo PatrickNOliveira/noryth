@@ -417,5 +417,106 @@
       "MASTER": "Master",
       "PLAYER": "Giocatore"
     }
+  },
+  "character": {
+    "hubMeta": "Crea e gestisci PNG, creature e figure chiave della tua storia.",
+    "list": {
+      "back": "Torna al tavolo",
+      "new": "Nuovo personaggio",
+      "title": "Personaggi",
+      "eyebrow": "Il cast",
+      "lead": "PNG, creature e figure plasmate dal master.",
+      "search": "Cerca per nome…",
+      "loading": "Radunando il cast…",
+      "emptyTitle": "Ancora nessun personaggio",
+      "emptyDescription": "Crea il primo PNG, creatura o figura della tua storia.",
+      "artDirection": "Direzione artistica"
+    },
+    "new": {
+      "eyebrow": "Nuovo personaggio",
+      "title": "Crea un personaggio",
+      "lead": "Una figura narrativa della campagna — alleato, mostro o mistero, come decide la storia."
+    },
+    "edit": {
+      "eyebrow": "Personaggio",
+      "title": "Modifica personaggio"
+    },
+    "detail": {
+      "loading": "Apertura del personaggio…",
+      "back": "Torna al cast",
+      "notFound": "Personaggio non trovato.",
+      "edit": "Modifica",
+      "delete": "Rimuovi",
+      "confirmDelete": "Conferma rimozione",
+      "generate": "Genera ritratto",
+      "regenerate": "Rigenera ritratto",
+      "makePublic": "Rendi visibile",
+      "makePrivate": "Rendi privato",
+      "attributesEyebrow": "Scheda",
+      "attributesTitle": "Attributi",
+      "requestChange": "Richiedi una modifica",
+      "generateVersion": "Genera nuova versione",
+      "adjustHelp": "Descrivi cosa vuoi cambiare. Il sistema cercherà di preservare l'identità del personaggio e applicare le modifiche.",
+      "adjustPlaceholder": "Descrivi le modifiche al ritratto…",
+      "adjustExample1": "Rendilo più anziano, con abiti più nobili.",
+      "adjustExample2": "Togli la spada e rendi l'espressione più stanca.",
+      "adjustExample3": "Rendilo meno colorato e più realistico."
+    },
+    "form": {
+      "back": "Indietro",
+      "create": "Crea personaggio",
+      "save": "Salva",
+      "cancel": "Annulla"
+    },
+    "fields": {
+      "name": "Nome",
+      "title": "Titolo / soprannome",
+      "shortDescription": "Descrizione breve",
+      "description": "Descrizione",
+      "history": "Storia",
+      "appearance": "Aspetto",
+      "personality": "Personalità",
+      "motivations": "Motivazioni",
+      "secrets": "Segreti",
+      "notes": "Note del master",
+      "faction": "Fazione",
+      "noFaction": "Nessuna fazione",
+      "visible": "Visibile ai giocatori",
+      "generateImage": "Genera un ritratto ora",
+      "ignoreArtDirection": "Ignora la direzione artistica della campagna"
+    },
+    "placeholders": {
+      "title": "es.: L’Erede Storto"
+    },
+    "hints": {
+      "masterOnly": "Solo tu (il master) puoi vederlo."
+    },
+    "validation": {
+      "nameRequired": "Dai un nome al personaggio",
+      "attrRange": "Deve essere tra {{min}} e {{max}}"
+    },
+    "visibility": {
+      "public": "Visibile",
+      "private": "Privato"
+    },
+    "imageStatus": {
+      "none": "Nessun ritratto",
+      "pending": "In coda",
+      "processing": "Generazione…",
+      "completed": "Pronto",
+      "failed": "Fallito"
+    },
+    "art": {
+      "back": "Torna al cast",
+      "eyebrow": "Stile visivo",
+      "title": "Direzione artistica dei personaggi",
+      "lead": "Definisci lo stile visivo che guida i ritratti dei personaggi di questa campagna.",
+      "help": "Queste istruzioni sono usate come base visiva per tutti i personaggi della campagna, a meno che un personaggio non chieda esplicitamente di ignorarle.",
+      "fieldLabel": "Direzione artistica",
+      "placeholder": "Es.: Dark fantasy realistico, toni freddi, abiti medievali logori, sfondo neutro, niente anime, niente colori vivaci…",
+      "save": "Salva direzione artistica",
+      "clear": "Cancella",
+      "loading": "Apertura della direzione artistica…"
+    }
   }
 }

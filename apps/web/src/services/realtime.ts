@@ -53,6 +53,13 @@ export const FACTION_IMAGE_EVENTS = {
   failed: 'faction.image.failed',
 } as const;
 
+/** Event names emitted by the API for character portrait generation. */
+export const CHARACTER_IMAGE_EVENTS = {
+  processing: 'character.image.processing',
+  completed: 'character.image.completed',
+  failed: 'character.image.failed',
+} as const;
+
 /** Client → server messages for campaign presence. */
 export const CAMPAIGN_PRESENCE_MESSAGES = {
   join: 'campaign:presence:join',

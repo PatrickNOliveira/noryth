@@ -135,6 +135,7 @@ export function CampaignDetailPage() {
   const dispatch = useAppDispatch();
   const { selectedCampaign, loading, error } = useAppSelector((s) => s.campaigns);
   const attributes = useAppSelector((s) => s.campaignAttributes.list);
+  const myId = useAppSelector((s) => s.auth.user?.id);
   const { notify } = useToast();
 
   const share = async (campaignId: string) => {
@@ -178,6 +179,7 @@ export function CampaignDetailPage() {
   const c = selectedCampaign;
   if (!c) return null;
 
+  const isMaster = !!myId && c.masterId === myId;
   const attrCount = attributes.filter((a) => a.campaignId === c.id).length;
   const themeKey = themeLabelKey(c.theme);
   const toneKey = toneLabelKey(c.tone);
@@ -223,28 +225,30 @@ export function CampaignDetailPage() {
         <Prose>{c.premise}</Prose>
       </Chapter>
 
-      <Chapter>
-        <ChapterHeading
-          eyebrow={t('campaign.sheet.eyebrow')}
-          title={t('campaign.sheet.title')}
-        />
-        <EntryList>
-          <Entry
-            title={t('campaign.attributes.title')}
-            icon={<DiceIcon size={20} />}
-            meta={t('campaign.attributes.lead')}
-            trailing={
-              attrCount > 0 ? (
-                <Badge $tone="neutral">
-                  {t('campaign.attributes.configured', { count: attrCount })}
-                </Badge>
-              ) : undefined
-            }
-            onClick={() => navigate(`/campaigns/${c.id}/attributes`)}
+      {isMaster && (
+        <Chapter>
+          <ChapterHeading
+            eyebrow={t('campaign.sheet.eyebrow')}
+            title={t('campaign.sheet.title')}
           />
-        </EntryList>
-        <Divider variant="ornament" />
-      </Chapter>
+          <EntryList>
+            <Entry
+              title={t('campaign.attributes.title')}
+              icon={<DiceIcon size={20} />}
+              meta={t('campaign.attributes.lead')}
+              trailing={
+                attrCount > 0 ? (
+                  <Badge $tone="neutral">
+                    {t('campaign.attributes.configured', { count: attrCount })}
+                  </Badge>
+                ) : undefined
+              }
+              onClick={() => navigate(`/campaigns/${c.id}/attributes`)}
+            />
+          </EntryList>
+          <Divider variant="ornament" />
+        </Chapter>
+      )}
 
       <Chapter>
         <ChapterHeading
@@ -270,6 +274,12 @@ export function CampaignDetailPage() {
             icon={<ShieldIcon size={20} />}
             meta={t('faction.list.lead')}
             onClick={() => navigate(`/campaigns/${c.id}/factions`)}
+          />
+          <Entry
+            title={t('character.list.title')}
+            icon={<CompassIcon size={20} />}
+            meta={t('character.hubMeta')}
+            onClick={() => navigate(`/campaigns/${c.id}/characters`)}
           />
         </EntryList>
         <Divider variant="ornament" />

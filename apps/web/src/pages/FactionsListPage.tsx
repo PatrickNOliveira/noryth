@@ -13,6 +13,7 @@ import { FactionEntry } from '../components/FactionEntry';
 import { ShieldIcon, PlusIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchFactions } from '../store/slices/factions.slice';
+import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
 
 const Page = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ export function FactionsListPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { list, loading } = useAppSelector((s) => s.factions);
+  const isMaster = useIsCampaignMaster(campaignId);
 
   useEffect(() => {
     if (campaignId) dispatch(fetchFactions(campaignId));
@@ -53,9 +55,11 @@ export function FactionsListPage() {
         <Button variant="ghost" size="sm" onClick={() => navigate(`/campaigns/${campaignId}`)}>
           {t('faction.list.back')}
         </Button>
-        <Button size="sm" leftIcon={<PlusIcon size={16} />} onClick={create}>
-          {t('faction.list.new')}
-        </Button>
+        {isMaster && (
+          <Button size="sm" leftIcon={<PlusIcon size={16} />} onClick={create}>
+            {t('faction.list.new')}
+          </Button>
+        )}
       </BackRow>
 
       <ChapterHeading
@@ -72,9 +76,11 @@ export function FactionsListPage() {
           title={t('faction.list.emptyTitle')}
           description={t('faction.list.emptyDescription')}
           actions={
-            <Button leftIcon={<PlusIcon size={18} />} onClick={create}>
-              {t('faction.list.new')}
-            </Button>
+            isMaster ? (
+              <Button leftIcon={<PlusIcon size={18} />} onClick={create}>
+                {t('faction.list.new')}
+              </Button>
+            ) : undefined
           }
         />
       ) : (

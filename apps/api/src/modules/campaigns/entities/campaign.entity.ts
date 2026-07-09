@@ -55,4 +55,12 @@ export class Campaign extends BaseEntity {
 
   @Column({ type: 'varchar', length: 16, default: 'active' })
   status!: CampaignStatus;
+
+  /**
+   * Global art direction for this campaign's character portraits (master-only).
+   * Empty = no global direction; the prompt builder folds it into every
+   * character image unless a generation explicitly ignores it.
+   */
+  @Column({ name: 'character_art_direction', type: 'text', default: '' })
+  characterArtDirection!: string;
 }

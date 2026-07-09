@@ -23,6 +23,7 @@ import {
   clearSelectedFaction,
 } from '../store/slices/factions.slice';
 import { factionTypeLabelKey } from '../utils/factionOptions';
+import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { realtime, FACTION_IMAGE_EVENTS } from '../services/realtime';
 import { Faction, FactionStatus } from '../types/faction';
 import { media } from '../styles/media';
@@ -145,6 +146,7 @@ export function FactionDetailPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { selected, loading, saving, error } = useAppSelector((s) => s.factions);
+  const isMaster = useIsCampaignMaster(campaignId);
   const [notes, setNotes] = useState('');
 
   useEffect(() => {
@@ -264,37 +266,43 @@ export function FactionDetailPage() {
               {t('faction.detail.failed')}
               {failureMessage ? ` (${failureMessage})` : ''}
             </Alert>
-            <Actions style={{ marginTop: '1rem' }}>
-              <Button onClick={() => regenerate(false)} loading={saving}>
-                {t('faction.detail.retry')}
-              </Button>
-            </Actions>
+            {isMaster && (
+              <Actions style={{ marginTop: '1rem' }}>
+                <Button onClick={() => regenerate(false)} loading={saving}>
+                  {t('faction.detail.retry')}
+                </Button>
+              </Actions>
+            )}
           </Card>
         )}
 
         {f.status === 'pending_approval' && (
           <Card>
             <Alert variant="warning">{t('faction.detail.pendingHint')}</Alert>
-            <Actions style={{ marginTop: '1rem' }}>
-              <Button onClick={approve} loading={saving}>{t('faction.detail.approve')}</Button>
-              <Button variant="danger" onClick={reject} disabled={saving}>{t('faction.detail.reject')}</Button>
-            </Actions>
-            <AdjustBox>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder={t('faction.detail.adjustPlaceholder')}
-              />
-              <Actions>
-                <Button variant="secondary" onClick={() => regenerate(true)} loading={saving}>
-                  {t('faction.detail.requestAdjustments')}
-                </Button>
-              </Actions>
-            </AdjustBox>
+            {isMaster && (
+              <>
+                <Actions style={{ marginTop: '1rem' }}>
+                  <Button onClick={approve} loading={saving}>{t('faction.detail.approve')}</Button>
+                  <Button variant="danger" onClick={reject} disabled={saving}>{t('faction.detail.reject')}</Button>
+                </Actions>
+                <AdjustBox>
+                  <Textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder={t('faction.detail.adjustPlaceholder')}
+                  />
+                  <Actions>
+                    <Button variant="secondary" onClick={() => regenerate(true)} loading={saving}>
+                      {t('faction.detail.requestAdjustments')}
+                    </Button>
+                  </Actions>
+                </AdjustBox>
+              </>
+            )}
           </Card>
         )}
 
-        {(f.status === 'active' || f.status === 'draft') && (
+        {isMaster && (f.status === 'active' || f.status === 'draft') && (
           <Actions>
             <Button variant="secondary" onClick={() => regenerate(false)} loading={saving}>
               {t('faction.detail.regenerate')}

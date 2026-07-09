@@ -144,9 +144,34 @@ export class CampaignsService {
     return campaign;
   }
 
+  /**
+   * Guards narrative/playable configuration (factions, attributes, …). Only the
+   * CURRENT master may write — the owner passes only when they are also the
+   * master. This is the single source of truth for that rule; services call it
+   * instead of re-checking `ownerId`/`masterId` themselves.
+   */
+  async findForMasterOrFail(userId: string, id: string): Promise<Campaign> {
+    const campaign = await this.findByIdOrFail(id);
+    if (campaign.masterId !== userId) {
+      throw new ForbiddenException(
+        'Apenas o mestre da campanha pode realizar esta ação.',
+      );
+    }
+    return campaign;
+  }
+
   /** Persists a new master for the campaign. Authorization is the caller's job. */
   async updateMaster(campaign: Campaign, masterId: string): Promise<Campaign> {
     campaign.masterId = masterId;
+    return this.campaigns.save(campaign);
+  }
+
+  /** Persists the campaign's character art direction. Authorization is the caller's job. */
+  async saveCharacterArtDirection(
+    campaign: Campaign,
+    value: string,
+  ): Promise<Campaign> {
+    campaign.characterArtDirection = value;
     return this.campaigns.save(campaign);
   }
 }
