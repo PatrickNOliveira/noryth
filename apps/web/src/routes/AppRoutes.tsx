@@ -20,6 +20,7 @@ import { CharacterArtDirectionPage } from '../pages/CharacterArtDirectionPage';
 import { NewCharacterPage } from '../pages/NewCharacterPage';
 import { CharacterDetailPage } from '../pages/CharacterDetailPage';
 import { CharacterEditPage } from '../pages/CharacterEditPage';
+import { MyCharacterPage } from '../pages/MyCharacterPage';
 import { MapsListPage } from '../pages/MapsListPage';
 import { MapArtDirectionPage } from '../pages/MapArtDirectionPage';
 import { NewMapPage } from '../pages/NewMapPage';
@@ -64,6 +65,7 @@ export function AppRoutes() {
           <Route path="/campaigns/:campaignId/characters/new" element={<NewCharacterPage />} />
           <Route path="/campaigns/:campaignId/characters/:characterId" element={<CharacterDetailPage />} />
           <Route path="/campaigns/:campaignId/characters/:characterId/edit" element={<CharacterEditPage />} />
+          <Route path="/campaigns/:campaignId/my-character" element={<MyCharacterPage />} />
           <Route path="/campaigns/:campaignId/maps" element={<MapsListPage />} />
           <Route path="/campaigns/:campaignId/maps/art-direction" element={<MapArtDirectionPage />} />
           <Route path="/campaigns/:campaignId/maps/new" element={<NewMapPage />} />

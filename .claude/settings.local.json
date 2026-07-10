@@ -27,7 +27,8 @@
       "Bash(node inject-characters-i18n.js)",
       "Bash(node inject-artdirection-i18n.js)",
       "Bash(node inject-maps-i18n.js)",
-      "Bash(node inject-labels-i18n.js)"
+      "Bash(node inject-labels-i18n.js)",
+      "Bash(node inject-pc-i18n.js)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

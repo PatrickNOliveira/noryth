@@ -25,6 +25,7 @@ import {
   mapImageUpdate,
 } from '../store/slices/maps.slice';
 import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
+import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
 import { realtime, MAP_IMAGE_EVENTS } from '../services/realtime';
 import { MapImageStatus } from '../types/map';
 import { media } from '../styles/media';
@@ -180,6 +181,10 @@ export function MapDetailPage() {
   }, [campaignId, mapId, dispatch]);
 
   const m = selected?.id === mapId ? selected : null;
+  const inFlight = m?.imageStatus === 'pending' || m?.imageStatus === 'processing';
+  useImageFallbackPoll(!!inFlight, () =>
+    dispatch(fetchMap({ campaignId, mapId })),
+  );
 
   if (loading && !m) return <Loading block label={t('map.detail.loading')} />;
   if (!m) {
@@ -299,7 +304,7 @@ export function MapDetailPage() {
                   {t('map.detail.requestChange')}
                 </Button>
               ) : (
-                <Button size="sm" variant="secondary" loading={generating || saving} onClick={submitAdjust}>
+                <Button size="sm" variant="secondary" loading={generating || saving} disabled={generating || saving} onClick={submitAdjust}>
                   {t('map.detail.generate')}
                 </Button>
               )}
@@ -315,7 +320,7 @@ export function MapDetailPage() {
               <Switch label={t('map.fields.ignoreArtDirection')} checked={ignoreArt} onChange={(e) => setIgnoreArt(e.target.checked)} />
               <Switch label={t('map.fields.includeLabels')} checked={includeLabels} onChange={(e) => setIncludeLabels(e.target.checked)} />
               <Actions>
-                <Button size="sm" loading={generating || saving} onClick={submitAdjust}>
+                <Button size="sm" loading={generating || saving} disabled={generating || saving} onClick={submitAdjust}>
                   {t('map.detail.generateVersion')}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setAdjustOpen(false)}>

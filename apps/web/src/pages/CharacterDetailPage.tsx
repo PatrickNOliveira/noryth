@@ -12,6 +12,7 @@ import {
   Alert,
   Textarea,
   Switch,
+  Input,
 } from '../components/ui';
 import { CompassIcon } from '../components/icons';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -22,11 +23,13 @@ import {
   updateCharacter,
   generateCharacterImage,
   regenerateCharacterImage,
+  setCharacterBudget,
   characterImageUpdate,
 } from '../store/slices/characters.slice';
 import { fetchFactions } from '../store/slices/factions.slice';
 import { fetchAttributes } from '../store/slices/campaignAttributes.slice';
 import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
+import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
 import { realtime, CHARACTER_IMAGE_EVENTS } from '../services/realtime';
 import { CharacterImageStatus } from '../types/character';
 import { media } from '../styles/media';
@@ -174,6 +177,15 @@ export function CharacterDetailPage() {
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [adjustText, setAdjustText] = useState('');
   const [ignoreArt, setIgnoreArt] = useState(false);
+  const [budgetInput, setBudgetInput] = useState('');
+
+  useEffect(() => {
+    setBudgetInput(
+      selected?.attributePointsBudget != null
+        ? String(selected.attributePointsBudget)
+        : '',
+    );
+  }, [selected?.attributePointsBudget]);
 
   useEffect(() => {
     if (campaignId && characterId) {
@@ -224,6 +236,10 @@ export function CharacterDetailPage() {
   }, [attributes]);
 
   const c = selected?.id === characterId ? selected : null;
+  const inFlight = c?.imageStatus === 'pending' || c?.imageStatus === 'processing';
+  useImageFallbackPoll(!!inFlight, () =>
+    dispatch(fetchCharacter({ campaignId, characterId })),
+  );
 
   if (loading && !c) return <Loading block label={t('character.detail.loading')} />;
   if (!c) {
@@ -271,7 +287,8 @@ export function CharacterDetailPage() {
     { key: 'motivations', value: c.motivations },
     { key: 'history', value: c.history },
     { key: 'secrets', value: c.secrets },
-    { key: 'notes', value: c.notes },
+    { key: 'playerNotes', value: c.playerNotes },
+    { key: 'notes', value: c.masterNotes },
   ];
 
   return (
@@ -332,7 +349,7 @@ export function CharacterDetailPage() {
                   {t('character.detail.requestChange')}
                 </Button>
               ) : (
-                <Button size="sm" variant="secondary" loading={generating || saving} onClick={generate}>
+                <Button size="sm" variant="secondary" loading={generating || saving} disabled={generating || saving} onClick={generate}>
                   {t('character.detail.generate')}
                 </Button>
               )}
@@ -360,7 +377,7 @@ export function CharacterDetailPage() {
                 onChange={(e) => setIgnoreArt(e.target.checked)}
               />
               <Actions>
-                <Button size="sm" loading={generating || saving} onClick={submitAdjust}>
+                <Button size="sm" loading={generating || saving} disabled={generating || saving} onClick={submitAdjust}>
                   {t('character.detail.generateVersion')}
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setAdjustOpen(false)}>
@@ -374,6 +391,39 @@ export function CharacterDetailPage() {
           )}
         </Titles>
       </Head>
+
+      {isMaster && c.isPlayerCharacter && (
+        <Chapter>
+          <ChapterHeading eyebrow={t('playerCharacter.badge')} title={t('playerCharacter.budget.title')} />
+          <Actions>
+            <Input
+              type="number"
+              inputMode="numeric"
+              value={budgetInput}
+              placeholder={t('playerCharacter.budget.placeholder')}
+              onChange={(e) => setBudgetInput(e.target.value)}
+              style={{ maxWidth: 140 }}
+            />
+            <Button
+              size="sm"
+              loading={saving}
+              onClick={() =>
+                dispatch(
+                  setCharacterBudget({
+                    campaignId,
+                    characterId,
+                    attributePointsBudget:
+                      budgetInput.trim() === '' ? null : Number(budgetInput),
+                  }),
+                )
+              }
+            >
+              {t('playerCharacter.budget.save')}
+            </Button>
+          </Actions>
+          <Hint>{t('playerCharacter.budget.hint')}</Hint>
+        </Chapter>
+      )}
 
       {c.attributes.length > 0 && (
         <Chapter>

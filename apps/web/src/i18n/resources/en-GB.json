@@ -483,7 +483,8 @@
       "noFaction": "No faction",
       "visible": "Visible to players",
       "generateImage": "Generate a portrait now",
-      "ignoreArtDirection": "Ignore campaign art direction"
+      "ignoreArtDirection": "Ignore campaign art direction",
+      "playerNotes": "Player notes"
     },
     "placeholders": {
       "title": "e.g. The Crooked Heir"
@@ -644,6 +645,46 @@
         "visible": "Visible to players",
         "showLabel": "Show name on the map"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "My character",
+    "hubMeta": "Create and manage your character in this campaign.",
+    "back": "Back to the campaign",
+    "badge": "Player character",
+    "loading": "Opening your character…",
+    "edit": "Edit",
+    "new": {
+      "eyebrow": "Your hero",
+      "title": "Create your character",
+      "lead": "Build your own playable character within the master's rules."
+    },
+    "form": {
+      "create": "Create character",
+      "appearanceHint": "Describe how your character looks — the portrait follows this.",
+      "privateHint": "Only you and the master can see this."
+    },
+    "fields": {
+      "playerNotes": "Player notes"
+    },
+    "attributes": {
+      "eyebrow": "Character sheet",
+      "title": "Attributes",
+      "lead": "Distribute your points across the table's attributes.",
+      "available": "Available: {{count}}",
+      "spent": "Spent: {{count}}",
+      "remaining": "Remaining: {{count}}",
+      "cost": "spent {{count}}",
+      "save": "Save attributes",
+      "noBudget": "The master hasn't defined how many points you can distribute yet.",
+      "noAttributes": "This campaign has no attributes configured yet.",
+      "over": "You have exceeded the point limit set by the master."
+    },
+    "budget": {
+      "title": "Attribute-point budget",
+      "placeholder": "e.g. 30",
+      "save": "Save budget",
+      "hint": "Points the player may distribute (spent = value − minimum). Leave empty to clear."
     }
   }
 }

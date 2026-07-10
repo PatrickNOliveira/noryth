@@ -20,6 +20,7 @@ import { CreateCharacterDto } from '../dto/create-character.dto';
 import { UpdateCharacterDto } from '../dto/update-character.dto';
 import { GenerateCharacterImageDto } from '../dto/generate-character-image.dto';
 import { ArtDirectionDto, UpdateArtDirectionDto } from '../dto/art-direction.dto';
+import { SetAttributeBudgetDto } from '../dto/attribute-budget.dto';
 
 /**
  * Character endpoints, scoped to a campaign. Read is open to participants (with
@@ -113,6 +114,22 @@ export class CharactersController {
     @Param('characterId', new ParseUUIDPipe()) characterId: string,
   ): Promise<void> {
     await this.characters.remove(user.id, campaignId, characterId);
+  }
+
+  /** Master sets/clears a character's attribute-point budget. */
+  @Patch(':characterId/attribute-budget')
+  setAttributeBudget(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('characterId', new ParseUUIDPipe()) characterId: string,
+    @Body() dto: SetAttributeBudgetDto,
+  ): Promise<CharacterDto> {
+    return this.characters.setAttributeBudget(
+      user.id,
+      campaignId,
+      characterId,
+      dto.attributePointsBudget,
+    );
   }
 
   @Post(':characterId/generate-image')

@@ -1,25 +1,18 @@
-import { Type } from 'class-transformer';
 import {
-  IsArray,
-  IsBoolean,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
   MaxLength,
-  Min,
   ValidateIf,
-  ValidateNested,
 } from 'class-validator';
-import { CharacterAttributeInput } from './character-attribute.input';
 
 /**
- * Payload for updating a character. Every field is optional; only provided ones
- * change. `factionId: null` unlinks the faction. When `attributes` is provided,
- * it REPLACES the character's whole attribute set.
+ * Payload for a player editing THEIR character. Only narrative/visual fields,
+ * faction and player notes — never budget, master notes, visibility or ids.
+ * `factionId: null` unlinks.
  */
-export class UpdateCharacterDto {
+export class UpdatePlayerCharacterDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -69,33 +62,10 @@ export class UpdateCharacterDto {
   @IsOptional()
   @IsString()
   @MaxLength(5000)
-  notes?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(5000)
   playerNotes?: string;
 
-  /** Master can set/clear the player's attribute-point budget (null = unset). */
-  @IsOptional()
-  @ValidateIf((_o, value) => value !== null)
-  @IsInt()
-  @Min(0)
-  attributePointsBudget?: number | null;
-
-  /** UUID to link a faction, or explicit null to unlink. */
   @IsOptional()
   @ValidateIf((_o, value) => value !== null)
   @IsUUID()
   factionId?: string | null;
-
-  @IsOptional()
-  @IsBoolean()
-  isVisibleToPlayers?: boolean;
-
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CharacterAttributeInput)
-  attributes?: CharacterAttributeInput[];
 }

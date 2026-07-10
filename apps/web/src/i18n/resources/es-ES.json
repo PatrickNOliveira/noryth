@@ -483,7 +483,8 @@
       "noFaction": "Sin facción",
       "visible": "Visible para jugadores",
       "generateImage": "Generar un retrato ahora",
-      "ignoreArtDirection": "Ignorar la dirección de arte de la campaña"
+      "ignoreArtDirection": "Ignorar la dirección de arte de la campaña",
+      "playerNotes": "Notas del jugador"
     },
     "placeholders": {
       "title": "p. ej.: El Heredero Torcido"
@@ -644,6 +645,46 @@
         "visible": "Visible para jugadores",
         "showLabel": "Mostrar el nombre en el mapa"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "Mi personaje",
+    "hubMeta": "Crea y gestiona tu personaje en esta campaña.",
+    "back": "Volver a la mesa",
+    "badge": "Personaje de jugador",
+    "loading": "Abriendo tu personaje…",
+    "edit": "Editar",
+    "new": {
+      "eyebrow": "Tu héroe",
+      "title": "Crear tu personaje",
+      "lead": "Crea tu propio personaje jugable dentro de las reglas del máster."
+    },
+    "form": {
+      "create": "Crear personaje",
+      "appearanceHint": "Describe el aspecto de tu personaje: el retrato lo sigue.",
+      "privateHint": "Solo tú y el máster podéis ver esto."
+    },
+    "fields": {
+      "playerNotes": "Notas del jugador"
+    },
+    "attributes": {
+      "eyebrow": "Hoja",
+      "title": "Atributos",
+      "lead": "Distribuye tus puntos entre los atributos de la mesa.",
+      "available": "Disponibles: {{count}}",
+      "spent": "Gastados: {{count}}",
+      "remaining": "Restantes: {{count}}",
+      "cost": "gasta {{count}}",
+      "save": "Guardar atributos",
+      "noBudget": "El máster aún no ha definido cuántos puntos puedes distribuir.",
+      "noAttributes": "Esta campaña aún no tiene atributos configurados.",
+      "over": "Has superado el límite de puntos definido por el máster."
+    },
+    "budget": {
+      "title": "Presupuesto de puntos de atributo",
+      "placeholder": "ej.: 30",
+      "save": "Guardar presupuesto",
+      "hint": "Puntos que el jugador puede distribuir (gasto = valor − mínimo). Deja vacío para borrar."
     }
   }
 }

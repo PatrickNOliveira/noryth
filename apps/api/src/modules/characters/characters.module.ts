@@ -6,6 +6,7 @@ import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-
 import { Character } from './entities/character.entity';
 import { CharacterAttributeValue } from './entities/character-attribute-value.entity';
 import { CharactersController } from './controllers/characters.controller';
+import { PlayerCharactersController } from './controllers/player-characters.controller';
 import { CharactersService } from './services/characters.service';
 import { CharacterPortraitAgent } from './services/character-portrait.agent';
 import { CharacterPortraitHandler } from './services/character-portrait.handler';
@@ -26,7 +27,7 @@ import { TypeOrmCharactersRepository } from './repositories/typeorm-characters.r
     FactionsModule,
     CampaignAttributesModule,
   ],
-  controllers: [CharactersController],
+  controllers: [CharactersController, PlayerCharactersController],
   providers: [
     CharactersService,
     CharacterPortraitAgent,

@@ -19,6 +19,21 @@ export class Character extends BaseEntity {
   @Column({ name: 'created_by_user_id', type: 'uuid' })
   createdByUserId!: string;
 
+  /** Player who controls this character (a player character); null for NPCs. */
+  @Column({ name: 'controlled_by_user_id', type: 'uuid', nullable: true })
+  controlledByUserId!: string | null;
+
+  /** True when this is a player-authored character (not a master NPC). */
+  @Column({ name: 'is_player_character', type: 'boolean', default: false })
+  isPlayerCharacter!: boolean;
+
+  /**
+   * Attribute points the controlling player may distribute (points spent per
+   * attribute = value - minValue). Null = the master hasn't set a budget yet.
+   */
+  @Column({ name: 'attribute_points_budget', type: 'int', nullable: true })
+  attributePointsBudget!: number | null;
+
   @Column({ type: 'varchar', length: 120 })
   name!: string;
 
@@ -47,9 +62,13 @@ export class Character extends BaseEntity {
   @Column({ type: 'text', default: '' })
   secrets!: string;
 
-  /** Master-only free notes; stripped from player-facing responses. */
+  /** Master-only free notes; never shown to players (incl. the controller). */
   @Column({ type: 'text', default: '' })
   notes!: string;
+
+  /** The controlling player's private notes; shown to that player and master. */
+  @Column({ name: 'player_notes', type: 'text', default: '' })
+  playerNotes!: string;
 
   @Column({ name: 'faction_id', type: 'uuid', nullable: true })
   factionId!: string | null;

@@ -14,6 +14,9 @@ export interface Character {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  controlledByUserId: string | null;
+  isPlayerCharacter: boolean;
+  attributePointsBudget: number | null;
   name: string;
   title: string;
   shortDescription: string;
@@ -22,10 +25,12 @@ export interface Character {
   appearance: string;
   personality: string;
   motivations: string;
-  /** Master-only; null for players. */
+  /** Visible to the controlling player and master. */
   secrets: string | null;
-  /** Master-only; null for players. */
-  notes: string | null;
+  /** Master-only free notes. */
+  masterNotes: string | null;
+  /** Controlling player's notes; visible to that player and master. */
+  playerNotes: string | null;
   factionId: string | null;
   isVisibleToPlayers: boolean;
   imageUrl: string | null;
@@ -56,4 +61,28 @@ export interface CreateCharacterInput {
 
 export type UpdateCharacterInput = Partial<
   Omit<CreateCharacterInput, 'generateImage' | 'ignoreCampaignArtDirection'>
+> & {
+  playerNotes?: string;
+  attributePointsBudget?: number | null;
+};
+
+/** A player creating their own character (no attributes/visibility/budget). */
+export interface CreatePlayerCharacterInput {
+  name: string;
+  title?: string;
+  shortDescription?: string;
+  description?: string;
+  history?: string;
+  appearance?: string;
+  personality?: string;
+  motivations?: string;
+  secrets?: string;
+  playerNotes?: string;
+  factionId?: string | null;
+  generateImage?: boolean;
+  ignoreCampaignArtDirection?: boolean;
+}
+
+export type UpdatePlayerCharacterInput = Partial<
+  Omit<CreatePlayerCharacterInput, 'generateImage' | 'ignoreCampaignArtDirection'>
 >;

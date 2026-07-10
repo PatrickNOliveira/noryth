@@ -49,6 +49,19 @@ export class TypeOrmCharactersRepository implements CharactersRepository {
     });
   }
 
+  findPlayerCharacter(
+    campaignId: string,
+    userId: string,
+  ): Promise<Character | null> {
+    return this.characters.findOne({
+      where: {
+        campaignId,
+        controlledByUserId: userId,
+        isPlayerCharacter: true,
+      },
+    });
+  }
+
   findValues(characterId: string): Promise<CharacterAttributeValue[]> {
     return this.values.find({ where: { characterId } });
   }

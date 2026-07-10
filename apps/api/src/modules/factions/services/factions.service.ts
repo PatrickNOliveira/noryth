@@ -1,11 +1,13 @@
 import { randomUUID } from 'crypto';
 import {
   BadRequestException,
+  ConflictException,
   Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { IMAGE_GENERATION_STALE_MS } from '@shared/utils/image-generation.util';
 import {
   IMAGE_GENERATION_PROVIDER,
   ImageGenerationProvider,
@@ -143,6 +145,16 @@ export class FactionsService {
     notes?: string,
   ): Promise<FactionResult> {
     const faction = await this.getMasterFactionContext(userId, campaignId, factionId);
+    // Block re-triggering while a symbol generation is genuinely in flight; a
+    // stale one (worker never ran) is allowed through to recover.
+    if (
+      faction.status === 'generating_symbol' &&
+      Date.now() - faction.updatedAt.getTime() < IMAGE_GENERATION_STALE_MS
+    ) {
+      throw new ConflictException(
+        'Uma geração de imagem já está em andamento. Aguarde a conclusão.',
+      );
+    }
     const image = await this.newQueuedImage(faction.id, notes);
     faction.status = 'generating_symbol';
     await this.factions.saveFaction(faction);

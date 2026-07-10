@@ -67,4 +67,12 @@ export class Campaign extends BaseEntity {
   /** Global art direction for this campaign's maps (master-only). */
   @Column({ name: 'map_art_direction', type: 'text', default: '' })
   mapArtDirection!: string;
+
+  /** Default attribute-point budget copied to new player characters. Null = unset. */
+  @Column({
+    name: 'default_player_character_attribute_points',
+    type: 'int',
+    nullable: true,
+  })
+  defaultPlayerCharacterAttributePoints!: number | null;
 }

@@ -483,7 +483,8 @@
       "noFaction": "Geen factie",
       "visible": "Zichtbaar voor spelers",
       "generateImage": "Nu een portret genereren",
-      "ignoreArtDirection": "Negeer de artistieke richting van de campagne"
+      "ignoreArtDirection": "Negeer de artistieke richting van de campagne",
+      "playerNotes": "Spelersnotities"
     },
     "placeholders": {
       "title": "bijv.: De Kromme Erfgenaam"
@@ -644,6 +645,46 @@
         "visible": "Zichtbaar voor spelers",
         "showLabel": "Naam op de kaart tonen"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "Mijn personage",
+    "hubMeta": "Maak en beheer je personage in deze campagne.",
+    "back": "Terug naar de tafel",
+    "badge": "Spelerspersonage",
+    "loading": "Je personage openen…",
+    "edit": "Bewerken",
+    "new": {
+      "eyebrow": "Jouw held",
+      "title": "Maak je personage",
+      "lead": "Bouw je eigen speelbare personage binnen de regels van de spelleider."
+    },
+    "form": {
+      "create": "Personage maken",
+      "appearanceHint": "Beschrijf hoe je personage eruitziet — het portret volgt dit.",
+      "privateHint": "Alleen jij en de spelleider zien dit."
+    },
+    "fields": {
+      "playerNotes": "Spelersnotities"
+    },
+    "attributes": {
+      "eyebrow": "Blad",
+      "title": "Kenmerken",
+      "lead": "Verdeel je punten over de kenmerken van de tafel.",
+      "available": "Beschikbaar: {{count}}",
+      "spent": "Besteed: {{count}}",
+      "remaining": "Resterend: {{count}}",
+      "cost": "kost {{count}}",
+      "save": "Kenmerken opslaan",
+      "noBudget": "De spelleider heeft nog niet bepaald hoeveel punten je mag verdelen.",
+      "noAttributes": "Deze campagne heeft nog geen kenmerken ingesteld.",
+      "over": "Je bent over de door de spelleider ingestelde puntenlimiet."
+    },
+    "budget": {
+      "title": "Puntenbudget voor kenmerken",
+      "placeholder": "bijv.: 30",
+      "save": "Budget opslaan",
+      "hint": "Punten die de speler mag verdelen (besteed = waarde − minimum). Laat leeg om te wissen."
     }
   }
 }

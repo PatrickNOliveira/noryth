@@ -2,15 +2,21 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { characterService } from '../../services/character.service';
 import {
   Character,
+  CharacterAttributeValue,
   CharacterImageStatus,
   CreateCharacterInput,
   UpdateCharacterInput,
+  CreatePlayerCharacterInput,
+  UpdatePlayerCharacterInput,
 } from '../../types/character';
 import { ApiError } from '../../services/api';
 
 export interface CharactersState {
   list: Character[];
   selected: Character | null;
+  /** The authenticated user's own player character in the campaign. */
+  mine: Character | null;
+  mineLoaded: boolean;
   artDirection: string;
   artDirectionLoaded: boolean;
   loading: boolean;
@@ -21,12 +27,62 @@ export interface CharactersState {
 const initialState: CharactersState = {
   list: [],
   selected: null,
+  mine: null,
+  mineLoaded: false,
   artDirection: '',
   artDirectionLoaded: false,
   loading: false,
   saving: false,
   error: null,
 };
+
+export const fetchMyCharacter = createAsyncThunk(
+  'characters/fetchMine',
+  (campaignId: string) => characterService.getMine(campaignId),
+);
+
+export const createMyCharacter = createAsyncThunk(
+  'characters/createMine',
+  (args: { campaignId: string; input: CreatePlayerCharacterInput }) =>
+    characterService.createMine(args.campaignId, args.input),
+);
+
+export const updateMyCharacter = createAsyncThunk(
+  'characters/updateMine',
+  (args: {
+    campaignId: string;
+    characterId: string;
+    input: UpdatePlayerCharacterInput;
+  }) => characterService.updateMine(args.campaignId, args.characterId, args.input),
+);
+
+export const distributeMyAttributes = createAsyncThunk(
+  'characters/distribute',
+  (args: {
+    campaignId: string;
+    characterId: string;
+    attributes: CharacterAttributeValue[];
+  }) =>
+    characterService.distribute(
+      args.campaignId,
+      args.characterId,
+      args.attributes,
+    ),
+);
+
+export const regenerateMyImage = createAsyncThunk(
+  'characters/regenerateMine',
+  (args: {
+    campaignId: string;
+    characterId: string;
+    adjustments?: string;
+    ignoreCampaignArtDirection?: boolean;
+  }) =>
+    characterService.regenerateMineImage(args.campaignId, args.characterId, {
+      adjustments: args.adjustments,
+      ignoreCampaignArtDirection: args.ignoreCampaignArtDirection,
+    }),
+);
 
 export const fetchCharacters = createAsyncThunk(
   'characters/fetchList',
@@ -82,6 +138,20 @@ export const regenerateCharacterImage = createAsyncThunk(
     }),
 );
 
+export const setCharacterBudget = createAsyncThunk(
+  'characters/setBudget',
+  (args: {
+    campaignId: string;
+    characterId: string;
+    attributePointsBudget: number | null;
+  }) =>
+    characterService.setAttributeBudget(
+      args.campaignId,
+      args.characterId,
+      args.attributePointsBudget,
+    ),
+);
+
 export const fetchArtDirection = createAsyncThunk(
   'characters/fetchArtDirection',
   (campaignId: string) => characterService.getArtDirection(campaignId),
@@ -124,6 +194,7 @@ const charactersSlice = createSlice({
         if (imageError !== undefined) c.imageError = imageError ?? null;
       };
       if (state.selected?.id === characterId) patch(state.selected);
+      if (state.mine?.id === characterId) patch(state.mine);
       const inList = state.list.find((c) => c.id === characterId);
       if (inList) patch(inList);
     },
@@ -181,6 +252,7 @@ const charactersSlice = createSlice({
       updateCharacter,
       generateCharacterImage,
       regenerateCharacterImage,
+      setCharacterBudget,
     ]) {
       builder.addCase(
         thunk.fulfilled,
@@ -190,8 +262,54 @@ const charactersSlice = createSlice({
           state.list = state.list.map((c) =>
             c.id === action.payload.id ? action.payload : c,
           );
+          if (state.mine?.id === action.payload.id) state.mine = action.payload;
         },
       );
+    }
+
+    // ── my player character ──
+    builder
+      .addCase(fetchMyCharacter.pending, (state) => {
+        if (!state.mine) state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchMyCharacter.fulfilled,
+        (state, action: PayloadAction<Character | null>) => {
+          state.loading = false;
+          state.mine = action.payload;
+          state.mineLoaded = true;
+        },
+      )
+      .addCase(fetchMyCharacter.rejected, (state, action) => {
+        state.loading = false;
+        state.mineLoaded = true;
+        state.error = message(action.error, 'failed');
+      });
+
+    for (const thunk of [
+      createMyCharacter,
+      updateMyCharacter,
+      distributeMyAttributes,
+      regenerateMyImage,
+    ]) {
+      builder
+        .addCase(thunk.pending, (state) => {
+          state.saving = true;
+          state.error = null;
+        })
+        .addCase(thunk.fulfilled, (state, action: PayloadAction<Character>) => {
+          state.saving = false;
+          state.mine = action.payload;
+          state.mineLoaded = true;
+          if (state.selected?.id === action.payload.id) {
+            state.selected = action.payload;
+          }
+        })
+        .addCase(thunk.rejected, (state, action) => {
+          state.saving = false;
+          state.error = message(action.error, 'failed');
+        });
     }
 
     builder
@@ -225,6 +343,7 @@ const charactersSlice = createSlice({
       removeCharacter,
       generateCharacterImage,
       regenerateCharacterImage,
+      setCharacterBudget,
       saveArtDirection,
       clearArtDirection,
     ]) {

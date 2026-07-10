@@ -483,7 +483,8 @@
       "noFaction": "Nessuna fazione",
       "visible": "Visibile ai giocatori",
       "generateImage": "Genera un ritratto ora",
-      "ignoreArtDirection": "Ignora la direzione artistica della campagna"
+      "ignoreArtDirection": "Ignora la direzione artistica della campagna",
+      "playerNotes": "Note del giocatore"
     },
     "placeholders": {
       "title": "es.: L’Erede Storto"
@@ -644,6 +645,46 @@
         "visible": "Visibile ai giocatori",
         "showLabel": "Mostra il nome sulla mappa"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "Il mio personaggio",
+    "hubMeta": "Crea e gestisci il tuo personaggio in questa campagna.",
+    "back": "Torna al tavolo",
+    "badge": "Personaggio giocante",
+    "loading": "Apertura del tuo personaggio…",
+    "edit": "Modifica",
+    "new": {
+      "eyebrow": "Il tuo eroe",
+      "title": "Crea il tuo personaggio",
+      "lead": "Costruisci il tuo personaggio giocabile secondo le regole del master."
+    },
+    "form": {
+      "create": "Crea personaggio",
+      "appearanceHint": "Descrivi l'aspetto del personaggio — il ritratto lo segue.",
+      "privateHint": "Solo tu e il master potete vederlo."
+    },
+    "fields": {
+      "playerNotes": "Note del giocatore"
+    },
+    "attributes": {
+      "eyebrow": "Scheda",
+      "title": "Attributi",
+      "lead": "Distribuisci i tuoi punti tra gli attributi del tavolo.",
+      "available": "Disponibili: {{count}}",
+      "spent": "Spesi: {{count}}",
+      "remaining": "Rimanenti: {{count}}",
+      "cost": "spende {{count}}",
+      "save": "Salva attributi",
+      "noBudget": "Il master non ha ancora definito quanti punti puoi distribuire.",
+      "noAttributes": "Questa campagna non ha ancora attributi configurati.",
+      "over": "Hai superato il limite di punti definito dal master."
+    },
+    "budget": {
+      "title": "Budget di punti attributo",
+      "placeholder": "es.: 30",
+      "save": "Salva budget",
+      "hint": "Punti che il giocatore può distribuire (spesa = valore − minimo). Lascia vuoto per azzerare."
     }
   }
 }

@@ -10,6 +10,9 @@ export interface CharacterDto {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  controlledByUserId: string | null;
+  isPlayerCharacter: boolean;
+  attributePointsBudget: number | null;
   name: string;
   title: string;
   shortDescription: string;
@@ -18,10 +21,12 @@ export interface CharacterDto {
   appearance: string;
   personality: string;
   motivations: string;
-  /** Master-only; null for player-facing responses. */
+  /** Visible to the controlling player and the master. */
   secrets: string | null;
-  /** Master-only; null for player-facing responses. */
-  notes: string | null;
+  /** Master-only free notes; never shown to players (incl. the controller). */
+  masterNotes: string | null;
+  /** The controlling player's notes; visible to that player and the master. */
+  playerNotes: string | null;
   factionId: string | null;
   isVisibleToPlayers: boolean;
   imageUrl: string | null;
@@ -33,18 +38,24 @@ export interface CharacterDto {
 }
 
 /**
- * @param includePrivate whether to expose master-only fields (secrets, notes).
- *        Pass the "is the viewer the master?" result.
+ * @param isMaster     viewer is the campaign master (sees everything).
+ * @param isController viewer controls this character (sees their own private
+ *                     fields, but never the master notes).
  */
 export function toCharacterDto(
   character: Character,
   values: CharacterAttributeValue[],
-  includePrivate: boolean,
+  isMaster: boolean,
+  isController = false,
 ): CharacterDto {
+  const privileged = isMaster || isController;
   return {
     id: character.id,
     campaignId: character.campaignId,
     createdByUserId: character.createdByUserId,
+    controlledByUserId: character.controlledByUserId,
+    isPlayerCharacter: character.isPlayerCharacter,
+    attributePointsBudget: character.attributePointsBudget,
     name: character.name,
     title: character.title,
     shortDescription: character.shortDescription,
@@ -53,8 +64,9 @@ export function toCharacterDto(
     appearance: character.appearance,
     personality: character.personality,
     motivations: character.motivations,
-    secrets: includePrivate ? character.secrets : null,
-    notes: includePrivate ? character.notes : null,
+    secrets: privileged ? character.secrets : null,
+    masterNotes: isMaster ? character.notes : null,
+    playerNotes: privileged ? character.playerNotes : null,
     factionId: character.factionId,
     isVisibleToPlayers: character.isVisibleToPlayers,
     imageUrl: character.imageUrl,

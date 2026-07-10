@@ -483,7 +483,8 @@
       "noFaction": "Sem facção",
       "visible": "Visível para jogadores",
       "generateImage": "Gerar um retrato agora",
-      "ignoreArtDirection": "Ignorar direção de arte da campanha"
+      "ignoreArtDirection": "Ignorar direção de arte da campanha",
+      "playerNotes": "Notas do jogador"
     },
     "placeholders": {
       "title": "ex.: O Herdeiro Torto"
@@ -644,6 +645,46 @@
         "visible": "Visível para jogadores",
         "showLabel": "Mostrar nome no mapa"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "A minha personagem",
+    "hubMeta": "Cria e gere a tua personagem nesta campanha.",
+    "back": "Voltar para a mesa",
+    "badge": "Personagem de jogador",
+    "loading": "A abrir a tua personagem…",
+    "edit": "Editar",
+    "new": {
+      "eyebrow": "O teu herói",
+      "title": "Criar a tua personagem",
+      "lead": "Constrói a tua própria personagem jogável dentro das regras do mestre."
+    },
+    "form": {
+      "create": "Criar personagem",
+      "appearanceHint": "Descreve o aspeto da personagem — a imagem segue isto.",
+      "privateHint": "Apenas tu e o mestre veem isto."
+    },
+    "fields": {
+      "playerNotes": "Notas do jogador"
+    },
+    "attributes": {
+      "eyebrow": "Ficha",
+      "title": "Atributos",
+      "lead": "Distribui os teus pontos pelos atributos da mesa.",
+      "available": "Disponíveis: {{count}}",
+      "spent": "Gastos: {{count}}",
+      "remaining": "Restantes: {{count}}",
+      "cost": "gasta {{count}}",
+      "save": "Guardar atributos",
+      "noBudget": "O mestre ainda não definiu quantos pontos podes distribuir.",
+      "noAttributes": "Esta campanha ainda não tem atributos configurados.",
+      "over": "Ultrapassaste o limite de pontos definido pelo mestre."
+    },
+    "budget": {
+      "title": "Orçamento de pontos de atributo",
+      "placeholder": "ex.: 30",
+      "save": "Guardar orçamento",
+      "hint": "Pontos que o jogador pode distribuir (gasto = valor − mínimo). Deixa vazio para limpar."
     }
   }
 }

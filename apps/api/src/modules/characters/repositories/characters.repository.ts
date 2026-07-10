@@ -18,6 +18,11 @@ export interface CharactersRepository {
   findById(id: string): Promise<Character | null>;
   findByCampaign(campaignId: string): Promise<Character[]>;
   findVisibleByCampaign(campaignId: string): Promise<Character[]>;
+  /** The player character controlled by a user in a campaign, if any. */
+  findPlayerCharacter(
+    campaignId: string,
+    userId: string,
+  ): Promise<Character | null>;
 
   findValues(characterId: string): Promise<CharacterAttributeValue[]>;
   /** Replaces ALL attribute values of a character with the given set. */

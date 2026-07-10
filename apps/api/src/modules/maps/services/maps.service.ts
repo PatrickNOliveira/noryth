@@ -23,6 +23,7 @@ import {
 } from '@shared/providers/realtime/realtime.provider';
 import { CampaignsService } from '@modules/campaigns/services/campaigns.service';
 import { campaignRoom } from '@modules/campaigns/campaign.constants';
+import { imageGenerationInFlight } from '@shared/utils/image-generation.util';
 import { CampaignMap } from '../entities/campaign-map.entity';
 import { MapDto, toMapDto } from '../dto/map.dto';
 import { CreateMapDto } from '../dto/create-map.dto';
@@ -335,6 +336,11 @@ export class MapsService {
       includeLabels?: boolean;
     } = {},
   ): Promise<CampaignMap> {
+    if (imageGenerationInFlight(map.imageStatus, map.updatedAt)) {
+      throw new ConflictException(
+        'Uma geração de imagem já está em andamento. Aguarde a conclusão.',
+      );
+    }
     if (!this.imageProvider.isConfigured()) {
       map.imageStatus = 'failed';
       map.imageError = 'Geração de imagem por IA não está configurada.';

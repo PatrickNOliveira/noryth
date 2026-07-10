@@ -183,4 +183,13 @@ export class CampaignsService {
     campaign.mapArtDirection = value;
     return this.campaigns.save(campaign);
   }
+
+  /** Persists the campaign's default player-character attribute budget. */
+  async saveDefaultPlayerAttributePoints(
+    campaign: Campaign,
+    value: number | null,
+  ): Promise<Campaign> {
+    campaign.defaultPlayerCharacterAttributePoints = value;
+    return this.campaigns.save(campaign);
+  }
 }

@@ -483,7 +483,8 @@
       "noFaction": "Sem facção",
       "visible": "Visível para jogadores",
       "generateImage": "Gerar um retrato agora",
-      "ignoreArtDirection": "Ignorar direção de arte da campanha"
+      "ignoreArtDirection": "Ignorar direção de arte da campanha",
+      "playerNotes": "Notas do jogador"
     },
     "placeholders": {
       "title": "ex.: O Herdeiro Torto"
@@ -644,6 +645,46 @@
         "visible": "Visível para jogadores",
         "showLabel": "Mostrar nome no mapa"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "Meu personagem",
+    "hubMeta": "Crie e gerencie seu personagem nesta campanha.",
+    "back": "Voltar para a mesa",
+    "badge": "Personagem de jogador",
+    "loading": "Abrindo seu personagem…",
+    "edit": "Editar",
+    "new": {
+      "eyebrow": "Seu herói",
+      "title": "Criar seu personagem",
+      "lead": "Monte seu próprio personagem jogável dentro das regras do mestre."
+    },
+    "form": {
+      "create": "Criar personagem",
+      "appearanceHint": "Descreva a aparência do personagem — a imagem segue isto.",
+      "privateHint": "Apenas você e o mestre veem isto."
+    },
+    "fields": {
+      "playerNotes": "Notas do jogador"
+    },
+    "attributes": {
+      "eyebrow": "Ficha",
+      "title": "Atributos",
+      "lead": "Distribua seus pontos entre os atributos da mesa.",
+      "available": "Disponíveis: {{count}}",
+      "spent": "Gastos: {{count}}",
+      "remaining": "Restantes: {{count}}",
+      "cost": "gasta {{count}}",
+      "save": "Salvar atributos",
+      "noBudget": "O mestre ainda não definiu quantos pontos você pode distribuir.",
+      "noAttributes": "Esta campanha ainda não tem atributos configurados.",
+      "over": "Você ultrapassou o limite de pontos definido pelo mestre."
+    },
+    "budget": {
+      "title": "Orçamento de pontos de atributo",
+      "placeholder": "ex.: 30",
+      "save": "Salvar orçamento",
+      "hint": "Pontos que o jogador pode distribuir (gasto = valor − mínimo). Deixe vazio para limpar."
     }
   }
 }

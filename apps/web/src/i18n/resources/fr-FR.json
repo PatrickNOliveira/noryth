@@ -483,7 +483,8 @@
       "noFaction": "Aucune faction",
       "visible": "Visible par les joueurs",
       "generateImage": "Générer un portrait maintenant",
-      "ignoreArtDirection": "Ignorer la direction artistique de la campagne"
+      "ignoreArtDirection": "Ignorer la direction artistique de la campagne",
+      "playerNotes": "Notes du joueur"
     },
     "placeholders": {
       "title": "ex. : L’Héritier Tordu"
@@ -644,6 +645,46 @@
         "visible": "Visible par les joueurs",
         "showLabel": "Afficher le nom sur la carte"
       }
+    }
+  },
+  "playerCharacter": {
+    "hubTitle": "Mon personnage",
+    "hubMeta": "Créez et gérez votre personnage dans cette campagne.",
+    "back": "Retour à la table",
+    "badge": "Personnage de joueur",
+    "loading": "Ouverture de votre personnage…",
+    "edit": "Modifier",
+    "new": {
+      "eyebrow": "Votre héros",
+      "title": "Créer votre personnage",
+      "lead": "Créez votre propre personnage jouable dans les règles du maître."
+    },
+    "form": {
+      "create": "Créer le personnage",
+      "appearanceHint": "Décrivez l'apparence de votre personnage — le portrait la suit.",
+      "privateHint": "Vous et le maître seuls voyez ceci."
+    },
+    "fields": {
+      "playerNotes": "Notes du joueur"
+    },
+    "attributes": {
+      "eyebrow": "Fiche",
+      "title": "Attributs",
+      "lead": "Répartissez vos points entre les attributs de la table.",
+      "available": "Disponibles : {{count}}",
+      "spent": "Dépensés : {{count}}",
+      "remaining": "Restants : {{count}}",
+      "cost": "dépense {{count}}",
+      "save": "Enregistrer les attributs",
+      "noBudget": "Le maître n'a pas encore défini combien de points vous pouvez répartir.",
+      "noAttributes": "Cette campagne n'a pas encore d'attributs configurés.",
+      "over": "Vous avez dépassé la limite de points fixée par le maître."
+    },
+    "budget": {
+      "title": "Budget de points d’attribut",
+      "placeholder": "ex. : 30",
+      "save": "Enregistrer le budget",
+      "hint": "Points que le joueur peut répartir (dépense = valeur − minimum). Laissez vide pour effacer."
     }
   }
 }

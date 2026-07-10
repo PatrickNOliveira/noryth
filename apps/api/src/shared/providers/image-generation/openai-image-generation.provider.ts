@@ -26,6 +26,12 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
   private readonly model: string;
   private readonly size: string;
   private readonly endpoint = 'https://api.openai.com/v1/images/generations';
+  /**
+   * Hard timeout per HTTP call. Without it, a hung request would keep the queue
+   * worker (and the image status) stuck forever with no error — so a timeout is
+   * what turns "silently stuck" into a normal failure the pipeline can recover.
+   */
+  private readonly requestTimeoutMs = 120_000;
 
   constructor(config: ConfigService<EnvironmentVariables, true>) {
     this.apiKey = config.get('OPENAI_API_KEY', { infer: true });
@@ -72,7 +78,7 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
 
     let response: Response;
     try {
-      response = await fetch(this.endpoint, {
+      response = await this.fetchWithTimeout(this.endpoint, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
@@ -114,7 +120,7 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
     }
     if (item?.url) {
       this.logger.log(`Fetching image from returned URL…`);
-      const img = await fetch(item.url);
+      const img = await this.fetchWithTimeout(item.url, {});
       const arrayBuffer = await img.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
       this.logger.log(`Image downloaded from URL: ${buffer.length} bytes`);
@@ -126,5 +132,19 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
 
     this.logger.error('OpenAI returned no image data');
     throw new ServiceUnavailableException('O serviço de IA não retornou imagem.');
+  }
+
+  /** `fetch` that aborts (and throws) after {@link requestTimeoutMs}. */
+  private async fetchWithTimeout(
+    url: string,
+    init: RequestInit,
+  ): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.requestTimeoutMs);
+    try {
+      return await fetch(url, { ...init, signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
   }
 }

@@ -105,7 +105,7 @@ export function CharacterForm({
   const [personality, setPersonality] = useState(S(initial?.personality));
   const [motivations, setMotivations] = useState(S(initial?.motivations));
   const [secrets, setSecrets] = useState(S(initial?.secrets));
-  const [notes, setNotes] = useState(S(initial?.notes));
+  const [notes, setNotes] = useState(S(initial?.masterNotes));
   const [factionId, setFactionId] = useState(S(initial?.factionId));
   const [visible, setVisible] = useState(initial?.isVisibleToPlayers ?? false);
   const [generateImage, setGenerateImage] = useState(false);

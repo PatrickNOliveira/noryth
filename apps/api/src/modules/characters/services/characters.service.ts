@@ -1,6 +1,8 @@
 import { randomUUID } from 'crypto';
 import {
   BadRequestException,
+  ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   Logger,
@@ -24,10 +26,13 @@ import { CampaignsService } from '@modules/campaigns/services/campaigns.service'
 import { campaignRoom } from '@modules/campaigns/campaign.constants';
 import { FactionsService } from '@modules/factions/services/factions.service';
 import { CampaignAttributesService } from '@modules/campaign-attributes/services/campaign-attributes.service';
+import { imageGenerationInFlight } from '@shared/utils/image-generation.util';
 import { Character } from '../entities/character.entity';
 import { CharacterDto, toCharacterDto } from '../dto/character.dto';
 import { CreateCharacterDto } from '../dto/create-character.dto';
 import { UpdateCharacterDto } from '../dto/update-character.dto';
+import { CreatePlayerCharacterDto } from '../dto/create-player-character.dto';
+import { UpdatePlayerCharacterDto } from '../dto/update-player-character.dto';
 import { CharacterAttributeInput } from '../dto/character-attribute.input';
 import {
   characterRoom,
@@ -80,7 +85,9 @@ export class CharactersService {
       ? await this.characters.findByCampaign(campaignId)
       : await this.characters.findVisibleByCampaign(campaignId);
     // Attribute values are omitted from the list (loaded on detail) to keep it light.
-    return list.map((c) => toCharacterDto(c, [], isMaster));
+    return list.map((c) =>
+      toCharacterDto(c, [], isMaster, c.controlledByUserId === userId),
+    );
   }
 
   async getDetail(
@@ -91,12 +98,13 @@ export class CharactersService {
     const campaign = await this.campaigns.findForMemberOrFail(userId, campaignId);
     const isMaster = campaign.masterId === userId;
     const character = await this.loadOrFail(campaignId, characterId);
-    if (!isMaster && !character.isVisibleToPlayers) {
+    const isController = character.controlledByUserId === userId;
+    if (!isMaster && !isController && !character.isVisibleToPlayers) {
       // Hide existence of private characters from players.
       throw new NotFoundException('Personagem não encontrado');
     }
     const values = await this.characters.findValues(character.id);
-    return toCharacterDto(character, values, isMaster);
+    return toCharacterDto(character, values, isMaster, isController);
   }
 
   // ── writes (master only) ────────────────────────────────────
@@ -174,9 +182,13 @@ export class CharactersService {
     applyIfDefined(character, 'motivations', dto.motivations?.trim());
     applyIfDefined(character, 'secrets', dto.secrets?.trim());
     applyIfDefined(character, 'notes', dto.notes?.trim());
+    applyIfDefined(character, 'playerNotes', dto.playerNotes?.trim());
     if (dto.factionId !== undefined) character.factionId = dto.factionId; // null unlinks
     if (dto.isVisibleToPlayers !== undefined) {
       character.isVisibleToPlayers = dto.isVisibleToPlayers;
+    }
+    if (dto.attributePointsBudget !== undefined) {
+      character.attributePointsBudget = dto.attributePointsBudget;
     }
 
     const saved = await this.characters.saveCharacter(character);
@@ -209,11 +221,180 @@ export class CharactersService {
     characterId: string,
     options: { adjustments?: string; ignoreArtDirection?: boolean } = {},
   ): Promise<CharacterDto> {
-    await this.campaigns.findForMasterOrFail(userId, campaignId);
-    let character = await this.loadOrFail(campaignId, characterId);
-    character = await this.startGeneration(character, userId, options);
+    // Master OR the controlling player may (re)generate the portrait.
+    const ctx = await this.loadControllable(userId, campaignId, characterId);
+    const character = await this.startGeneration(ctx.character, userId, options);
     const values = await this.characters.findValues(character.id);
-    return toCharacterDto(character, values, true);
+    return toCharacterDto(character, values, ctx.isMaster, ctx.isController);
+  }
+
+  // ── player characters ───────────────────────────────────────
+
+  /** The authenticated user's own player character in the campaign, or null. */
+  async getMine(
+    userId: string,
+    campaignId: string,
+  ): Promise<CharacterDto | null> {
+    await this.campaigns.findForMemberOrFail(userId, campaignId);
+    const character = await this.characters.findPlayerCharacter(
+      campaignId,
+      userId,
+    );
+    if (!character) return null;
+    const values = await this.characters.findValues(character.id);
+    return toCharacterDto(character, values, false, true);
+  }
+
+  /**
+   * A participant creates THEIR own player character. One per player. Budget is
+   * seeded from the campaign default; attributes are distributed later.
+   */
+  async createPlayerCharacter(
+    userId: string,
+    campaignId: string,
+    dto: CreatePlayerCharacterDto,
+  ): Promise<CharacterDto> {
+    const campaign = await this.campaigns.findForMemberOrFail(userId, campaignId);
+    if (await this.characters.findPlayerCharacter(campaignId, userId)) {
+      throw new ConflictException('Você já possui um personagem nesta mesa.');
+    }
+    await this.assertFaction(campaignId, dto.factionId);
+
+    let character = await this.characters.saveCharacter(
+      this.characters.createCharacter({
+        campaignId,
+        createdByUserId: userId,
+        controlledByUserId: userId,
+        isPlayerCharacter: true,
+        attributePointsBudget: campaign.defaultPlayerCharacterAttributePoints,
+        name: dto.name.trim(),
+        title: dto.title?.trim() ?? '',
+        shortDescription: dto.shortDescription?.trim() ?? '',
+        description: dto.description?.trim() ?? '',
+        history: dto.history?.trim() ?? '',
+        appearance: dto.appearance?.trim() ?? '',
+        personality: dto.personality?.trim() ?? '',
+        motivations: dto.motivations?.trim() ?? '',
+        secrets: dto.secrets?.trim() ?? '',
+        notes: '',
+        playerNotes: dto.playerNotes?.trim() ?? '',
+        factionId: dto.factionId ?? null,
+        // Player characters belong to the party and are visible by default.
+        isVisibleToPlayers: true,
+        imageStatus: 'none',
+        imagePath: null,
+        imageUrl: null,
+        imageError: null,
+        imageJobId: null,
+      }),
+    );
+
+    if (dto.generateImage) {
+      character = await this.startGeneration(character, userId, {
+        ignoreArtDirection: dto.ignoreCampaignArtDirection,
+      });
+    }
+    return toCharacterDto(character, [], false, true);
+  }
+
+  /** A player edits THEIR character (narrative + faction + player notes only). */
+  async updatePlayerCharacter(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    dto: UpdatePlayerCharacterDto,
+  ): Promise<CharacterDto> {
+    const { character, isMaster, isController } = await this.loadControllable(
+      userId,
+      campaignId,
+      characterId,
+    );
+
+    if (dto.factionId !== undefined && dto.factionId !== null) {
+      await this.assertFaction(campaignId, dto.factionId);
+    }
+    applyIfDefined(character, 'name', dto.name?.trim());
+    applyIfDefined(character, 'title', dto.title?.trim());
+    applyIfDefined(character, 'shortDescription', dto.shortDescription?.trim());
+    applyIfDefined(character, 'description', dto.description?.trim());
+    applyIfDefined(character, 'history', dto.history?.trim());
+    applyIfDefined(character, 'appearance', dto.appearance?.trim());
+    applyIfDefined(character, 'personality', dto.personality?.trim());
+    applyIfDefined(character, 'motivations', dto.motivations?.trim());
+    applyIfDefined(character, 'secrets', dto.secrets?.trim());
+    applyIfDefined(character, 'playerNotes', dto.playerNotes?.trim());
+    if (dto.factionId !== undefined) character.factionId = dto.factionId;
+
+    const saved = await this.characters.saveCharacter(character);
+    const values = await this.characters.findValues(saved.id);
+    return toCharacterDto(saved, values, isMaster, isController);
+  }
+
+  /**
+   * Distributes a character's attribute values against its point budget. The
+   * controlling player or the master may call it. Points spent per attribute =
+   * value - minValue.
+   */
+  async distributeAttributes(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    attributes: CharacterAttributeInput[],
+  ): Promise<CharacterDto> {
+    const { character, isMaster, isController } = await this.loadControllable(
+      userId,
+      campaignId,
+      characterId,
+    );
+
+    const budget = character.attributePointsBudget;
+    if (budget == null && !isMaster) {
+      throw new BadRequestException(
+        'O mestre ainda não definiu quantos pontos você pode distribuir.',
+      );
+    }
+    await this.assertAttributes(campaignId, attributes, budget ?? undefined);
+
+    const values = await this.characters.replaceValues(character.id, attributes);
+    return toCharacterDto(character, values, isMaster, isController);
+  }
+
+  /** Master sets/clears a single character's attribute-point budget. */
+  async setAttributeBudget(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    budget: number | null,
+  ): Promise<CharacterDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const character = await this.loadOrFail(campaignId, characterId);
+    character.attributePointsBudget = budget;
+    const saved = await this.characters.saveCharacter(character);
+    const values = await this.characters.findValues(saved.id);
+    return toCharacterDto(saved, values, true);
+  }
+
+  /** Master reads the campaign default player-character budget. */
+  async getDefaultBudget(
+    userId: string,
+    campaignId: string,
+  ): Promise<number | null> {
+    const campaign = await this.campaigns.findForMasterOrFail(userId, campaignId);
+    return campaign.defaultPlayerCharacterAttributePoints;
+  }
+
+  /** Master sets/clears the campaign default player-character budget. */
+  async setDefaultBudget(
+    userId: string,
+    campaignId: string,
+    value: number | null,
+  ): Promise<number | null> {
+    const campaign = await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const saved = await this.campaigns.saveDefaultPlayerAttributePoints(
+      campaign,
+      value,
+    );
+    return saved.defaultPlayerCharacterAttributePoints;
   }
 
   // ── art direction (master only) ─────────────────────────────
@@ -248,15 +429,26 @@ export class CharactersService {
       return;
     }
 
+    // The requester must still be allowed to (re)generate this portrait: the
+    // campaign master OR the player who controls it (player characters). Using
+    // findForMasterOrFail here wrongly aborted player-character generations.
     let campaign;
     try {
-      campaign = await this.campaigns.findForMasterOrFail(
+      campaign = await this.campaigns.findForMemberOrFail(
         payload.requestedBy,
         character.campaignId,
       );
     } catch {
       this.logger.warn(
-        `Job requester is no longer the master of campaign ${character.campaignId}`,
+        `Job requester no longer participates in campaign ${character.campaignId}`,
+      );
+      return;
+    }
+    const isMaster = campaign.masterId === payload.requestedBy;
+    const isController = character.controlledByUserId === payload.requestedBy;
+    if (!isMaster && !isController) {
+      this.logger.warn(
+        `Job requester may no longer generate character ${character.id}`,
       );
       return;
     }
@@ -377,6 +569,13 @@ export class CharactersService {
     requestedBy: string,
     options: { adjustments?: string; ignoreArtDirection?: boolean } = {},
   ): Promise<Character> {
+    // Reject a new run while one is genuinely in flight; a stale one (worker
+    // never ran / job vanished) is allowed through to recover.
+    if (imageGenerationInFlight(character.imageStatus, character.updatedAt)) {
+      throw new ConflictException(
+        'Uma geração de imagem já está em andamento. Aguarde a conclusão.',
+      );
+    }
     if (!this.imageProvider.isConfigured()) {
       character.imageStatus = 'failed';
       character.imageError = 'Geração de imagem por IA não está configurada.';
@@ -436,6 +635,27 @@ export class CharactersService {
     return character;
   }
 
+  /**
+   * Loads a character for a controller-or-master write: the caller must be the
+   * campaign master OR the player who controls the character.
+   */
+  private async loadControllable(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+  ): Promise<{ character: Character; isMaster: boolean; isController: boolean }> {
+    const campaign = await this.campaigns.findForMemberOrFail(userId, campaignId);
+    const character = await this.loadOrFail(campaignId, characterId);
+    const isMaster = campaign.masterId === userId;
+    const isController = character.controlledByUserId === userId;
+    if (!isMaster && !isController) {
+      throw new ForbiddenException(
+        'Você não tem permissão para alterar este personagem.',
+      );
+    }
+    return { character, isMaster, isController };
+  }
+
   private async assertFaction(
     campaignId: string,
     factionId?: string,
@@ -449,9 +669,14 @@ export class CharactersService {
     }
   }
 
+  /**
+   * Validates attribute values against the campaign's attributes. When `budget`
+   * is given, also enforces that total spent points (value - minValue) fit it.
+   */
   private async assertAttributes(
     campaignId: string,
     attributes?: CharacterAttributeInput[],
+    budget?: number,
   ): Promise<void> {
     if (!attributes || attributes.length === 0) return;
 
@@ -459,6 +684,7 @@ export class CharactersService {
       (await this.attributes.getForCampaign(campaignId)).map((a) => [a.id, a]),
     );
     const seen = new Set<string>();
+    let spent = 0;
     for (const item of attributes) {
       if (seen.has(item.attributeId)) {
         throw new BadRequestException(
@@ -478,6 +704,13 @@ export class CharactersService {
           `O valor de "${attribute.name}" deve estar entre ${attribute.minValue} e ${attribute.maxValue}.`,
         );
       }
+      spent += item.value - attribute.minValue;
+    }
+
+    if (budget !== undefined && spent > budget) {
+      throw new BadRequestException(
+        'Você ultrapassou o limite de pontos definido pelo mestre.',
+      );
     }
   }
 }
