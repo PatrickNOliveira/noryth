@@ -32,6 +32,13 @@ export interface ImageEditRequest {
 export interface ImageGenerationProvider {
   /** Whether the provider is configured (API key present, etc.). */
   isConfigured(): boolean;
+  /**
+   * A valid WIDESCREEN/landscape size string for this provider's model (e.g.
+   * "1536x1024"). Callers that need a horizontal image (like the session scene)
+   * pass this as {@link ImageGenerationRequest.size} — the model-specific pixel
+   * math stays inside the adapter, never in domain code.
+   */
+  landscapeSize(): string;
   generateImage(request: ImageGenerationRequest): Promise<GeneratedImage>;
   /**
    * Whether this provider can edit from a base image (image-to-image). When

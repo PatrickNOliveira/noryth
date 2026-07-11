@@ -29,7 +29,14 @@
       "Bash(node inject-maps-i18n.js)",
       "Bash(node inject-labels-i18n.js)",
       "Bash(node inject-pc-i18n.js)",
-      "Bash(node inject-items-i18n.js)"
+      "Bash(node inject-items-i18n.js)",
+      "Bash(node inject-abilities-i18n.js)",
+      "Bash(node -e \"const j=require\\('./i18n/resources/pt-BR.json'\\); console.log\\(Object.keys\\(j\\).join\\(', '\\)\\)\")",
+      "Bash(node -e \"const j=require\\('./i18n/resources/pt-BR.json'\\); console.log\\(JSON.stringify\\(j.common\\)\\)\")",
+      "Bash(node inject-session-i18n.js)",
+      "Bash(node inject-scene-i18n.js)",
+      "Bash(node inject-session-characters-i18n.js)",
+      "Bash(node inject-size-i18n.js)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

@@ -1,26 +1,41 @@
 import {
   Inject,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
+import {
+  REALTIME_PROVIDER,
+  RealtimeProvider,
+} from '@shared/providers/realtime/realtime.provider';
 import { CampaignsService } from '@modules/campaigns/services/campaigns.service';
+import { campaignRoom } from '@modules/campaigns/campaign.constants';
 import { CampaignMap } from '../entities/campaign-map.entity';
 import { MapPoint } from '../entities/map-point.entity';
 import { MapPointDto, toMapPointDto } from '../dto/map.dto';
-import { CreateMapPointDto, UpdateMapPointDto } from '../dto/map-point.dto';
+import {
+  CreateMapPointDto,
+  UpdateMapPointDto,
+  UpdateScenePositionDto,
+} from '../dto/map-point.dto';
+import { MAP_POINT_EVENTS } from '../map.constants';
 import { MAPS_REPOSITORY, MapsRepository } from '../repositories/maps.repository';
 
 /**
  * Application service for map points of interest. Write is master-only; reads
  * follow map + point visibility: players only see visible points of visible
- * maps. Depends only on ports/services — no infrastructure.
+ * maps. Realtime is via the port only — no infrastructure.
  */
 @Injectable()
 export class MapPointsService {
+  private readonly logger = new Logger(MapPointsService.name);
+
   constructor(
     @Inject(MAPS_REPOSITORY)
     private readonly maps: MapsRepository,
     private readonly campaigns: CampaignsService,
+    @Inject(REALTIME_PROVIDER)
+    private readonly realtime: RealtimeProvider,
   ) {}
 
   async list(
@@ -106,6 +121,57 @@ export class MapPointsService {
     await this.maps.removePoint(point);
   }
 
+  /**
+   * Moves a point on the 2.5D session scene (master only). Stores percent
+   * coordinates (clamped 0–100) in sceneX/sceneY — the cartographic x/y are left
+   * untouched. Broadcasts to players only for visible points (a private point's
+   * position is never leaked).
+   */
+  async updateScenePosition(
+    userId: string,
+    campaignId: string,
+    mapId: string,
+    pointId: string,
+    dto: UpdateScenePositionDto,
+  ): Promise<MapPointDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const point = await this.loadPointOrFail(campaignId, mapId, pointId);
+    point.sceneX = clampPercent(dto.sceneX);
+    point.sceneY = clampPercent(dto.sceneY);
+    const saved = await this.maps.savePoint(point);
+    if (saved.isVisibleToPlayers) {
+      this.emitScenePosition(saved, userId, dto.clientMutationId);
+    }
+    return toMapPointDto(saved, true);
+  }
+
+  private emitScenePosition(
+    point: MapPoint,
+    originUserId: string,
+    clientMutationId?: string,
+  ): void {
+    void this.realtime
+      .emitToRoom(
+        campaignRoom(point.campaignId),
+        MAP_POINT_EVENTS.scenePositionUpdated,
+        {
+          tableId: point.campaignId,
+          mapId: point.mapId,
+          pointId: point.id,
+          sceneX: point.sceneX,
+          sceneY: point.sceneY,
+          updatedAt: point.updatedAt,
+          originUserId,
+          clientMutationId: clientMutationId ?? null,
+        },
+      )
+      .catch((error) =>
+        this.logger.warn(
+          `Realtime emit "${MAP_POINT_EVENTS.scenePositionUpdated}" failed: ${(error as Error).message}`,
+        ),
+      );
+  }
+
   private async loadMapOrFail(
     campaignId: string,
     mapId: string,
@@ -140,4 +206,9 @@ function applyIfDefined<K extends keyof MapPoint>(
   value: MapPoint[K] | undefined,
 ): void {
   if (value !== undefined) entity[key] = value;
+}
+
+/** Clamp a percentage into the valid 0–100 range. */
+function clampPercent(n: number): number {
+  return Math.min(100, Math.max(0, n));
 }

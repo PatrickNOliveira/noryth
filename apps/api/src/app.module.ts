@@ -16,6 +16,8 @@ import { FactionsModule } from '@modules/factions/factions.module';
 import { CharactersModule } from '@modules/characters/characters.module';
 import { MapsModule } from '@modules/maps/maps.module';
 import { ItemsModule } from '@modules/items/items.module';
+import { AbilitiesModule } from '@modules/abilities/abilities.module';
+import { SessionsModule } from '@modules/sessions/sessions.module';
 
 /**
  * Composition root. Wires global infrastructure (config, database, events,
@@ -40,6 +42,8 @@ import { ItemsModule } from '@modules/items/items.module';
     CharactersModule,
     MapsModule,
     ItemsModule,
+    AbilitiesModule,
+    SessionsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

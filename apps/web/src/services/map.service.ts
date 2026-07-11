@@ -43,6 +43,19 @@ export const mapService = {
     await api.delete(`${base(campaignId)}/${mapId}`);
   },
 
+  /** (Re)generate the 2.5D session scene for a map. Master only. */
+  async generateSessionScene(
+    campaignId: string,
+    mapId: string,
+    adjustments?: string,
+  ): Promise<CampaignMap> {
+    const { data } = await api.post<CampaignMap>(
+      `${base(campaignId)}/${mapId}/session-scene`,
+      { adjustments },
+    );
+    return data;
+  },
+
   async regenerateImage(
     campaignId: string,
     mapId: string,
@@ -116,5 +129,21 @@ export const mapService = {
     pointId: string,
   ): Promise<void> {
     await api.delete(`${base(campaignId)}/${mapId}/points/${pointId}`);
+  },
+
+  /** Master: move a point on the 2.5D session scene (percent coords). */
+  async updatePointScenePosition(
+    campaignId: string,
+    mapId: string,
+    pointId: string,
+    body: { sceneX: number; sceneY: number; clientMutationId?: string },
+    signal?: AbortSignal,
+  ): Promise<MapPoint> {
+    const { data } = await api.patch<MapPoint>(
+      `${base(campaignId)}/${mapId}/points/${pointId}/scene-position`,
+      body,
+      { signal },
+    );
+    return data;
   },
 };

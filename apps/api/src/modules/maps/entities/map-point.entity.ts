@@ -34,6 +34,17 @@ export class MapPoint extends BaseEntity {
   @Column({ type: 'double precision', nullable: true })
   y!: number | null;
 
+  /**
+   * Percentage 0–100 on the 2.5D SESSION SCENE. The AI scene may compose things
+   * differently from the cartographic map, so the master can nudge the marker
+   * here without touching the original x/y. Null = fall back to x/y.
+   */
+  @Column({ name: 'scene_x', type: 'double precision', nullable: true })
+  sceneX!: number | null;
+
+  @Column({ name: 'scene_y', type: 'double precision', nullable: true })
+  sceneY!: number | null;
+
   @Column({ name: 'is_visible_to_players', type: 'boolean', default: false })
   isVisibleToPlayers!: boolean;
 

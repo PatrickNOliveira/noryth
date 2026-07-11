@@ -50,3 +50,27 @@ export const MAP_IMAGE_EVENTS = {
   completed: 'map.image.completed',
   failed: 'map.image.failed',
 } as const;
+
+/**
+ * Job name for the async 2.5D "session scene" generation — a game-viewport asset
+ * derived from the map (shares the AI image queue).
+ */
+export const GENERATE_MAP_SESSION_SCENE_JOB = 'generate-map-session-scene';
+
+export interface GenerateMapSessionScenePayload {
+  mapId: string;
+  requestedBy: string;
+  adjustments?: string;
+}
+
+/** Server → client events for session-scene generation. */
+export const MAP_SESSION_SCENE_EVENTS = {
+  processing: 'map.session_scene.processing',
+  completed: 'map.session_scene.completed',
+  failed: 'map.session_scene.failed',
+} as const;
+
+/** Server → client event when a point's 2.5D scene position is moved. */
+export const MAP_POINT_EVENTS = {
+  scenePositionUpdated: 'map.point.scene_position.updated',
+} as const;

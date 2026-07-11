@@ -15,6 +15,7 @@ import {
 import { CompassIcon } from '../components/icons';
 import { PlayerCharacterForm, PlayerCharacterFormResult } from '../components/PlayerCharacterForm';
 import { AttributeDistribution } from '../components/AttributeDistribution';
+import { CharacterAbilitiesSection } from '../components/CharacterAbilitiesSection';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   fetchMyCharacter,
@@ -295,6 +296,11 @@ export function MyCharacterPage() {
       <Chapter>
         <ChapterHeading eyebrow={t('playerCharacter.attributes.eyebrow')} title={t('playerCharacter.attributes.title')} lead={t('playerCharacter.attributes.lead')} />
         <AttributeDistribution campaignId={campaignId} character={c} />
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading eyebrow={t('ability.character.eyebrow')} title={t('ability.character.title')} lead={t('ability.character.playerLead')} />
+        <CharacterAbilitiesSection campaignId={campaignId} characterId={c.id} mode="player" />
       </Chapter>
     </Page>
   );

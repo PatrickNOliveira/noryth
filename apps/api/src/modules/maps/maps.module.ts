@@ -9,6 +9,8 @@ import { MapsService } from './services/maps.service';
 import { MapPointsService } from './services/map-points.service';
 import { MapImageAgent } from './services/map-image.agent';
 import { MapImageHandler } from './services/map-image.handler';
+import { MapSessionSceneAgent } from './services/map-session-scene.agent';
+import { MapSessionSceneHandler } from './services/map-session-scene.handler';
 import { MAPS_REPOSITORY } from './repositories/maps.repository';
 import { TypeOrmMapsRepository } from './repositories/typeorm-maps.repository';
 
@@ -29,6 +31,8 @@ import { TypeOrmMapsRepository } from './repositories/typeorm-maps.repository';
     MapPointsService,
     MapImageAgent,
     MapImageHandler,
+    MapSessionSceneAgent,
+    MapSessionSceneHandler,
     { provide: MAPS_REPOSITORY, useClass: TypeOrmMapsRepository },
   ],
   exports: [MapsService],

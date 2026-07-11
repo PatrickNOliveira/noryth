@@ -63,6 +63,25 @@ export class CreateMapPointDto {
   displayOrder?: number;
 }
 
+/** Payload for moving a point on the 2.5D session scene. */
+export class UpdateScenePositionDto {
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  sceneX!: number;
+
+  @IsNumber()
+  @Min(0)
+  @Max(100)
+  sceneY!: number;
+
+  /** Echoed on the realtime event so clients can drop their own stale updates. */
+  @IsOptional()
+  @IsString()
+  @MaxLength(64)
+  clientMutationId?: string;
+}
+
 /** Payload for updating a point of interest; every field optional. */
 export class UpdateMapPointDto {
   @IsOptional()

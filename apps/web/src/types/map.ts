@@ -29,6 +29,9 @@ export interface MapPoint {
   type: string;
   x: number | null;
   y: number | null;
+  /** Position on the 2.5D session scene (null = fall back to x/y). */
+  sceneX: number | null;
+  sceneY: number | null;
   isVisibleToPlayers: boolean;
   showLabelOnMap: boolean;
   displayOrder: number;
@@ -54,6 +57,10 @@ export interface CampaignMap {
   imageUrl: string | null;
   imageStatus: MapImageStatus;
   imageError: string | null;
+  /** 2.5D session-scene asset (game viewport); distinct from the map image. */
+  sessionSceneImageUrl: string | null;
+  sessionSceneImageStatus: MapImageStatus;
+  sessionSceneImageError: string | null;
   displayOrder: number;
   points?: MapPoint[];
   createdAt: string;

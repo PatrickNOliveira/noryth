@@ -31,11 +31,15 @@ import { UpdateMapDto } from '../dto/update-map.dto';
 import {
   mapRoom,
   MAP_IMAGE_EVENTS,
+  MAP_SESSION_SCENE_EVENTS,
   GENERATE_MAP_IMAGE_JOB,
+  GENERATE_MAP_SESSION_SCENE_JOB,
   GenerateMapImagePayload,
+  GenerateMapSessionScenePayload,
 } from '../map.constants';
 import { MAPS_REPOSITORY, MapsRepository } from '../repositories/maps.repository';
 import { MapImageAgent } from './map-image.agent';
+import { MapSessionSceneAgent } from './map-session-scene.agent';
 
 /**
  * Application service for campaign maps: CRUD, hierarchy (with cycle guards),
@@ -53,6 +57,7 @@ export class MapsService {
     private readonly maps: MapsRepository,
     private readonly campaigns: CampaignsService,
     private readonly agent: MapImageAgent,
+    private readonly sceneAgent: MapSessionSceneAgent,
     @Inject(IMAGE_GENERATION_PROVIDER)
     private readonly imageProvider: ImageGenerationProvider,
     @Inject(STORAGE_PROVIDER)
@@ -192,6 +197,55 @@ export class MapsService {
     return toMapDto(map, true, points);
   }
 
+  // ── session scene (2.5D game viewport asset) ────────────────
+
+  /**
+   * Master-triggered generation of the map's 2.5D session scene. Explicit entry
+   * point (e.g. a retry button, or preparing before starting the session).
+   */
+  async generateSessionScene(
+    userId: string,
+    campaignId: string,
+    mapId: string,
+    options: { adjustments?: string } = {},
+  ): Promise<MapDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    let map = await this.loadOrFail(campaignId, mapId);
+    map = await this.startSessionSceneGeneration(map, userId, options);
+    const points = await this.maps.findPointsByMap(map.id);
+    return toMapDto(map, true, points);
+  }
+
+  /**
+   * Ensures the map has a session scene when a session starts. Idempotent and
+   * defensive (never throws): if a scene is already completed or a generation is
+   * in flight, it does nothing; otherwise it enqueues one. Called by the sessions
+   * module — permission is the caller's responsibility (only the master starts a
+   * session), so this does not re-check it.
+   */
+  async ensureSessionScene(
+    campaignId: string,
+    mapId: string,
+    requestedBy: string,
+  ): Promise<void> {
+    try {
+      const map = await this.findMapInCampaign(campaignId, mapId);
+      if (!map) return;
+      if (map.sessionSceneImageStatus === 'completed' && map.sessionSceneImageUrl) {
+        return;
+      }
+      if (imageGenerationInFlight(map.sessionSceneImageStatus, map.updatedAt)) {
+        return;
+      }
+      await this.startSessionSceneGeneration(map, requestedBy, {});
+    } catch (error) {
+      // A scene is a nice-to-have for the session; never block the start on it.
+      this.logger.warn(
+        `ensureSessionScene failed for map ${mapId}: ${(error as Error).message}`,
+      );
+    }
+  }
+
   /** Raw lookup (NO permission) of a map in a campaign, for other modules. */
   async findMapInCampaign(
     campaignId: string,
@@ -205,6 +259,17 @@ export class MapsService {
   async findPointInCampaign(campaignId: string, pointId: string) {
     const point = await this.maps.findPointById(pointId);
     return point && point.campaignId === campaignId ? point : null;
+  }
+
+  /**
+   * Points of a map for another module (NO permission). `includeHidden` returns
+   * every point (master view); otherwise only player-visible ones. Used by the
+   * session viewport to place points of interest.
+   */
+  async findPointsForMap(mapId: string, includeHidden: boolean) {
+    return includeHidden
+      ? this.maps.findPointsByMap(mapId)
+      : this.maps.findVisiblePointsByMap(mapId);
   }
 
   // ── global map art direction (master only) ──────────────────
@@ -340,7 +405,160 @@ export class MapsService {
     }
   }
 
+  async processSessionSceneJob(
+    payload: GenerateMapSessionScenePayload,
+  ): Promise<void> {
+    const map = await this.maps.findMapById(payload.mapId);
+    if (!map) {
+      this.logger.warn(`Session-scene job for missing map ${payload.mapId}`);
+      return;
+    }
+
+    let campaign;
+    try {
+      campaign = await this.campaigns.findForMasterOrFail(
+        payload.requestedBy,
+        map.campaignId,
+      );
+    } catch {
+      this.logger.warn(
+        `Session-scene requester is no longer the master of campaign ${map.campaignId}`,
+      );
+      return;
+    }
+
+    const startedAt = Date.now();
+    map.sessionSceneImageStatus = 'processing';
+    map.sessionSceneImageError = null;
+    await this.maps.saveMap(map);
+    await this.emitScene(map, MAP_SESSION_SCENE_EVENTS.processing, {
+      status: 'PROCESSING',
+    });
+
+    try {
+      const points = await this.maps.findPointsByMap(map.id);
+      const prompt = await this.sceneAgent.build(
+        {
+          name: campaign.name,
+          theme: campaign.theme,
+          tone: campaign.tone,
+          mainLanguage: campaign.mainLanguage,
+        },
+        {
+          name: map.name,
+          type: map.type,
+          shortDescription: map.shortDescription,
+          description: map.description,
+          history: map.history,
+          artDirection: map.artDirection,
+        },
+        {
+          globalArtDirection: campaign.mapArtDirection,
+          adjustments: payload.adjustments,
+          points: points.map((p) => ({ name: p.name, type: p.type })),
+        },
+      );
+      this.logger.log(
+        `Session-scene prompt for map ${map.id}:\n  prompt: ${prompt.imagePrompt}`,
+      );
+
+      // The session scene must be WIDESCREEN to match the desktop game viewport
+      // (a square image would leave big side borders). The adapter picks a valid
+      // landscape size for its model.
+      const size = this.imageProvider.landscapeSize();
+
+      // Prefer image-to-image from the original map when supported, so the scene
+      // stays faithful to the existing cartography; otherwise text-only.
+      const useI2I =
+        this.imageProvider.supportsImageToImage() && !!map.imageUrl;
+      const generated = useI2I
+        ? await this.imageProvider.editImage({
+            prompt: prompt.imagePrompt,
+            negativePrompt: prompt.negativePrompt,
+            baseImageUrl: map.imageUrl as string,
+            size,
+          })
+        : await this.imageProvider.generateImage({
+            prompt: prompt.imagePrompt,
+            negativePrompt: prompt.negativePrompt,
+            size,
+          });
+
+      const path = `campaigns/${map.campaignId}/maps/${map.id}/session-scene/${randomUUID()}.png`;
+      const stored = await this.storage.upload({
+        path,
+        buffer: generated.buffer,
+        contentType: generated.contentType,
+      });
+
+      map.sessionSceneImagePath = stored.path;
+      map.sessionSceneImageUrl = stored.url;
+      map.sessionSceneImageStatus = 'completed';
+      map.sessionSceneImageError = null;
+      map.lastSessionScenePrompt = prompt.imagePrompt;
+      map.lastSessionSceneNegativePrompt = prompt.negativePrompt;
+      await this.maps.saveMap(map);
+
+      await this.emitScene(map, MAP_SESSION_SCENE_EVENTS.completed, {
+        status: 'COMPLETED',
+        sessionSceneImageUrl: stored.url,
+      });
+      this.logger.log(
+        `✔ Session scene done: map=${map.id} in ${Date.now() - startedAt}ms`,
+      );
+    } catch (error) {
+      const message = (error as Error).message;
+      map.sessionSceneImageStatus = 'failed';
+      map.sessionSceneImageError = message;
+      await this.maps.saveMap(map);
+      await this.emitScene(map, MAP_SESSION_SCENE_EVENTS.failed, {
+        status: 'FAILED',
+        errorMessage: message,
+      });
+      this.logger.error(`✖ Session scene failed: map=${map.id}: ${message}`);
+      throw error;
+    }
+  }
+
   // ── helpers ─────────────────────────────────────────────────
+
+  private async startSessionSceneGeneration(
+    map: CampaignMap,
+    requestedBy: string,
+    options: { adjustments?: string },
+  ): Promise<CampaignMap> {
+    if (
+      imageGenerationInFlight(map.sessionSceneImageStatus, map.updatedAt)
+    ) {
+      throw new ConflictException(
+        'A cena da sessão já está sendo gerada. Aguarde a conclusão.',
+      );
+    }
+    if (!this.imageProvider.isConfigured()) {
+      map.sessionSceneImageStatus = 'failed';
+      map.sessionSceneImageError =
+        'Geração de imagem por IA não está configurada.';
+      return this.maps.saveMap(map);
+    }
+    const adjustments = options.adjustments?.trim() || undefined;
+    map.sessionSceneImageStatus = 'pending';
+    map.sessionSceneImageError = null;
+    const saved = await this.maps.saveMap(map);
+    try {
+      await this.queue.enqueue<GenerateMapSessionScenePayload>({
+        queue: AI_IMAGE_QUEUE,
+        name: GENERATE_MAP_SESSION_SCENE_JOB,
+        payload: { mapId: saved.id, requestedBy, adjustments },
+        options: { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
+      });
+      this.logger.log(`Enqueued session-scene generation: map=${saved.id}`);
+    } catch (error) {
+      saved.sessionSceneImageStatus = 'failed';
+      saved.sessionSceneImageError = (error as Error).message;
+      return this.maps.saveMap(saved);
+    }
+    return saved;
+  }
 
   private async startGeneration(
     map: CampaignMap,
@@ -399,6 +617,19 @@ export class MapsService {
     } catch (error) {
       this.logger.warn(`Realtime emit "${event}" failed: ${(error as Error).message}`);
     }
+  }
+
+  /** Emits a session-scene event to the map and campaign rooms. */
+  private async emitScene(
+    map: CampaignMap,
+    event: string,
+    extra: Record<string, unknown>,
+  ): Promise<void> {
+    await this.emit(map, event, {
+      tableId: map.campaignId,
+      mapId: map.id,
+      ...extra,
+    });
   }
 
   private async loadOrFail(

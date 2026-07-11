@@ -11,6 +11,9 @@ export interface MapPointDto {
   type: string;
   x: number | null;
   y: number | null;
+  /** Position on the 2.5D session scene (null = fall back to x/y). */
+  sceneX: number | null;
+  sceneY: number | null;
   isVisibleToPlayers: boolean;
   showLabelOnMap: boolean;
   displayOrder: number;
@@ -36,6 +39,10 @@ export interface MapDto {
   imageUrl: string | null;
   imageStatus: string;
   imageError: string | null;
+  /** 2.5D session-scene asset (game viewport); distinct from the map image. */
+  sessionSceneImageUrl: string | null;
+  sessionSceneImageStatus: string;
+  sessionSceneImageError: string | null;
   displayOrder: number;
   /** Present on the detail view. */
   points?: MapPointDto[];
@@ -56,6 +63,8 @@ export function toMapPointDto(
     type: point.type,
     x: point.x,
     y: point.y,
+    sceneX: point.sceneX,
+    sceneY: point.sceneY,
     isVisibleToPlayers: point.isVisibleToPlayers,
     showLabelOnMap: point.showLabelOnMap,
     displayOrder: point.displayOrder,
@@ -86,6 +95,9 @@ export function toMapDto(
     imageUrl: map.imageUrl,
     imageStatus: map.imageStatus,
     imageError: map.imageError,
+    sessionSceneImageUrl: map.sessionSceneImageUrl,
+    sessionSceneImageStatus: map.sessionSceneImageStatus,
+    sessionSceneImageError: map.sessionSceneImageError,
     displayOrder: map.displayOrder,
     points: points?.map((p) => toMapPointDto(p, includePrivate)),
     createdAt: map.createdAt,

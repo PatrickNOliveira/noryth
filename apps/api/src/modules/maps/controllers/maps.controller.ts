@@ -19,6 +19,7 @@ import { MapDto } from '../dto/map.dto';
 import { CreateMapDto } from '../dto/create-map.dto';
 import { UpdateMapDto } from '../dto/update-map.dto';
 import { GenerateMapImageDto } from '../dto/generate-map-image.dto';
+import { GenerateSessionSceneDto } from '../dto/generate-session-scene.dto';
 import {
   MapArtDirectionDto,
   UpdateMapArtDirectionDto,
@@ -136,6 +137,19 @@ export class MapsController {
       adjustments: dto.adjustments,
       ignoreArtDirection: dto.ignoreCampaignArtDirection,
       includeLabels: dto.includeLabels,
+    });
+  }
+
+  /** (Re)generate the 2.5D session scene for this map. Master only. */
+  @Post(':mapId/session-scene')
+  generateSessionScene(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('mapId', new ParseUUIDPipe()) mapId: string,
+    @Body() dto: GenerateSessionSceneDto,
+  ): Promise<MapDto> {
+    return this.maps.generateSessionScene(user.id, campaignId, mapId, {
+      adjustments: dto.adjustments,
     });
   }
 }

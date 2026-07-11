@@ -44,6 +44,17 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
   }
 
   /**
+   * Best valid landscape size for the configured model. gpt-image-1 accepts
+   * 1536x1024; dall-e-3 accepts 1792x1024. For anything else we fall back to the
+   * configured default (may be square) rather than send a size the API rejects.
+   */
+  landscapeSize(): string {
+    if (this.model.includes('dall-e-3')) return '1792x1024';
+    if (this.model.includes('gpt-image')) return '1536x1024';
+    return this.size;
+  }
+
+  /**
    * This adapter uses the text-to-image endpoint only. Image-to-image is not
    * enabled, so callers rebuild a coherent prompt and regenerate instead. A
    * future provider can flip this on without any domain change.

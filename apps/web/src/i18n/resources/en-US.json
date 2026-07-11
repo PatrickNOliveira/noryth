@@ -281,6 +281,10 @@
       "cta": "Join",
       "error": "Could not join the campaign.",
       "players": "{{current}}/{{max}} players"
+    },
+    "rules": {
+      "eyebrow": "The table",
+      "title": "Rules & progression"
     }
   },
   "faction": {
@@ -832,6 +836,202 @@
       "CONSUMED": "Consumed",
       "DESTROYED": "Destroyed",
       "LOST": "Lost"
+    }
+  },
+  "ability": {
+    "back": "Back to the campaign",
+    "eyebrow": "Rules & progression",
+    "title": "Abilities",
+    "lead": "Powers, techniques, blessings, curses and special capabilities of the characters.",
+    "loading": "Opening the abilities…",
+    "hubMeta": "Create powers, techniques, blessings, curses and special capabilities of the characters.",
+    "emptyTitle": "No abilities yet",
+    "emptyMaster": "Create the first ability of your campaign.",
+    "emptyPlayer": "No public abilities in this campaign yet.",
+    "remove": "Remove",
+    "new": {
+      "button": "New ability",
+      "eyebrow": "New ability",
+      "title": "Create an ability",
+      "lead": "Master-created abilities are born approved."
+    },
+    "edit": {
+      "button": "Edit",
+      "eyebrow": "Ability",
+      "title": "Edit ability"
+    },
+    "form": {
+      "back": "Back",
+      "create": "Create ability",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "noType": "No type",
+      "shortDescription": "Short description",
+      "description": "Description",
+      "history": "History",
+      "effectDescription": "Narrative effect",
+      "rulesText": "Rules text",
+      "costDescription": "Cost",
+      "limitationDescription": "Limitations",
+      "masterNotes": "Master notes",
+      "isUnique": "Unique ability",
+      "visible": "Visible to players"
+    },
+    "hints": {
+      "masterOnly": "Only you (the master) can see this."
+    },
+    "validation": {
+      "nameRequired": "Give the ability a name"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Private"
+    },
+    "badge": {
+      "unique": "Unique"
+    },
+    "pending": {
+      "eyebrow": "Awaiting review",
+      "title": "Proposals to review"
+    },
+    "review": {
+      "notesPlaceholder": "Review notes for the player (optional)…",
+      "approve": "Approve",
+      "requestChanges": "Request changes",
+      "reject": "Reject"
+    },
+    "character": {
+      "eyebrow": "Abilities",
+      "title": "Abilities",
+      "playerLead": "Your approved abilities and proposals under review.",
+      "emptyTitle": "No abilities yet",
+      "emptyDescription": "Approved abilities and proposals will appear here.",
+      "remove": "Remove",
+      "assign": "Assign",
+      "selectAbility": "Select an approved ability…",
+      "masterReview": "Master review",
+      "editProposal": "Edit proposal",
+      "resubmit": "Resubmit proposal",
+      "propose": "Submit proposal",
+      "proposeButton": "Propose ability"
+    },
+    "type": {
+      "COMBAT": "Combat",
+      "SOCIAL": "Social",
+      "MAGIC": "Magic",
+      "RITUAL": "Ritual",
+      "SPIRITUAL": "Spiritual",
+      "CURSE": "Curse",
+      "BLESSING": "Blessing",
+      "LINEAGE": "Lineage",
+      "KNOWLEDGE": "Knowledge",
+      "PASSIVE": "Passive",
+      "OTHER": "Other"
+    },
+    "status": {
+      "PENDING_APPROVAL": "Pending approval",
+      "CHANGES_REQUESTED": "Changes requested",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    }
+  },
+  "session": {
+    "title": "Session",
+    "loading": "Opening the session…",
+    "leave": "Leave",
+    "noMap": "No map",
+    "actionSoon": "Action not implemented yet.",
+    "none": {
+      "title": "No session in progress",
+      "master": "Start a session to bring your players to the table.",
+      "player": "Waiting for the master to start the session.",
+      "start": "Start session"
+    },
+    "start": {
+      "title": "Start session",
+      "cancel": "Cancel",
+      "confirm": "Start session",
+      "loadingMaps": "Loading maps…",
+      "mapLabel": "Initial map",
+      "noMaps": "Create at least one map before starting the session."
+    },
+    "hub": {
+      "live": "Live",
+      "joinTitle": "Enter the session",
+      "joinMeta": "A session is in progress — join the table.",
+      "startTitle": "Start session",
+      "startMeta": "Choose an initial map and bring everyone to the table.",
+      "waitingTitle": "Session",
+      "waitingMeta": "Waiting for the master to start the session."
+    },
+    "action": {
+      "narrate": "Narrate",
+      "changeMap": "Change map",
+      "showCharacter": "Show character",
+      "showItem": "Show item",
+      "showHandout": "Show handout",
+      "masterNotes": "Master notes",
+      "manageScene": "Manage scene",
+      "endSession": "End session",
+      "myCharacter": "My character",
+      "abilities": "Abilities",
+      "items": "Items",
+      "map": "Map",
+      "notes": "Notes",
+      "requestAction": "Request action",
+      "rollDice": "Roll dice",
+      "editPoints": "Reposition points",
+      "editPointsDone": "Done repositioning"
+    },
+    "scene": {
+      "building": "Building the session scene…",
+      "buildingHint": "Generating a 2.5D game view of this map. It will appear here automatically.",
+      "failed": "The session scene could not be generated.",
+      "failedPlayer": "The master will regenerate the scene.",
+      "retry": "Generate again",
+      "none": "No session scene yet.",
+      "generate": "Build session scene"
+    },
+    "characters": {
+      "addTitle": "Add character to the map",
+      "loading": "Loading characters…",
+      "emptyTitle": "No characters",
+      "emptyDescription": "Create characters in the campaign first.",
+      "alreadyPlaced": "on the map",
+      "front": "Front",
+      "back": "Back",
+      "show": "Show to players",
+      "hide": "Hide from players",
+      "regenerate": "Regenerate sprite",
+      "regenerating": "Regenerating the sprite…",
+      "remove": "Remove from map",
+      "size": "Size",
+      "smaller": "Smaller",
+      "larger": "Larger",
+      "resizeError": "Could not save the character size.",
+      "moveError": "Could not save the character position.",
+      "adding": "Adding character to the map…",
+      "added": "Character added to the map.",
+      "addError": "Could not add the character to the map.",
+      "facingError": "Could not change the facing.",
+      "visibilityError": "Could not change the visibility.",
+      "removeError": "Could not remove the character from the map.",
+      "hiddenTag": "Hidden"
+    },
+    "changeMap": {
+      "title": "Change map",
+      "loading": "Loading maps…",
+      "emptyTitle": "No maps",
+      "emptyDescription": "Create maps in the campaign first.",
+      "current": "Current",
+      "error": "Could not change the map."
+    },
+    "poi": {
+      "error": "Could not save the point position."
     }
   }
 }

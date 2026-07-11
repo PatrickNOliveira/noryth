@@ -31,6 +31,10 @@ import { ItemArtDirectionPage } from '../pages/ItemArtDirectionPage';
 import { NewItemPage } from '../pages/NewItemPage';
 import { ItemDetailPage } from '../pages/ItemDetailPage';
 import { ItemEditPage } from '../pages/ItemEditPage';
+import { AbilitiesPage } from '../pages/AbilitiesPage';
+import { NewAbilityPage } from '../pages/NewAbilityPage';
+import { AbilityEditPage } from '../pages/AbilityEditPage';
+import { SessionPage } from '../pages/SessionPage';
 
 /**
  * Route table.
@@ -55,6 +59,8 @@ export function AppRoutes() {
       </Route>
 
       <Route element={<ProtectedRoute />}>
+        {/* Full-viewport game screen — intentionally outside the admin shell. */}
+        <Route path="/campaigns/:campaignId/session" element={<SessionPage />} />
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/campaigns/new" element={<NewCampaignPage />} />
@@ -81,6 +87,9 @@ export function AppRoutes() {
           <Route path="/campaigns/:campaignId/items/new" element={<NewItemPage />} />
           <Route path="/campaigns/:campaignId/items/:itemId" element={<ItemDetailPage />} />
           <Route path="/campaigns/:campaignId/items/:itemId/edit" element={<ItemEditPage />} />
+          <Route path="/campaigns/:campaignId/abilities" element={<AbilitiesPage />} />
+          <Route path="/campaigns/:campaignId/abilities/new" element={<NewAbilityPage />} />
+          <Route path="/campaigns/:campaignId/abilities/:abilityId/edit" element={<AbilityEditPage />} />
         </Route>
       </Route>
 

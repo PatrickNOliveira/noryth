@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -20,6 +20,9 @@ import {
   fetchAttributes,
   clearAttributes,
 } from '../store/slices/campaignAttributes.slice';
+import { fetchActiveSession, clearSession } from '../store/slices/session.slice';
+import { useSessionRedirect } from '../hooks/useSessionRedirect';
+import { StartSessionModal } from '../components/session/StartSessionModal';
 import { themeLabelKey, toneLabelKey } from '../utils/campaignOptions';
 import { SUPPORTED_LANGUAGES } from '../i18n/supportedLanguages';
 import { media } from '../styles/media';
@@ -135,8 +138,13 @@ export function CampaignDetailPage() {
   const dispatch = useAppDispatch();
   const { selectedCampaign, loading, error } = useAppSelector((s) => s.campaigns);
   const attributes = useAppSelector((s) => s.campaignAttributes.list);
+  const activeSession = useAppSelector((s) => s.session.active);
   const myId = useAppSelector((s) => s.auth.user?.id);
   const { notify } = useToast();
+  const [startOpen, setStartOpen] = useState(false);
+
+  // Take participants to the session screen when the master starts one.
+  useSessionRedirect(id ?? '');
 
   const share = async (campaignId: string) => {
     const link = `${window.location.origin}/campaigns/${campaignId}/join`;
@@ -152,10 +160,12 @@ export function CampaignDetailPage() {
     if (id) {
       dispatch(fetchCampaign(id));
       dispatch(fetchAttributes(id));
+      dispatch(fetchActiveSession(id));
     }
     return () => {
       dispatch(clearSelectedCampaign());
       dispatch(clearAttributes());
+      dispatch(clearSession());
     };
   }, [id, dispatch]);
 
@@ -256,6 +266,28 @@ export function CampaignDetailPage() {
           title={t('campaign.session.title')}
         />
         <EntryList>
+          {activeSession ? (
+            <Entry
+              title={t('session.hub.joinTitle')}
+              icon={<DiceIcon size={20} />}
+              meta={t('session.hub.joinMeta')}
+              trailing={<Badge $tone="success">{t('session.hub.live')}</Badge>}
+              onClick={() => navigate(`/campaigns/${c.id}/session`)}
+            />
+          ) : isMaster ? (
+            <Entry
+              title={t('session.hub.startTitle')}
+              icon={<DiceIcon size={20} />}
+              meta={t('session.hub.startMeta')}
+              onClick={() => setStartOpen(true)}
+            />
+          ) : (
+            <Entry
+              title={t('session.hub.waitingTitle')}
+              icon={<DiceIcon size={20} />}
+              meta={t('session.hub.waitingMeta')}
+            />
+          )}
           <Entry
             title={t('playerCharacter.hubTitle')}
             icon={<CompassIcon size={20} />}
@@ -271,6 +303,15 @@ export function CampaignDetailPage() {
         </EntryList>
         <Divider variant="ornament" />
       </Chapter>
+
+      {isMaster && (
+        <StartSessionModal
+          campaignId={c.id}
+          isOpen={startOpen}
+          onClose={() => setStartOpen(false)}
+          onStarted={() => navigate(`/campaigns/${c.id}/session`)}
+        />
+      )}
 
       <Chapter>
         <ChapterHeading eyebrow={t('dashboard.world.eyebrow')} title={t('dashboard.world.title')} />
@@ -298,6 +339,19 @@ export function CampaignDetailPage() {
             icon={<BookIcon size={20} />}
             meta={t('item.hubMeta')}
             onClick={() => navigate(`/campaigns/${c.id}/items`)}
+          />
+        </EntryList>
+        <Divider variant="ornament" />
+      </Chapter>
+
+      <Chapter>
+        <ChapterHeading eyebrow={t('campaign.rules.eyebrow')} title={t('campaign.rules.title')} />
+        <EntryList>
+          <Entry
+            title={t('ability.title')}
+            icon={<DiceIcon size={20} />}
+            meta={t('ability.hubMeta')}
+            onClick={() => navigate(`/campaigns/${c.id}/abilities`)}
           />
         </EntryList>
         <Divider variant="ornament" />

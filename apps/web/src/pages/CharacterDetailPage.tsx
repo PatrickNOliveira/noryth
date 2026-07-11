@@ -30,6 +30,7 @@ import { fetchFactions } from '../store/slices/factions.slice';
 import { fetchAttributes } from '../store/slices/campaignAttributes.slice';
 import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
+import { CharacterAbilitiesSection } from '../components/CharacterAbilitiesSection';
 import { realtime, CHARACTER_IMAGE_EVENTS } from '../services/realtime';
 import { CharacterImageStatus } from '../types/character';
 import { media } from '../styles/media';
@@ -447,6 +448,13 @@ export function CharacterDetailPage() {
             <Prose>{entry.value}</Prose>
           </Chapter>
         ))}
+
+      {isMaster && (
+        <Chapter>
+          <ChapterHeading eyebrow={t('ability.character.eyebrow')} title={t('ability.character.title')} />
+          <CharacterAbilitiesSection campaignId={campaignId} characterId={characterId} mode="master" />
+        </Chapter>
+      )}
 
       <Divider variant="ornament" />
     </>

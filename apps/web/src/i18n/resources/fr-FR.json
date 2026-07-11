@@ -281,6 +281,10 @@
       "cta": "Rejoindre",
       "error": "Impossible de rejoindre la campagne.",
       "players": "{{current}}/{{max}} joueurs"
+    },
+    "rules": {
+      "eyebrow": "La table",
+      "title": "Règles et progression"
     }
   },
   "faction": {
@@ -832,6 +836,202 @@
       "CONSUMED": "Consommé",
       "DESTROYED": "Détruit",
       "LOST": "Perdu"
+    }
+  },
+  "ability": {
+    "back": "Retour à la table",
+    "eyebrow": "Règles et progression",
+    "title": "Compétences",
+    "lead": "Pouvoirs, techniques, bénédictions, malédictions et capacités spéciales des personnages.",
+    "loading": "Ouverture des compétences…",
+    "hubMeta": "Créez des pouvoirs, techniques, bénédictions, malédictions et capacités spéciales des personnages.",
+    "emptyTitle": "Aucune compétence",
+    "emptyMaster": "Créez la première compétence de votre campagne.",
+    "emptyPlayer": "Aucune compétence publique dans cette campagne pour l’instant.",
+    "remove": "Supprimer",
+    "new": {
+      "button": "Nouvelle compétence",
+      "eyebrow": "Nouvelle compétence",
+      "title": "Créer une compétence",
+      "lead": "Les compétences créées par le maître naissent approuvées."
+    },
+    "edit": {
+      "button": "Modifier",
+      "eyebrow": "Compétence",
+      "title": "Modifier la compétence"
+    },
+    "form": {
+      "back": "Retour",
+      "create": "Créer la compétence",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "fields": {
+      "name": "Nom",
+      "type": "Type",
+      "noType": "Sans type",
+      "shortDescription": "Description courte",
+      "description": "Description",
+      "history": "Histoire",
+      "effectDescription": "Effet narratif",
+      "rulesText": "Texte de règle",
+      "costDescription": "Coût",
+      "limitationDescription": "Limitations",
+      "masterNotes": "Notes du maître",
+      "isUnique": "Compétence unique",
+      "visible": "Visible par les joueurs"
+    },
+    "hints": {
+      "masterOnly": "Vous seul (le maître) voyez ceci."
+    },
+    "validation": {
+      "nameRequired": "Donnez un nom à la compétence"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privée"
+    },
+    "badge": {
+      "unique": "Unique"
+    },
+    "pending": {
+      "eyebrow": "En attente de revue",
+      "title": "Propositions à examiner"
+    },
+    "review": {
+      "notesPlaceholder": "Notes de revue pour le joueur (facultatif)…",
+      "approve": "Approuver",
+      "requestChanges": "Demander des modifications",
+      "reject": "Rejeter"
+    },
+    "character": {
+      "eyebrow": "Compétences",
+      "title": "Compétences",
+      "playerLead": "Vos compétences approuvées et vos propositions en cours de revue.",
+      "emptyTitle": "Aucune compétence",
+      "emptyDescription": "Les compétences approuvées et les propositions apparaîtront ici.",
+      "remove": "Supprimer",
+      "assign": "Attribuer",
+      "selectAbility": "Sélectionnez une compétence approuvée…",
+      "masterReview": "Revue du maître",
+      "editProposal": "Modifier la proposition",
+      "resubmit": "Renvoyer la proposition",
+      "propose": "Envoyer la proposition",
+      "proposeButton": "Proposer une compétence"
+    },
+    "type": {
+      "COMBAT": "Combat",
+      "SOCIAL": "Social",
+      "MAGIC": "Magie",
+      "RITUAL": "Rituel",
+      "SPIRITUAL": "Spirituel",
+      "CURSE": "Malédiction",
+      "BLESSING": "Bénédiction",
+      "LINEAGE": "Lignée",
+      "KNOWLEDGE": "Savoir",
+      "PASSIVE": "Passive",
+      "OTHER": "Autre"
+    },
+    "status": {
+      "PENDING_APPROVAL": "En attente d’approbation",
+      "CHANGES_REQUESTED": "Modifications demandées",
+      "APPROVED": "Approuvée",
+      "REJECTED": "Rejetée"
+    }
+  },
+  "session": {
+    "title": "Session",
+    "loading": "Ouverture de la session…",
+    "leave": "Quitter",
+    "noMap": "Aucune carte",
+    "actionSoon": "Action pas encore implémentée.",
+    "none": {
+      "title": "Aucune session en cours",
+      "master": "Lancez une session pour amener vos joueurs à la table.",
+      "player": "En attente que le maître lance la session.",
+      "start": "Lancer la session"
+    },
+    "start": {
+      "title": "Lancer la session",
+      "cancel": "Annuler",
+      "confirm": "Lancer la session",
+      "loadingMaps": "Chargement des cartes…",
+      "mapLabel": "Carte initiale",
+      "noMaps": "Créez au moins une carte avant de lancer la session."
+    },
+    "hub": {
+      "live": "En direct",
+      "joinTitle": "Rejoindre la session",
+      "joinMeta": "Une session est en cours — rejoignez la table.",
+      "startTitle": "Lancer la session",
+      "startMeta": "Choisissez une carte initiale et amenez tout le monde à la table.",
+      "waitingTitle": "Session",
+      "waitingMeta": "En attente que le maître lance la session."
+    },
+    "action": {
+      "narrate": "Narrer",
+      "changeMap": "Changer de carte",
+      "showCharacter": "Montrer un personnage",
+      "showItem": "Montrer un objet",
+      "showHandout": "Montrer un document",
+      "masterNotes": "Notes du maître",
+      "manageScene": "Gérer la scène",
+      "endSession": "Terminer la session",
+      "myCharacter": "Mon personnage",
+      "abilities": "Compétences",
+      "items": "Objets",
+      "map": "Carte",
+      "notes": "Notes",
+      "requestAction": "Demander une action",
+      "rollDice": "Lancer un dé",
+      "editPoints": "Repositionner les points",
+      "editPointsDone": "Terminer"
+    },
+    "scene": {
+      "building": "Construction de la scène de session…",
+      "buildingHint": "Génération d’une vue de jeu 2.5D de cette carte. Elle apparaîtra ici automatiquement.",
+      "failed": "Impossible de générer la scène de session.",
+      "failedPlayer": "Le maître régénérera la scène.",
+      "retry": "Générer à nouveau",
+      "none": "Pas encore de scène de session.",
+      "generate": "Construire la scène de session"
+    },
+    "characters": {
+      "addTitle": "Ajouter un personnage à la carte",
+      "loading": "Chargement des personnages…",
+      "emptyTitle": "Aucun personnage",
+      "emptyDescription": "Créez d’abord des personnages dans la campagne.",
+      "alreadyPlaced": "sur la carte",
+      "front": "Face",
+      "back": "Dos",
+      "show": "Montrer aux joueurs",
+      "hide": "Cacher aux joueurs",
+      "regenerate": "Régénérer le sprite",
+      "regenerating": "Régénération du sprite…",
+      "remove": "Retirer de la carte",
+      "size": "Taille",
+      "smaller": "Réduire",
+      "larger": "Agrandir",
+      "resizeError": "Impossible d’enregistrer la taille du personnage.",
+      "moveError": "Impossible d’enregistrer la position du personnage.",
+      "adding": "Ajout du personnage à la carte…",
+      "added": "Personnage ajouté à la carte.",
+      "addError": "Impossible d’ajouter le personnage à la carte.",
+      "facingError": "Impossible de changer l’orientation.",
+      "visibilityError": "Impossible de changer la visibilité.",
+      "removeError": "Impossible de retirer le personnage de la carte.",
+      "hiddenTag": "Caché"
+    },
+    "changeMap": {
+      "title": "Changer de carte",
+      "loading": "Chargement des cartes…",
+      "emptyTitle": "Aucune carte",
+      "emptyDescription": "Créez d’abord des cartes dans la campagne.",
+      "current": "Actuelle",
+      "error": "Impossible de changer de carte."
+    },
+    "poi": {
+      "error": "Impossible d’enregistrer la position du point."
     }
   }
 }

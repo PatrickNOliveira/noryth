@@ -281,6 +281,10 @@
       "cta": "Unirse",
       "error": "No se pudo unir a la campaña.",
       "players": "{{current}}/{{max}} jugadores"
+    },
+    "rules": {
+      "eyebrow": "La mesa",
+      "title": "Reglas y progresión"
     }
   },
   "faction": {
@@ -832,6 +836,202 @@
       "CONSUMED": "Consumido",
       "DESTROYED": "Destruido",
       "LOST": "Perdido"
+    }
+  },
+  "ability": {
+    "back": "Volver a la mesa",
+    "eyebrow": "Reglas y progresión",
+    "title": "Habilidades",
+    "lead": "Poderes, técnicas, bendiciones, maldiciones y capacidades especiales de los personajes.",
+    "loading": "Abriendo las habilidades…",
+    "hubMeta": "Crea poderes, técnicas, bendiciones, maldiciones y capacidades especiales de los personajes.",
+    "emptyTitle": "Aún no hay habilidades",
+    "emptyMaster": "Crea la primera habilidad de tu campaña.",
+    "emptyPlayer": "Aún no hay habilidades públicas en esta campaña.",
+    "remove": "Eliminar",
+    "new": {
+      "button": "Nueva habilidad",
+      "eyebrow": "Nueva habilidad",
+      "title": "Crear habilidad",
+      "lead": "Las habilidades creadas por el máster nacen aprobadas."
+    },
+    "edit": {
+      "button": "Editar",
+      "eyebrow": "Habilidad",
+      "title": "Editar habilidad"
+    },
+    "form": {
+      "back": "Volver",
+      "create": "Crear habilidad",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "fields": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "noType": "Sin tipo",
+      "shortDescription": "Descripción breve",
+      "description": "Descripción",
+      "history": "Historia",
+      "effectDescription": "Efecto narrativo",
+      "rulesText": "Texto de regla",
+      "costDescription": "Coste",
+      "limitationDescription": "Limitaciones",
+      "masterNotes": "Notas del máster",
+      "isUnique": "Habilidad única",
+      "visible": "Visible para jugadores"
+    },
+    "hints": {
+      "masterOnly": "Solo tú (el máster) puedes ver esto."
+    },
+    "validation": {
+      "nameRequired": "Ponle un nombre a la habilidad"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privada"
+    },
+    "badge": {
+      "unique": "Única"
+    },
+    "pending": {
+      "eyebrow": "A la espera de revisión",
+      "title": "Propuestas por revisar"
+    },
+    "review": {
+      "notesPlaceholder": "Notas de revisión para el jugador (opcional)…",
+      "approve": "Aprobar",
+      "requestChanges": "Pedir cambios",
+      "reject": "Rechazar"
+    },
+    "character": {
+      "eyebrow": "Habilidades",
+      "title": "Habilidades",
+      "playerLead": "Tus habilidades aprobadas y propuestas en revisión.",
+      "emptyTitle": "Aún no hay habilidades",
+      "emptyDescription": "Las habilidades aprobadas y propuestas aparecerán aquí.",
+      "remove": "Eliminar",
+      "assign": "Asignar",
+      "selectAbility": "Selecciona una habilidad aprobada…",
+      "masterReview": "Revisión del máster",
+      "editProposal": "Editar propuesta",
+      "resubmit": "Reenviar propuesta",
+      "propose": "Enviar propuesta",
+      "proposeButton": "Proponer habilidad"
+    },
+    "type": {
+      "COMBAT": "Combate",
+      "SOCIAL": "Social",
+      "MAGIC": "Magia",
+      "RITUAL": "Ritual",
+      "SPIRITUAL": "Espiritual",
+      "CURSE": "Maldición",
+      "BLESSING": "Bendición",
+      "LINEAGE": "Linaje",
+      "KNOWLEDGE": "Conocimiento",
+      "PASSIVE": "Pasiva",
+      "OTHER": "Otro"
+    },
+    "status": {
+      "PENDING_APPROVAL": "Pendiente de aprobación",
+      "CHANGES_REQUESTED": "Cambios solicitados",
+      "APPROVED": "Aprobada",
+      "REJECTED": "Rechazada"
+    }
+  },
+  "session": {
+    "title": "Sesión",
+    "loading": "Abriendo la sesión…",
+    "leave": "Salir",
+    "noMap": "Sin mapa",
+    "actionSoon": "Acción aún no implementada.",
+    "none": {
+      "title": "No hay ninguna sesión en curso",
+      "master": "Inicia una sesión para llevar a tus jugadores a la mesa.",
+      "player": "Esperando a que el máster inicie la sesión.",
+      "start": "Iniciar sesión"
+    },
+    "start": {
+      "title": "Iniciar sesión",
+      "cancel": "Cancelar",
+      "confirm": "Iniciar sesión",
+      "loadingMaps": "Cargando mapas…",
+      "mapLabel": "Mapa inicial",
+      "noMaps": "Crea al menos un mapa antes de iniciar la sesión."
+    },
+    "hub": {
+      "live": "En directo",
+      "joinTitle": "Entrar en la sesión",
+      "joinMeta": "Hay una sesión en curso: únete a la mesa.",
+      "startTitle": "Iniciar sesión",
+      "startMeta": "Elige un mapa inicial y lleva a todos a la mesa.",
+      "waitingTitle": "Sesión",
+      "waitingMeta": "Esperando a que el máster inicie la sesión."
+    },
+    "action": {
+      "narrate": "Narrar",
+      "changeMap": "Cambiar mapa",
+      "showCharacter": "Mostrar personaje",
+      "showItem": "Mostrar objeto",
+      "showHandout": "Mostrar documento",
+      "masterNotes": "Notas del máster",
+      "manageScene": "Gestionar escena",
+      "endSession": "Terminar sesión",
+      "myCharacter": "Mi personaje",
+      "abilities": "Habilidades",
+      "items": "Objetos",
+      "map": "Mapa",
+      "notes": "Notas",
+      "requestAction": "Pedir acción",
+      "rollDice": "Tirar dado",
+      "editPoints": "Reposicionar puntos",
+      "editPointsDone": "Terminar reposición"
+    },
+    "scene": {
+      "building": "Construyendo la escena de la sesión…",
+      "buildingHint": "Generando una vista de juego 2.5D de este mapa. Aparecerá aquí automáticamente.",
+      "failed": "No se pudo generar la escena de la sesión.",
+      "failedPlayer": "El máster generará la escena de nuevo.",
+      "retry": "Generar de nuevo",
+      "none": "Aún no hay escena de sesión.",
+      "generate": "Construir escena de sesión"
+    },
+    "characters": {
+      "addTitle": "Añadir personaje al mapa",
+      "loading": "Cargando personajes…",
+      "emptyTitle": "Sin personajes",
+      "emptyDescription": "Crea personajes en la campaña primero.",
+      "alreadyPlaced": "en el mapa",
+      "front": "Frente",
+      "back": "Espalda",
+      "show": "Mostrar a los jugadores",
+      "hide": "Ocultar a los jugadores",
+      "regenerate": "Regenerar sprite",
+      "regenerating": "Regenerando el sprite…",
+      "remove": "Quitar del mapa",
+      "size": "Tamaño",
+      "smaller": "Reducir",
+      "larger": "Aumentar",
+      "resizeError": "No se pudo guardar el tamaño del personaje.",
+      "moveError": "No se pudo guardar la posición del personaje.",
+      "adding": "Añadiendo personaje al mapa…",
+      "added": "Personaje añadido al mapa.",
+      "addError": "No se pudo añadir el personaje al mapa.",
+      "facingError": "No se pudo cambiar la dirección.",
+      "visibilityError": "No se pudo cambiar la visibilidad.",
+      "removeError": "No se pudo quitar el personaje del mapa.",
+      "hiddenTag": "Oculto"
+    },
+    "changeMap": {
+      "title": "Cambiar mapa",
+      "loading": "Cargando mapas…",
+      "emptyTitle": "Sin mapas",
+      "emptyDescription": "Crea mapas en la campaña primero.",
+      "current": "Actual",
+      "error": "No se pudo cambiar el mapa."
+    },
+    "poi": {
+      "error": "No se pudo guardar la posición del punto."
     }
   }
 }

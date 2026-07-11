@@ -74,6 +74,38 @@ export const ITEM_IMAGE_EVENTS = {
   failed: 'item.image.failed',
 } as const;
 
+/** Server → client events for the campaign session lifecycle. */
+export const SESSION_EVENTS = {
+  started: 'campaign.session.started',
+  mapChanged: 'session.map.changed',
+} as const;
+
+/** Server → client events for a map's 2.5D session-scene generation. */
+export const MAP_SESSION_SCENE_EVENTS = {
+  processing: 'map.session_scene.processing',
+  completed: 'map.session_scene.completed',
+  failed: 'map.session_scene.failed',
+} as const;
+
+/** Server → client events for characters placed on the session map. */
+export const SESSION_CHARACTER_EVENTS = {
+  added: 'session.character.added',
+  moved: 'session.character.moved',
+  removed: 'session.character.removed',
+} as const;
+
+/** Server → client events for a character's 2.5D session-sprite generation. */
+export const CHARACTER_SESSION_SPRITE_EVENTS = {
+  processing: 'character.session_sprite.processing',
+  completed: 'character.session_sprite.completed',
+  failed: 'character.session_sprite.failed',
+} as const;
+
+/** Server → client event when a map point's 2.5D scene position is moved. */
+export const MAP_POINT_EVENTS = {
+  scenePositionUpdated: 'map.point.scene_position.updated',
+} as const;
+
 /** Client → server messages for campaign presence. */
 export const CAMPAIGN_PRESENCE_MESSAGES = {
   join: 'campaign:presence:join',

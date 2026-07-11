@@ -18,6 +18,7 @@ import { MapPointDto } from '../dto/map.dto';
 import {
   CreateMapPointDto,
   UpdateMapPointDto,
+  UpdateScenePositionDto,
 } from '../dto/map-point.dto';
 
 /** Points of interest, scoped to a map. Write is master-only. */
@@ -53,6 +54,18 @@ export class MapPointsController {
     @Body() dto: UpdateMapPointDto,
   ): Promise<MapPointDto> {
     return this.points.update(user.id, campaignId, mapId, pointId, dto);
+  }
+
+  /** Move a point on the 2.5D session scene. Master only. */
+  @Patch(':pointId/scene-position')
+  updateScenePosition(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('mapId', new ParseUUIDPipe()) mapId: string,
+    @Param('pointId', new ParseUUIDPipe()) pointId: string,
+    @Body() dto: UpdateScenePositionDto,
+  ): Promise<MapPointDto> {
+    return this.points.updateScenePosition(user.id, campaignId, mapId, pointId, dto);
   }
 
   @Delete(':pointId')

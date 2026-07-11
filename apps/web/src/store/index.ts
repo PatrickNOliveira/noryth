@@ -21,6 +21,9 @@ import factionsReducer from './slices/factions.slice';
 import charactersReducer from './slices/characters.slice';
 import mapsReducer from './slices/maps.slice';
 import itemsReducer from './slices/items.slice';
+import abilitiesReducer from './slices/abilities.slice';
+import sessionReducer from './slices/session.slice';
+import sessionCharactersReducer from './slices/sessionCharacters.slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -34,6 +37,9 @@ const rootReducer = combineReducers({
   characters: charactersReducer,
   maps: mapsReducer,
   items: itemsReducer,
+  abilities: abilitiesReducer,
+  session: sessionReducer,
+  sessionCharacters: sessionCharactersReducer,
 });
 
 /**

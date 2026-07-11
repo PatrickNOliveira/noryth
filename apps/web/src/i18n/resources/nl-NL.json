@@ -281,6 +281,10 @@
       "cta": "Deelnemen",
       "error": "Kon niet deelnemen aan de campagne.",
       "players": "{{current}}/{{max}} spelers"
+    },
+    "rules": {
+      "eyebrow": "De tafel",
+      "title": "Regels & progressie"
     }
   },
   "faction": {
@@ -832,6 +836,202 @@
       "CONSUMED": "Verbruikt",
       "DESTROYED": "Vernietigd",
       "LOST": "Verloren"
+    }
+  },
+  "ability": {
+    "back": "Terug naar de tafel",
+    "eyebrow": "Regels & progressie",
+    "title": "Vaardigheden",
+    "lead": "Krachten, technieken, zegeningen, vloeken en speciale capaciteiten van de personages.",
+    "loading": "Vaardigheden openen…",
+    "hubMeta": "Maak krachten, technieken, zegeningen, vloeken en speciale capaciteiten van de personages.",
+    "emptyTitle": "Nog geen vaardigheden",
+    "emptyMaster": "Maak de eerste vaardigheid van je campagne.",
+    "emptyPlayer": "Nog geen openbare vaardigheden in deze campagne.",
+    "remove": "Verwijderen",
+    "new": {
+      "button": "Nieuwe vaardigheid",
+      "eyebrow": "Nieuwe vaardigheid",
+      "title": "Vaardigheid maken",
+      "lead": "Vaardigheden gemaakt door de spelleider zijn meteen goedgekeurd."
+    },
+    "edit": {
+      "button": "Bewerken",
+      "eyebrow": "Vaardigheid",
+      "title": "Vaardigheid bewerken"
+    },
+    "form": {
+      "back": "Terug",
+      "create": "Vaardigheid maken",
+      "save": "Opslaan",
+      "cancel": "Annuleren"
+    },
+    "fields": {
+      "name": "Naam",
+      "type": "Type",
+      "noType": "Geen type",
+      "shortDescription": "Korte beschrijving",
+      "description": "Beschrijving",
+      "history": "Geschiedenis",
+      "effectDescription": "Verhaaleffect",
+      "rulesText": "Regeltekst",
+      "costDescription": "Kosten",
+      "limitationDescription": "Beperkingen",
+      "masterNotes": "Notities van de spelleider",
+      "isUnique": "Unieke vaardigheid",
+      "visible": "Zichtbaar voor spelers"
+    },
+    "hints": {
+      "masterOnly": "Alleen jij (de spelleider) ziet dit."
+    },
+    "validation": {
+      "nameRequired": "Geef de vaardigheid een naam"
+    },
+    "visibility": {
+      "public": "Zichtbaar",
+      "private": "Privé"
+    },
+    "badge": {
+      "unique": "Uniek"
+    },
+    "pending": {
+      "eyebrow": "Wacht op beoordeling",
+      "title": "Voorstellen om te beoordelen"
+    },
+    "review": {
+      "notesPlaceholder": "Beoordelingsnotities voor de speler (optioneel)…",
+      "approve": "Goedkeuren",
+      "requestChanges": "Wijzigingen vragen",
+      "reject": "Afwijzen"
+    },
+    "character": {
+      "eyebrow": "Vaardigheden",
+      "title": "Vaardigheden",
+      "playerLead": "Je goedgekeurde vaardigheden en voorstellen in beoordeling.",
+      "emptyTitle": "Nog geen vaardigheden",
+      "emptyDescription": "Goedgekeurde vaardigheden en voorstellen verschijnen hier.",
+      "remove": "Verwijderen",
+      "assign": "Toewijzen",
+      "selectAbility": "Selecteer een goedgekeurde vaardigheid…",
+      "masterReview": "Beoordeling spelleider",
+      "editProposal": "Voorstel bewerken",
+      "resubmit": "Voorstel opnieuw indienen",
+      "propose": "Voorstel indienen",
+      "proposeButton": "Vaardigheid voorstellen"
+    },
+    "type": {
+      "COMBAT": "Gevecht",
+      "SOCIAL": "Sociaal",
+      "MAGIC": "Magie",
+      "RITUAL": "Ritueel",
+      "SPIRITUAL": "Spiritueel",
+      "CURSE": "Vloek",
+      "BLESSING": "Zegen",
+      "LINEAGE": "Afkomst",
+      "KNOWLEDGE": "Kennis",
+      "PASSIVE": "Passief",
+      "OTHER": "Overig"
+    },
+    "status": {
+      "PENDING_APPROVAL": "In afwachting van goedkeuring",
+      "CHANGES_REQUESTED": "Wijzigingen gevraagd",
+      "APPROVED": "Goedgekeurd",
+      "REJECTED": "Afgewezen"
+    }
+  },
+  "session": {
+    "title": "Sessie",
+    "loading": "Sessie openen…",
+    "leave": "Verlaten",
+    "noMap": "Geen kaart",
+    "actionSoon": "Actie nog niet geïmplementeerd.",
+    "none": {
+      "title": "Geen sessie bezig",
+      "master": "Start een sessie om je spelers naar de tafel te brengen.",
+      "player": "Wachten tot de spelleider de sessie start.",
+      "start": "Sessie starten"
+    },
+    "start": {
+      "title": "Sessie starten",
+      "cancel": "Annuleren",
+      "confirm": "Sessie starten",
+      "loadingMaps": "Kaarten laden…",
+      "mapLabel": "Startkaart",
+      "noMaps": "Maak eerst minstens één kaart voordat je de sessie start."
+    },
+    "hub": {
+      "live": "Live",
+      "joinTitle": "Deelnemen aan de sessie",
+      "joinMeta": "Er is een sessie bezig — kom naar de tafel.",
+      "startTitle": "Sessie starten",
+      "startMeta": "Kies een startkaart en breng iedereen naar de tafel.",
+      "waitingTitle": "Sessie",
+      "waitingMeta": "Wachten tot de spelleider de sessie start."
+    },
+    "action": {
+      "narrate": "Vertellen",
+      "changeMap": "Kaart wisselen",
+      "showCharacter": "Personage tonen",
+      "showItem": "Voorwerp tonen",
+      "showHandout": "Handout tonen",
+      "masterNotes": "Notities spelleider",
+      "manageScene": "Scène beheren",
+      "endSession": "Sessie beëindigen",
+      "myCharacter": "Mijn personage",
+      "abilities": "Vaardigheden",
+      "items": "Voorwerpen",
+      "map": "Kaart",
+      "notes": "Notities",
+      "requestAction": "Actie vragen",
+      "rollDice": "Dobbelsteen gooien",
+      "editPoints": "Punten verplaatsen",
+      "editPointsDone": "Klaar met verplaatsen"
+    },
+    "scene": {
+      "building": "Sessiescène opbouwen…",
+      "buildingHint": "Er wordt een 2.5D-spelweergave van deze kaart gemaakt. Die verschijnt hier automatisch.",
+      "failed": "De sessiescène kon niet worden gegenereerd.",
+      "failedPlayer": "De spelleider genereert de scène opnieuw.",
+      "retry": "Opnieuw genereren",
+      "none": "Nog geen sessiescène.",
+      "generate": "Sessiescène bouwen"
+    },
+    "characters": {
+      "addTitle": "Personage aan de kaart toevoegen",
+      "loading": "Personages laden…",
+      "emptyTitle": "Geen personages",
+      "emptyDescription": "Maak eerst personages in de campagne.",
+      "alreadyPlaced": "op de kaart",
+      "front": "Voorkant",
+      "back": "Achterkant",
+      "show": "Aan spelers tonen",
+      "hide": "Voor spelers verbergen",
+      "regenerate": "Sprite opnieuw genereren",
+      "regenerating": "Sprite opnieuw genereren…",
+      "remove": "Van de kaart verwijderen",
+      "size": "Grootte",
+      "smaller": "Kleiner",
+      "larger": "Groter",
+      "resizeError": "Kon de grootte van het personage niet opslaan.",
+      "moveError": "Kon de positie van het personage niet opslaan.",
+      "adding": "Personage aan de kaart toevoegen…",
+      "added": "Personage aan de kaart toegevoegd.",
+      "addError": "Kon het personage niet aan de kaart toevoegen.",
+      "facingError": "Kon de richting niet wijzigen.",
+      "visibilityError": "Kon de zichtbaarheid niet wijzigen.",
+      "removeError": "Kon het personage niet van de kaart verwijderen.",
+      "hiddenTag": "Verborgen"
+    },
+    "changeMap": {
+      "title": "Kaart wisselen",
+      "loading": "Kaarten laden…",
+      "emptyTitle": "Geen kaarten",
+      "emptyDescription": "Maak eerst kaarten in de campagne.",
+      "current": "Huidige",
+      "error": "Kon de kaart niet wisselen."
+    },
+    "poi": {
+      "error": "Kon de positie van het punt niet opslaan."
     }
   }
 }

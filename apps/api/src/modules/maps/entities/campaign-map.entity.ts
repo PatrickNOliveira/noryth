@@ -71,6 +71,30 @@ export class CampaignMap extends BaseEntity {
   @Column({ name: 'last_image_adjustment', type: 'text', nullable: true })
   lastImageAdjustment!: string | null;
 
+  // ── session scene (a distinct 2.5D isometric "game viewport" asset derived
+  // from this map; used by the live session screen, never replaces `imageUrl`) ──
+
+  @Column({ name: 'session_scene_image_path', type: 'varchar', length: 512, nullable: true })
+  sessionSceneImagePath!: string | null;
+
+  @Column({ name: 'session_scene_image_url', type: 'varchar', length: 1024, nullable: true })
+  sessionSceneImageUrl!: string | null;
+
+  @Column({ name: 'session_scene_image_status', type: 'varchar', length: 20, default: 'none' })
+  sessionSceneImageStatus!: MapImageStatus;
+
+  @Column({ name: 'session_scene_image_error', type: 'text', nullable: true })
+  sessionSceneImageError!: string | null;
+
+  @Column({ name: 'session_scene_image_job_id', type: 'varchar', length: 128, nullable: true })
+  sessionSceneImageJobId!: string | null;
+
+  @Column({ name: 'last_session_scene_prompt', type: 'text', nullable: true })
+  lastSessionScenePrompt!: string | null;
+
+  @Column({ name: 'last_session_scene_negative_prompt', type: 'text', nullable: true })
+  lastSessionSceneNegativePrompt!: string | null;
+
   @Column({ name: 'display_order', type: 'int', default: 0 })
   displayOrder!: number;
 }
