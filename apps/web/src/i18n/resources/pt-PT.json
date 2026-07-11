@@ -686,5 +686,152 @@
       "save": "Guardar orçamento",
       "hint": "Pontos que o jogador pode distribuir (gasto = valor − mínimo). Deixa vazio para limpar."
     }
+  },
+  "item": {
+    "hubMeta": "Crie relíquias, documentos, armas, chaves e objetos importantes da campanha.",
+    "list": {
+      "back": "Voltar para a mesa",
+      "new": "Novo item",
+      "artDirection": "Direção de arte",
+      "title": "Itens",
+      "eyebrow": "Tesouros & relíquias",
+      "lead": "Relíquias, documentos, armas e objetos que importam na sua história.",
+      "loading": "A abrir o cofre…",
+      "emptyTitle": "Nenhum item ainda",
+      "emptyDescription": "Crie a primeira relíquia, documento ou objeto da sua campanha."
+    },
+    "new": {
+      "eyebrow": "Novo item",
+      "title": "Criar item",
+      "lead": "Defina o conceito/base de um item; as ocorrências concretas são as instâncias."
+    },
+    "edit": {
+      "eyebrow": "Item",
+      "title": "Editar item"
+    },
+    "detail": {
+      "loading": "A abrir o item…",
+      "back": "Voltar aos itens",
+      "notFound": "Item não encontrado.",
+      "edit": "Editar",
+      "delete": "Remover",
+      "confirmDelete": "Confirmar remoção",
+      "generate": "Gerar imagem",
+      "requestChange": "Pedir alteração",
+      "generateVersion": "Gerar nova versão",
+      "adjustPlaceholder": "Descreva as alterações na imagem do item…",
+      "makePublic": "Tornar visível",
+      "makePrivate": "Tornar privado"
+    },
+    "form": {
+      "back": "Voltar",
+      "create": "Criar item",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo",
+      "noType": "Sem tipo",
+      "shortDescription": "Descrição curta",
+      "description": "Descrição",
+      "history": "História",
+      "appearance": "Aparência",
+      "effectDescription": "Efeito narrativo",
+      "rulesText": "Texto de regra",
+      "masterNotes": "Notas do mestre",
+      "isUnique": "Item único",
+      "visible": "Visível para jogadores",
+      "generateImage": "Gerar uma imagem agora",
+      "ignoreArtDirection": "Ignorar direção de arte global de itens"
+    },
+    "hints": {
+      "appearance": "Usada para gerar a imagem do item.",
+      "masterOnly": "Apenas você (o mestre) vê isto."
+    },
+    "validation": {
+      "nameRequired": "Dê um nome ao item"
+    },
+    "visibility": {
+      "public": "Visível",
+      "private": "Privado"
+    },
+    "badge": {
+      "unique": "Único"
+    },
+    "imageStatus": {
+      "none": "Sem imagem",
+      "pending": "Na fila",
+      "processing": "Gerando…",
+      "completed": "Pronto",
+      "failed": "Falhou"
+    },
+    "art": {
+      "back": "Voltar aos itens",
+      "eyebrow": "Estilo visual",
+      "title": "Direção de arte dos itens",
+      "lead": "Defina o estilo visual que deve guiar as imagens dos itens desta campanha.",
+      "help": "Essas instruções serão usadas como base visual para todos os itens da campanha, a menos que uma geração peça explicitamente para ignorá-las.",
+      "fieldLabel": "Direção de arte dos itens",
+      "placeholder": "Ex.: Dark fantasy realista, fundo neutro, tons frios, metal envelhecido, aparência medieval, sem cores vibrantes…",
+      "save": "Guardar direção de arte",
+      "clear": "Limpar",
+      "loading": "A abrir a direção de arte…"
+    },
+    "instance": {
+      "eyebrow": "No mundo",
+      "title": "Instâncias",
+      "lead": "Ocorrências concretas deste item na campanha e onde elas estão.",
+      "new": "Adicionar instância",
+      "save": "Guardar",
+      "edit": "Editar",
+      "remove": "Remover",
+      "emptyTitle": "Nenhuma instância",
+      "emptyDescription": "Adicione uma ocorrência concreta deste item em algum lugar da campanha.",
+      "emptyPlayers": "Nenhuma instância visível deste item.",
+      "uniqueLimit": "Este item é único — apenas uma instância é permitida.",
+      "withCharacter": "Com",
+      "atPoint": "Em um ponto de interesse",
+      "onMap": "No mapa",
+      "noLocation": "Sem localização definida",
+      "noHolder": "Sem portador",
+      "noMap": "Sem mapa",
+      "noPoint": "Sem ponto",
+      "locationHint": "Uma instância fica em no máximo um lugar (com um personagem OU em um mapa/ponto).",
+      "fields": {
+        "customName": "Nome customizado",
+        "customNameHint": "Deixe vazio para usar \"{{name}}\".",
+        "customDescription": "Descrição customizada",
+        "quantity": "Quantidade",
+        "state": "Estado",
+        "holder": "Portado por personagem",
+        "map": "No mapa",
+        "point": "Ponto de interesse",
+        "masterNotes": "Notas do mestre",
+        "visible": "Visível para jogadores"
+      }
+    },
+    "type": {
+      "WEAPON": "Arma",
+      "ARMOR": "Armadura",
+      "CONSUMABLE": "Consumível",
+      "RELIC": "Relíquia",
+      "DOCUMENT": "Documento",
+      "KEY": "Chave",
+      "TREASURE": "Tesouro",
+      "MAGIC_ITEM": "Item mágico",
+      "TOOL": "Ferramenta",
+      "MISC": "Diversos",
+      "OTHER": "Outro"
+    },
+    "state": {
+      "AVAILABLE": "Disponível",
+      "HIDDEN": "Escondido",
+      "CARRIED": "Carregado",
+      "FOUND": "Encontrado",
+      "CONSUMED": "Consumido",
+      "DESTROYED": "Destruído",
+      "LOST": "Perdido"
+    }
   }
 }

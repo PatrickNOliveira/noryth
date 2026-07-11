@@ -10,7 +10,13 @@ import { Server, Socket } from 'socket.io';
 import { RealtimeProvider } from './realtime.provider';
 
 /** Only these room namespaces may be joined. */
-const ALLOWED_ROOM_PREFIXES = ['faction:', 'campaign:', 'character:', 'map:'];
+const ALLOWED_ROOM_PREFIXES = [
+  'faction:',
+  'campaign:',
+  'character:',
+  'map:',
+  'item:',
+];
 
 function isAllowedRoom(room: unknown): room is string {
   return (

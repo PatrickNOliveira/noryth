@@ -228,6 +228,18 @@ export class CharactersService {
     return toCharacterDto(character, values, ctx.isMaster, ctx.isController);
   }
 
+  /**
+   * Raw lookup (NO permission check) for other modules to validate a link, e.g.
+   * an item instance held by a character. Null when it isn't in the campaign.
+   */
+  async findInCampaign(
+    campaignId: string,
+    characterId: string,
+  ): Promise<Character | null> {
+    const character = await this.characters.findById(characterId);
+    return character && character.campaignId === campaignId ? character : null;
+  }
+
   // ── player characters ───────────────────────────────────────
 
   /** The authenticated user's own player character in the campaign, or null. */

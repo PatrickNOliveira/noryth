@@ -686,5 +686,152 @@
       "save": "Enregistrer le budget",
       "hint": "Points que le joueur peut répartir (dépense = valeur − minimum). Laissez vide pour effacer."
     }
+  },
+  "item": {
+    "hubMeta": "Créez des reliques, documents, armes, clés et objets importants de la campagne.",
+    "list": {
+      "back": "Retour à la table",
+      "new": "Nouvel objet",
+      "artDirection": "Direction artistique",
+      "title": "Objets",
+      "eyebrow": "Trésors et reliques",
+      "lead": "Reliques, documents, armes et objets qui comptent dans votre histoire.",
+      "loading": "Ouverture du coffre…",
+      "emptyTitle": "Aucun objet",
+      "emptyDescription": "Créez la première relique, document ou objet de votre campagne."
+    },
+    "new": {
+      "eyebrow": "Nouvel objet",
+      "title": "Créer un objet",
+      "lead": "Définissez le concept/la base d’un objet ; les occurrences concrètes sont ses instances."
+    },
+    "edit": {
+      "eyebrow": "Objet",
+      "title": "Modifier l’objet"
+    },
+    "detail": {
+      "loading": "Ouverture de l’objet…",
+      "back": "Retour aux objets",
+      "notFound": "Objet introuvable.",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "confirmDelete": "Confirmer la suppression",
+      "generate": "Générer l’image",
+      "requestChange": "Demander une modification",
+      "generateVersion": "Générer une nouvelle version",
+      "adjustPlaceholder": "Décrivez les changements de l’image de l’objet…",
+      "makePublic": "Rendre visible",
+      "makePrivate": "Rendre privé"
+    },
+    "form": {
+      "back": "Retour",
+      "create": "Créer l’objet",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "fields": {
+      "name": "Nom",
+      "type": "Type",
+      "noType": "Sans type",
+      "shortDescription": "Description courte",
+      "description": "Description",
+      "history": "Histoire",
+      "appearance": "Apparence",
+      "effectDescription": "Effet narratif",
+      "rulesText": "Texte de règle",
+      "masterNotes": "Notes du maître",
+      "isUnique": "Objet unique",
+      "visible": "Visible par les joueurs",
+      "generateImage": "Générer une image maintenant",
+      "ignoreArtDirection": "Ignorer la direction artistique globale des objets"
+    },
+    "hints": {
+      "appearance": "Utilisée pour générer l’image de l’objet.",
+      "masterOnly": "Vous seul (le maître) voyez ceci."
+    },
+    "validation": {
+      "nameRequired": "Donnez un nom à l’objet"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privé"
+    },
+    "badge": {
+      "unique": "Unique"
+    },
+    "imageStatus": {
+      "none": "Sans image",
+      "pending": "En file",
+      "processing": "Génération…",
+      "completed": "Prêt",
+      "failed": "Échec"
+    },
+    "art": {
+      "back": "Retour aux objets",
+      "eyebrow": "Style visuel",
+      "title": "Direction artistique des objets",
+      "lead": "Définissez le style visuel qui guide les images des objets de cette campagne.",
+      "help": "Ces instructions servent de base visuelle à tous les objets de la campagne, sauf si une génération demande explicitement de les ignorer.",
+      "fieldLabel": "Direction artistique des objets",
+      "placeholder": "Ex. : Dark fantasy réaliste, fond neutre, tons froids, métal vieilli, aspect médiéval, sans couleurs vives…",
+      "save": "Enregistrer la direction artistique",
+      "clear": "Effacer",
+      "loading": "Ouverture de la direction artistique…"
+    },
+    "instance": {
+      "eyebrow": "Dans le monde",
+      "title": "Instances",
+      "lead": "Occurrences concrètes de cet objet dans la campagne et leur emplacement.",
+      "new": "Ajouter une instance",
+      "save": "Enregistrer",
+      "edit": "Modifier",
+      "remove": "Supprimer",
+      "emptyTitle": "Aucune instance",
+      "emptyDescription": "Ajoutez une occurrence concrète de cet objet quelque part dans la campagne.",
+      "emptyPlayers": "Aucune instance visible de cet objet.",
+      "uniqueLimit": "Cet objet est unique — une seule instance est autorisée.",
+      "withCharacter": "Avec",
+      "atPoint": "À un point d’intérêt",
+      "onMap": "Sur la carte",
+      "noLocation": "Aucun emplacement défini",
+      "noHolder": "Aucun porteur",
+      "noMap": "Aucune carte",
+      "noPoint": "Aucun point",
+      "locationHint": "Une instance est à un seul endroit (avec un personnage OU sur une carte/point).",
+      "fields": {
+        "customName": "Nom personnalisé",
+        "customNameHint": "Laissez vide pour utiliser « {{name}} ».",
+        "customDescription": "Description personnalisée",
+        "quantity": "Quantité",
+        "state": "État",
+        "holder": "Porté par le personnage",
+        "map": "Sur la carte",
+        "point": "Point d’intérêt",
+        "masterNotes": "Notes du maître",
+        "visible": "Visible par les joueurs"
+      }
+    },
+    "type": {
+      "WEAPON": "Arme",
+      "ARMOR": "Armure",
+      "CONSUMABLE": "Consommable",
+      "RELIC": "Relique",
+      "DOCUMENT": "Document",
+      "KEY": "Clé",
+      "TREASURE": "Trésor",
+      "MAGIC_ITEM": "Objet magique",
+      "TOOL": "Outil",
+      "MISC": "Divers",
+      "OTHER": "Autre"
+    },
+    "state": {
+      "AVAILABLE": "Disponible",
+      "HIDDEN": "Caché",
+      "CARRIED": "Porté",
+      "FOUND": "Trouvé",
+      "CONSUMED": "Consommé",
+      "DESTROYED": "Détruit",
+      "LOST": "Perdu"
+    }
   }
 }

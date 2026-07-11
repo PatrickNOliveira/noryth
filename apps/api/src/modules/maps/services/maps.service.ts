@@ -192,6 +192,21 @@ export class MapsService {
     return toMapDto(map, true, points);
   }
 
+  /** Raw lookup (NO permission) of a map in a campaign, for other modules. */
+  async findMapInCampaign(
+    campaignId: string,
+    mapId: string,
+  ): Promise<CampaignMap | null> {
+    const map = await this.maps.findMapById(mapId);
+    return map && map.campaignId === campaignId ? map : null;
+  }
+
+  /** Raw lookup (NO permission) of a map point in a campaign, for other modules. */
+  async findPointInCampaign(campaignId: string, pointId: string) {
+    const point = await this.maps.findPointById(pointId);
+    return point && point.campaignId === campaignId ? point : null;
+  }
+
   // ── global map art direction (master only) ──────────────────
 
   async getArtDirection(userId: string, campaignId: string): Promise<string> {

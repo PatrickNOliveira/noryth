@@ -686,5 +686,152 @@
       "save": "Save budget",
       "hint": "Points the player may distribute (spent = value − minimum). Leave empty to clear."
     }
+  },
+  "item": {
+    "hubMeta": "Create relics, documents, weapons, keys and important objects of the campaign.",
+    "list": {
+      "back": "Back to the campaign",
+      "new": "New item",
+      "artDirection": "Art direction",
+      "title": "Items",
+      "eyebrow": "Treasures & relics",
+      "lead": "Relics, documents, weapons and objects that matter in your story.",
+      "loading": "Opening the vault…",
+      "emptyTitle": "No items yet",
+      "emptyDescription": "Create the first relic, document or object of your campaign."
+    },
+    "new": {
+      "eyebrow": "New item",
+      "title": "Create an item",
+      "lead": "Define the concept/base of an item; concrete occurrences are its instances."
+    },
+    "edit": {
+      "eyebrow": "Item",
+      "title": "Edit item"
+    },
+    "detail": {
+      "loading": "Opening the item…",
+      "back": "Back to the items",
+      "notFound": "Item not found.",
+      "edit": "Edit",
+      "delete": "Remove",
+      "confirmDelete": "Confirm removal",
+      "generate": "Generate image",
+      "requestChange": "Request a change",
+      "generateVersion": "Generate new version",
+      "adjustPlaceholder": "Describe the changes to the item image…",
+      "makePublic": "Make visible",
+      "makePrivate": "Make private"
+    },
+    "form": {
+      "back": "Back",
+      "create": "Create item",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "noType": "No type",
+      "shortDescription": "Short description",
+      "description": "Description",
+      "history": "History",
+      "appearance": "Appearance",
+      "effectDescription": "Narrative effect",
+      "rulesText": "Rules text",
+      "masterNotes": "Master notes",
+      "isUnique": "Unique item",
+      "visible": "Visible to players",
+      "generateImage": "Generate an image now",
+      "ignoreArtDirection": "Ignore global item art direction"
+    },
+    "hints": {
+      "appearance": "Used to generate the item image.",
+      "masterOnly": "Only you (the master) can see this."
+    },
+    "validation": {
+      "nameRequired": "Give the item a name"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Private"
+    },
+    "badge": {
+      "unique": "Unique"
+    },
+    "imageStatus": {
+      "none": "No image",
+      "pending": "Queued",
+      "processing": "Generating…",
+      "completed": "Ready",
+      "failed": "Failed"
+    },
+    "art": {
+      "back": "Back to the items",
+      "eyebrow": "Visual style",
+      "title": "Item art direction",
+      "lead": "Define the visual style that guides every item image in this campaign.",
+      "help": "These instructions are used as the visual base for all items in the campaign, unless a generation explicitly ignores them.",
+      "fieldLabel": "Item art direction",
+      "placeholder": "e.g. Realistic dark fantasy, neutral background, cold tones, aged metal, medieval look, no vibrant colors…",
+      "save": "Save art direction",
+      "clear": "Clear",
+      "loading": "Opening the art direction…"
+    },
+    "instance": {
+      "eyebrow": "In the world",
+      "title": "Instances",
+      "lead": "Concrete occurrences of this item in the campaign and where they are.",
+      "new": "Add instance",
+      "save": "Save",
+      "edit": "Edit",
+      "remove": "Remove",
+      "emptyTitle": "No instances",
+      "emptyDescription": "Add a concrete occurrence of this item somewhere in the campaign.",
+      "emptyPlayers": "No visible instances of this item.",
+      "uniqueLimit": "This item is unique — only one instance is allowed.",
+      "withCharacter": "With",
+      "atPoint": "At a point of interest",
+      "onMap": "On map",
+      "noLocation": "No defined location",
+      "noHolder": "No holder",
+      "noMap": "No map",
+      "noPoint": "No point",
+      "locationHint": "An instance is in at most one place (with a character OR on a map/point).",
+      "fields": {
+        "customName": "Custom name",
+        "customNameHint": "Leave empty to use \"{{name}}\".",
+        "customDescription": "Custom description",
+        "quantity": "Quantity",
+        "state": "State",
+        "holder": "Held by character",
+        "map": "On map",
+        "point": "Point of interest",
+        "masterNotes": "Master notes",
+        "visible": "Visible to players"
+      }
+    },
+    "type": {
+      "WEAPON": "Weapon",
+      "ARMOR": "Armor",
+      "CONSUMABLE": "Consumable",
+      "RELIC": "Relic",
+      "DOCUMENT": "Document",
+      "KEY": "Key",
+      "TREASURE": "Treasure",
+      "MAGIC_ITEM": "Magic item",
+      "TOOL": "Tool",
+      "MISC": "Misc",
+      "OTHER": "Other"
+    },
+    "state": {
+      "AVAILABLE": "Available",
+      "HIDDEN": "Hidden",
+      "CARRIED": "Carried",
+      "FOUND": "Found",
+      "CONSUMED": "Consumed",
+      "DESTROYED": "Destroyed",
+      "LOST": "Lost"
+    }
   }
 }

@@ -34,5 +34,6 @@ import { TypeOrmCharactersRepository } from './repositories/typeorm-characters.r
     CharacterPortraitHandler,
     { provide: CHARACTERS_REPOSITORY, useClass: TypeOrmCharactersRepository },
   ],
+  exports: [CharactersService],
 })
 export class CharactersModule {}

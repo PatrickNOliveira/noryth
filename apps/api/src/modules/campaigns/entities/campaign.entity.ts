@@ -75,4 +75,8 @@ export class Campaign extends BaseEntity {
     nullable: true,
   })
   defaultPlayerCharacterAttributePoints!: number | null;
+
+  /** Global art direction for this campaign's item images (master-only). */
+  @Column({ name: 'item_art_direction', type: 'text', default: '' })
+  itemArtDirection!: string;
 }

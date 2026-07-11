@@ -31,5 +31,6 @@ import { TypeOrmMapsRepository } from './repositories/typeorm-maps.repository';
     MapImageHandler,
     { provide: MAPS_REPOSITORY, useClass: TypeOrmMapsRepository },
   ],
+  exports: [MapsService],
 })
 export class MapsModule {}

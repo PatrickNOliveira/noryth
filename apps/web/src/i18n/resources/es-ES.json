@@ -686,5 +686,152 @@
       "save": "Guardar presupuesto",
       "hint": "Puntos que el jugador puede distribuir (gasto = valor − mínimo). Deja vacío para borrar."
     }
+  },
+  "item": {
+    "hubMeta": "Crea reliquias, documentos, armas, llaves y objetos importantes de la campaña.",
+    "list": {
+      "back": "Volver a la mesa",
+      "new": "Nuevo objeto",
+      "artDirection": "Dirección de arte",
+      "title": "Objetos",
+      "eyebrow": "Tesoros y reliquias",
+      "lead": "Reliquias, documentos, armas y objetos que importan en tu historia.",
+      "loading": "Abriendo la cámara…",
+      "emptyTitle": "Aún no hay objetos",
+      "emptyDescription": "Crea la primera reliquia, documento u objeto de tu campaña."
+    },
+    "new": {
+      "eyebrow": "Nuevo objeto",
+      "title": "Crear objeto",
+      "lead": "Define el concepto/base de un objeto; las ocurrencias concretas son sus instancias."
+    },
+    "edit": {
+      "eyebrow": "Objeto",
+      "title": "Editar objeto"
+    },
+    "detail": {
+      "loading": "Abriendo el objeto…",
+      "back": "Volver a los objetos",
+      "notFound": "Objeto no encontrado.",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "confirmDelete": "Confirmar eliminación",
+      "generate": "Generar imagen",
+      "requestChange": "Pedir un cambio",
+      "generateVersion": "Generar nueva versión",
+      "adjustPlaceholder": "Describe los cambios en la imagen del objeto…",
+      "makePublic": "Hacer visible",
+      "makePrivate": "Hacer privado"
+    },
+    "form": {
+      "back": "Volver",
+      "create": "Crear objeto",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "fields": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "noType": "Sin tipo",
+      "shortDescription": "Descripción breve",
+      "description": "Descripción",
+      "history": "Historia",
+      "appearance": "Apariencia",
+      "effectDescription": "Efecto narrativo",
+      "rulesText": "Texto de regla",
+      "masterNotes": "Notas del máster",
+      "isUnique": "Objeto único",
+      "visible": "Visible para jugadores",
+      "generateImage": "Generar una imagen ahora",
+      "ignoreArtDirection": "Ignorar la dirección de arte global de objetos"
+    },
+    "hints": {
+      "appearance": "Se usa para generar la imagen del objeto.",
+      "masterOnly": "Solo tú (el máster) puedes ver esto."
+    },
+    "validation": {
+      "nameRequired": "Ponle un nombre al objeto"
+    },
+    "visibility": {
+      "public": "Visible",
+      "private": "Privado"
+    },
+    "badge": {
+      "unique": "Único"
+    },
+    "imageStatus": {
+      "none": "Sin imagen",
+      "pending": "En cola",
+      "processing": "Generando…",
+      "completed": "Listo",
+      "failed": "Falló"
+    },
+    "art": {
+      "back": "Volver a los objetos",
+      "eyebrow": "Estilo visual",
+      "title": "Dirección de arte de los objetos",
+      "lead": "Define el estilo visual que debe guiar las imágenes de los objetos de esta campaña.",
+      "help": "Estas instrucciones se usan como base visual para todos los objetos de la campaña, salvo que una generación pida explícitamente ignorarlas.",
+      "fieldLabel": "Dirección de arte de los objetos",
+      "placeholder": "Ej.: Dark fantasy realista, fondo neutro, tonos fríos, metal envejecido, aspecto medieval, sin colores vibrantes…",
+      "save": "Guardar dirección de arte",
+      "clear": "Limpiar",
+      "loading": "Abriendo la dirección de arte…"
+    },
+    "instance": {
+      "eyebrow": "En el mundo",
+      "title": "Instancias",
+      "lead": "Ocurrencias concretas de este objeto en la campaña y dónde están.",
+      "new": "Añadir instancia",
+      "save": "Guardar",
+      "edit": "Editar",
+      "remove": "Eliminar",
+      "emptyTitle": "Sin instancias",
+      "emptyDescription": "Añade una ocurrencia concreta de este objeto en algún lugar de la campaña.",
+      "emptyPlayers": "No hay instancias visibles de este objeto.",
+      "uniqueLimit": "Este objeto es único: solo se permite una instancia.",
+      "withCharacter": "Con",
+      "atPoint": "En un punto de interés",
+      "onMap": "En el mapa",
+      "noLocation": "Sin ubicación definida",
+      "noHolder": "Sin portador",
+      "noMap": "Sin mapa",
+      "noPoint": "Sin punto",
+      "locationHint": "Una instancia está en un solo lugar (con un personaje O en un mapa/punto).",
+      "fields": {
+        "customName": "Nombre personalizado",
+        "customNameHint": "Déjalo vacío para usar \"{{name}}\".",
+        "customDescription": "Descripción personalizada",
+        "quantity": "Cantidad",
+        "state": "Estado",
+        "holder": "Portado por personaje",
+        "map": "En el mapa",
+        "point": "Punto de interés",
+        "masterNotes": "Notas del máster",
+        "visible": "Visible para jugadores"
+      }
+    },
+    "type": {
+      "WEAPON": "Arma",
+      "ARMOR": "Armadura",
+      "CONSUMABLE": "Consumible",
+      "RELIC": "Reliquia",
+      "DOCUMENT": "Documento",
+      "KEY": "Llave",
+      "TREASURE": "Tesoro",
+      "MAGIC_ITEM": "Objeto mágico",
+      "TOOL": "Herramienta",
+      "MISC": "Varios",
+      "OTHER": "Otro"
+    },
+    "state": {
+      "AVAILABLE": "Disponible",
+      "HIDDEN": "Oculto",
+      "CARRIED": "Portado",
+      "FOUND": "Encontrado",
+      "CONSUMED": "Consumido",
+      "DESTROYED": "Destruido",
+      "LOST": "Perdido"
+    }
   }
 }

@@ -293,6 +293,12 @@ export function CampaignDetailPage() {
             meta={t('map.hubMeta')}
             onClick={() => navigate(`/campaigns/${c.id}/maps`)}
           />
+          <Entry
+            title={t('item.list.title')}
+            icon={<BookIcon size={20} />}
+            meta={t('item.hubMeta')}
+            onClick={() => navigate(`/campaigns/${c.id}/items`)}
+          />
         </EntryList>
         <Divider variant="ornament" />
       </Chapter>

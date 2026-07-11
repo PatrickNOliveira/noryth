@@ -686,5 +686,152 @@
       "save": "Budget opslaan",
       "hint": "Punten die de speler mag verdelen (besteed = waarde − minimum). Laat leeg om te wissen."
     }
+  },
+  "item": {
+    "hubMeta": "Maak relieken, documenten, wapens, sleutels en belangrijke voorwerpen van de campagne.",
+    "list": {
+      "back": "Terug naar de tafel",
+      "new": "Nieuw voorwerp",
+      "artDirection": "Artistieke richting",
+      "title": "Voorwerpen",
+      "eyebrow": "Schatten & relieken",
+      "lead": "Relieken, documenten, wapens en voorwerpen die ertoe doen in je verhaal.",
+      "loading": "De kluis openen…",
+      "emptyTitle": "Nog geen voorwerpen",
+      "emptyDescription": "Maak het eerste reliek, document of voorwerp van je campagne."
+    },
+    "new": {
+      "eyebrow": "Nieuw voorwerp",
+      "title": "Voorwerp maken",
+      "lead": "Definieer het concept/de basis van een voorwerp; concrete exemplaren zijn de instanties."
+    },
+    "edit": {
+      "eyebrow": "Voorwerp",
+      "title": "Voorwerp bewerken"
+    },
+    "detail": {
+      "loading": "Voorwerp openen…",
+      "back": "Terug naar de voorwerpen",
+      "notFound": "Voorwerp niet gevonden.",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "confirmDelete": "Verwijderen bevestigen",
+      "generate": "Afbeelding genereren",
+      "requestChange": "Wijziging aanvragen",
+      "generateVersion": "Nieuwe versie genereren",
+      "adjustPlaceholder": "Beschrijf de wijzigingen aan de voorwerpafbeelding…",
+      "makePublic": "Zichtbaar maken",
+      "makePrivate": "Privé maken"
+    },
+    "form": {
+      "back": "Terug",
+      "create": "Voorwerp maken",
+      "save": "Opslaan",
+      "cancel": "Annuleren"
+    },
+    "fields": {
+      "name": "Naam",
+      "type": "Type",
+      "noType": "Geen type",
+      "shortDescription": "Korte beschrijving",
+      "description": "Beschrijving",
+      "history": "Geschiedenis",
+      "appearance": "Uiterlijk",
+      "effectDescription": "Verhaaleffect",
+      "rulesText": "Regeltekst",
+      "masterNotes": "Notities van de spelleider",
+      "isUnique": "Uniek voorwerp",
+      "visible": "Zichtbaar voor spelers",
+      "generateImage": "Nu een afbeelding genereren",
+      "ignoreArtDirection": "Negeer de globale artistieke richting van voorwerpen"
+    },
+    "hints": {
+      "appearance": "Gebruikt om de voorwerpafbeelding te genereren.",
+      "masterOnly": "Alleen jij (de spelleider) ziet dit."
+    },
+    "validation": {
+      "nameRequired": "Geef het voorwerp een naam"
+    },
+    "visibility": {
+      "public": "Zichtbaar",
+      "private": "Privé"
+    },
+    "badge": {
+      "unique": "Uniek"
+    },
+    "imageStatus": {
+      "none": "Geen afbeelding",
+      "pending": "In wachtrij",
+      "processing": "Genereren…",
+      "completed": "Klaar",
+      "failed": "Mislukt"
+    },
+    "art": {
+      "back": "Terug naar de voorwerpen",
+      "eyebrow": "Visuele stijl",
+      "title": "Artistieke richting van voorwerpen",
+      "lead": "Bepaal de visuele stijl die alle voorwerpafbeeldingen in deze campagne stuurt.",
+      "help": "Deze instructies vormen de visuele basis voor alle voorwerpen in de campagne, tenzij een generatie ze expliciet negeert.",
+      "fieldLabel": "Artistieke richting van voorwerpen",
+      "placeholder": "Bijv.: Realistische dark fantasy, neutrale achtergrond, koele tinten, verweerd metaal, middeleeuwse look, geen felle kleuren…",
+      "save": "Artistieke richting opslaan",
+      "clear": "Wissen",
+      "loading": "Artistieke richting openen…"
+    },
+    "instance": {
+      "eyebrow": "In de wereld",
+      "title": "Instanties",
+      "lead": "Concrete exemplaren van dit voorwerp in de campagne en waar ze zijn.",
+      "new": "Instantie toevoegen",
+      "save": "Opslaan",
+      "edit": "Bewerken",
+      "remove": "Verwijderen",
+      "emptyTitle": "Geen instanties",
+      "emptyDescription": "Voeg ergens in de campagne een concreet exemplaar van dit voorwerp toe.",
+      "emptyPlayers": "Geen zichtbare instanties van dit voorwerp.",
+      "uniqueLimit": "Dit voorwerp is uniek — slechts één instantie is toegestaan.",
+      "withCharacter": "Bij",
+      "atPoint": "Op een bezienswaardigheid",
+      "onMap": "Op kaart",
+      "noLocation": "Geen locatie ingesteld",
+      "noHolder": "Geen drager",
+      "noMap": "Geen kaart",
+      "noPoint": "Geen punt",
+      "locationHint": "Een instantie is op maximaal één plek (bij een personage OF op een kaart/punt).",
+      "fields": {
+        "customName": "Aangepaste naam",
+        "customNameHint": "Laat leeg om \"{{name}}\" te gebruiken.",
+        "customDescription": "Aangepaste beschrijving",
+        "quantity": "Aantal",
+        "state": "Staat",
+        "holder": "Gedragen door personage",
+        "map": "Op kaart",
+        "point": "Bezienswaardigheid",
+        "masterNotes": "Notities van de spelleider",
+        "visible": "Zichtbaar voor spelers"
+      }
+    },
+    "type": {
+      "WEAPON": "Wapen",
+      "ARMOR": "Harnas",
+      "CONSUMABLE": "Verbruiksartikel",
+      "RELIC": "Reliek",
+      "DOCUMENT": "Document",
+      "KEY": "Sleutel",
+      "TREASURE": "Schat",
+      "MAGIC_ITEM": "Magisch voorwerp",
+      "TOOL": "Gereedschap",
+      "MISC": "Diversen",
+      "OTHER": "Overig"
+    },
+    "state": {
+      "AVAILABLE": "Beschikbaar",
+      "HIDDEN": "Verborgen",
+      "CARRIED": "Gedragen",
+      "FOUND": "Gevonden",
+      "CONSUMED": "Verbruikt",
+      "DESTROYED": "Vernietigd",
+      "LOST": "Verloren"
+    }
   }
 }

@@ -192,4 +192,13 @@ export class CampaignsService {
     campaign.defaultPlayerCharacterAttributePoints = value;
     return this.campaigns.save(campaign);
   }
+
+  /** Persists the campaign's item art direction. Authorization is the caller's job. */
+  async saveItemArtDirection(
+    campaign: Campaign,
+    value: string,
+  ): Promise<Campaign> {
+    campaign.itemArtDirection = value;
+    return this.campaigns.save(campaign);
+  }
 }

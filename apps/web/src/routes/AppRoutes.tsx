@@ -26,6 +26,11 @@ import { MapArtDirectionPage } from '../pages/MapArtDirectionPage';
 import { NewMapPage } from '../pages/NewMapPage';
 import { MapDetailPage } from '../pages/MapDetailPage';
 import { MapEditPage } from '../pages/MapEditPage';
+import { ItemsListPage } from '../pages/ItemsListPage';
+import { ItemArtDirectionPage } from '../pages/ItemArtDirectionPage';
+import { NewItemPage } from '../pages/NewItemPage';
+import { ItemDetailPage } from '../pages/ItemDetailPage';
+import { ItemEditPage } from '../pages/ItemEditPage';
 
 /**
  * Route table.
@@ -71,6 +76,11 @@ export function AppRoutes() {
           <Route path="/campaigns/:campaignId/maps/new" element={<NewMapPage />} />
           <Route path="/campaigns/:campaignId/maps/:mapId" element={<MapDetailPage />} />
           <Route path="/campaigns/:campaignId/maps/:mapId/edit" element={<MapEditPage />} />
+          <Route path="/campaigns/:campaignId/items" element={<ItemsListPage />} />
+          <Route path="/campaigns/:campaignId/items/art-direction" element={<ItemArtDirectionPage />} />
+          <Route path="/campaigns/:campaignId/items/new" element={<NewItemPage />} />
+          <Route path="/campaigns/:campaignId/items/:itemId" element={<ItemDetailPage />} />
+          <Route path="/campaigns/:campaignId/items/:itemId/edit" element={<ItemEditPage />} />
         </Route>
       </Route>
 

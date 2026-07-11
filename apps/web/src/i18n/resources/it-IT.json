@@ -686,5 +686,152 @@
       "save": "Salva budget",
       "hint": "Punti che il giocatore può distribuire (spesa = valore − minimo). Lascia vuoto per azzerare."
     }
+  },
+  "item": {
+    "hubMeta": "Crea reliquie, documenti, armi, chiavi e oggetti importanti della campagna.",
+    "list": {
+      "back": "Torna al tavolo",
+      "new": "Nuovo oggetto",
+      "artDirection": "Direzione artistica",
+      "title": "Oggetti",
+      "eyebrow": "Tesori e reliquie",
+      "lead": "Reliquie, documenti, armi e oggetti che contano nella tua storia.",
+      "loading": "Apertura del forziere…",
+      "emptyTitle": "Ancora nessun oggetto",
+      "emptyDescription": "Crea la prima reliquia, documento od oggetto della tua campagna."
+    },
+    "new": {
+      "eyebrow": "Nuovo oggetto",
+      "title": "Crea un oggetto",
+      "lead": "Definisci il concetto/la base di un oggetto; le occorrenze concrete sono le sue istanze."
+    },
+    "edit": {
+      "eyebrow": "Oggetto",
+      "title": "Modifica oggetto"
+    },
+    "detail": {
+      "loading": "Apertura dell’oggetto…",
+      "back": "Torna agli oggetti",
+      "notFound": "Oggetto non trovato.",
+      "edit": "Modifica",
+      "delete": "Rimuovi",
+      "confirmDelete": "Conferma rimozione",
+      "generate": "Genera immagine",
+      "requestChange": "Richiedi una modifica",
+      "generateVersion": "Genera nuova versione",
+      "adjustPlaceholder": "Descrivi le modifiche all’immagine dell’oggetto…",
+      "makePublic": "Rendi visibile",
+      "makePrivate": "Rendi privato"
+    },
+    "form": {
+      "back": "Indietro",
+      "create": "Crea oggetto",
+      "save": "Salva",
+      "cancel": "Annulla"
+    },
+    "fields": {
+      "name": "Nome",
+      "type": "Tipo",
+      "noType": "Nessun tipo",
+      "shortDescription": "Descrizione breve",
+      "description": "Descrizione",
+      "history": "Storia",
+      "appearance": "Aspetto",
+      "effectDescription": "Effetto narrativo",
+      "rulesText": "Testo di regola",
+      "masterNotes": "Note del master",
+      "isUnique": "Oggetto unico",
+      "visible": "Visibile ai giocatori",
+      "generateImage": "Genera un’immagine ora",
+      "ignoreArtDirection": "Ignora la direzione artistica globale degli oggetti"
+    },
+    "hints": {
+      "appearance": "Usata per generare l’immagine dell’oggetto.",
+      "masterOnly": "Solo tu (il master) puoi vederlo."
+    },
+    "validation": {
+      "nameRequired": "Dai un nome all’oggetto"
+    },
+    "visibility": {
+      "public": "Visibile",
+      "private": "Privato"
+    },
+    "badge": {
+      "unique": "Unico"
+    },
+    "imageStatus": {
+      "none": "Nessuna immagine",
+      "pending": "In coda",
+      "processing": "Generazione…",
+      "completed": "Pronto",
+      "failed": "Fallito"
+    },
+    "art": {
+      "back": "Torna agli oggetti",
+      "eyebrow": "Stile visivo",
+      "title": "Direzione artistica degli oggetti",
+      "lead": "Definisci lo stile visivo che guida le immagini degli oggetti di questa campagna.",
+      "help": "Queste istruzioni sono usate come base visiva per tutti gli oggetti della campagna, a meno che una generazione non chieda esplicitamente di ignorarle.",
+      "fieldLabel": "Direzione artistica degli oggetti",
+      "placeholder": "Es.: Dark fantasy realistico, sfondo neutro, toni freddi, metallo invecchiato, aspetto medievale, niente colori vivaci…",
+      "save": "Salva direzione artistica",
+      "clear": "Cancella",
+      "loading": "Apertura della direzione artistica…"
+    },
+    "instance": {
+      "eyebrow": "Nel mondo",
+      "title": "Istanze",
+      "lead": "Occorrenze concrete di questo oggetto nella campagna e dove si trovano.",
+      "new": "Aggiungi istanza",
+      "save": "Salva",
+      "edit": "Modifica",
+      "remove": "Rimuovi",
+      "emptyTitle": "Nessuna istanza",
+      "emptyDescription": "Aggiungi un’occorrenza concreta di questo oggetto da qualche parte nella campagna.",
+      "emptyPlayers": "Nessuna istanza visibile di questo oggetto.",
+      "uniqueLimit": "Questo oggetto è unico — è consentita una sola istanza.",
+      "withCharacter": "Con",
+      "atPoint": "In un punto di interesse",
+      "onMap": "Sulla mappa",
+      "noLocation": "Nessuna posizione definita",
+      "noHolder": "Nessun portatore",
+      "noMap": "Nessuna mappa",
+      "noPoint": "Nessun punto",
+      "locationHint": "Un’istanza è in un solo posto (con un personaggio O su una mappa/punto).",
+      "fields": {
+        "customName": "Nome personalizzato",
+        "customNameHint": "Lascia vuoto per usare \"{{name}}\".",
+        "customDescription": "Descrizione personalizzata",
+        "quantity": "Quantità",
+        "state": "Stato",
+        "holder": "Portato dal personaggio",
+        "map": "Sulla mappa",
+        "point": "Punto di interesse",
+        "masterNotes": "Note del master",
+        "visible": "Visibile ai giocatori"
+      }
+    },
+    "type": {
+      "WEAPON": "Arma",
+      "ARMOR": "Armatura",
+      "CONSUMABLE": "Consumabile",
+      "RELIC": "Reliquia",
+      "DOCUMENT": "Documento",
+      "KEY": "Chiave",
+      "TREASURE": "Tesoro",
+      "MAGIC_ITEM": "Oggetto magico",
+      "TOOL": "Strumento",
+      "MISC": "Varie",
+      "OTHER": "Altro"
+    },
+    "state": {
+      "AVAILABLE": "Disponibile",
+      "HIDDEN": "Nascosto",
+      "CARRIED": "Portato",
+      "FOUND": "Trovato",
+      "CONSUMED": "Consumato",
+      "DESTROYED": "Distrutto",
+      "LOST": "Perso"
+    }
   }
 }

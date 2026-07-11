@@ -67,6 +67,13 @@ export const MAP_IMAGE_EVENTS = {
   failed: 'map.image.failed',
 } as const;
 
+/** Event names emitted by the API for item image generation. */
+export const ITEM_IMAGE_EVENTS = {
+  processing: 'item.image.processing',
+  completed: 'item.image.completed',
+  failed: 'item.image.failed',
+} as const;
+
 /** Client → server messages for campaign presence. */
 export const CAMPAIGN_PRESENCE_MESSAGES = {
   join: 'campaign:presence:join',

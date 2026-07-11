@@ -15,6 +15,7 @@ import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-
 import { FactionsModule } from '@modules/factions/factions.module';
 import { CharactersModule } from '@modules/characters/characters.module';
 import { MapsModule } from '@modules/maps/maps.module';
+import { ItemsModule } from '@modules/items/items.module';
 
 /**
  * Composition root. Wires global infrastructure (config, database, events,
@@ -38,6 +39,7 @@ import { MapsModule } from '@modules/maps/maps.module';
     FactionsModule,
     CharactersModule,
     MapsModule,
+    ItemsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

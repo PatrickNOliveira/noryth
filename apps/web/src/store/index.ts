@@ -20,6 +20,7 @@ import participantsReducer from './slices/participants.slice';
 import factionsReducer from './slices/factions.slice';
 import charactersReducer from './slices/characters.slice';
 import mapsReducer from './slices/maps.slice';
+import itemsReducer from './slices/items.slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   factions: factionsReducer,
   characters: charactersReducer,
   maps: mapsReducer,
+  items: itemsReducer,
 });
 
 /**
