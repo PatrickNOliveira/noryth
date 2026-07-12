@@ -12,4 +12,5 @@ export type SessionStatus = (typeof SESSION_STATUSES)[number];
 export const SESSION_EVENTS = {
   started: 'campaign.session.started',
   mapChanged: 'session.map.changed',
+  ended: 'session.ended',
 } as const;

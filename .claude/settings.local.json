@@ -36,7 +36,11 @@
       "Bash(node inject-session-i18n.js)",
       "Bash(node inject-scene-i18n.js)",
       "Bash(node inject-session-characters-i18n.js)",
-      "Bash(node inject-size-i18n.js)"
+      "Bash(node inject-size-i18n.js)",
+      "Bash(node -e \"const j=require\\('./i18n/resources/pt-BR.json'\\); console.log\\(JSON.stringify\\(j.map.type\\)\\)\")",
+      "Bash(\" services/ability.service.ts | head && echo \"\" && echo \"=== CharacterAbility type ===\" && grep -n -A18 \"export interface CharacterAbility \" types/ability.ts && echo \"=== campaignAttribute id field ===\" && sed -n '1,12p' types/campaignAttribute.ts && echo \"=== faction type ===\" && grep -n \"id\\\\|name\\\\|type\" types/faction.ts | head)",
+      "Bash(grep -n \"charBase\\\\|listCharacter\\\\|assign\\\\|CharacterAbility\\\\|abilities`\" services/ability.service.ts | head && echo \"\" && echo \"=== CharacterAbility type ===\" && grep -n -A18 \"export interface CharacterAbility \" types/ability.ts && echo \"=== campaignAttribute id field ===\" && sed -n '1,12p' types/campaignAttribute.ts && echo \"=== faction type ===\" && grep -n \"id\\\\|name\\\\|type\" types/faction.ts | head)",
+      "Bash(grep -n \"getById\\\\|abilities/\\\\$\" services/ability.service.ts)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

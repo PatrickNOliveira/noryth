@@ -610,6 +610,7 @@
       "CITY": "Ciudad",
       "DISTRICT": "Distrito",
       "BUILDING": "Edificio",
+      "INTERIOR": "Interior",
       "DUNGEON": "Mazmorra",
       "ROOM": "Sala",
       "BATTLEFIELD": "Campo de batalla",
@@ -1032,6 +1033,84 @@
     },
     "poi": {
       "error": "No se pudo guardar la posición del punto."
+    },
+    "end": {
+      "confirmTitle": "¿Terminar la sesión?",
+      "confirmBody": "Todos los jugadores saldrán de la sesión actual. Podrás iniciar una nueva sesión después.",
+      "cancel": "Cancelar",
+      "confirm": "Terminar sesión",
+      "ending": "Terminando la sesión…",
+      "error": "No se pudo terminar la sesión.",
+      "endedTitle": "Sesión terminada",
+      "endedMaster": "Has terminado la sesión. Puedes iniciar una nueva cuando quieras.",
+      "endedPlayer": "El máster terminó la sesión.",
+      "back": "Volver a la campaña"
+    },
+    "sheet": {
+      "open": "Abrir ficha",
+      "title": "Ficha del personaje",
+      "loading": "Cargando ficha…",
+      "error": "No se pudo cargar la ficha del personaje.",
+      "notInformed": "No indicado.",
+      "playerCharacter": "Personaje del jugador",
+      "npc": "PNJ",
+      "visible": "Visible para los jugadores",
+      "hidden": "Oculto a los jugadores",
+      "appearance": "Apariencia",
+      "personality": "Personalidad",
+      "motivations": "Motivaciones",
+      "description": "Descripción",
+      "history": "Historia",
+      "attributes": "Atributos",
+      "attribute": "Atributo",
+      "abilities": "Habilidades",
+      "secrets": "Secretos",
+      "masterNotes": "Notas del máster"
+    },
+    "inventory": {
+      "open": "Inventario",
+      "title": "Inventario",
+      "loading": "Cargando inventario…",
+      "error": "No se pudo cargar el inventario.",
+      "emptyTitle": "Inventario vacío",
+      "emptyDescription": "Este personaje no lleva ningún objeto.",
+      "hidden": "Oculto",
+      "unknownItem": "Objeto"
+    },
+    "itemSheet": {
+      "title": "Objeto",
+      "unique": "Único",
+      "visible": "Visible para los jugadores",
+      "hidden": "Oculto a los jugadores",
+      "appearance": "Apariencia",
+      "description": "Descripción",
+      "effect": "Efecto",
+      "rules": "Reglas",
+      "history": "Historia",
+      "masterNotes": "Notas del máster"
+    },
+    "abilities": {
+      "open": "Habilidades",
+      "title": "Habilidades",
+      "loading": "Cargando habilidades…",
+      "error": "No se pudieron cargar las habilidades.",
+      "emptyTitle": "Sin habilidades",
+      "emptyDescription": "Este personaje no tiene habilidades."
+    },
+    "abilitySheet": {
+      "title": "Habilidad",
+      "loading": "Cargando habilidad…",
+      "error": "No se pudo cargar la habilidad.",
+      "unique": "Única",
+      "visible": "Visible para los jugadores",
+      "hidden": "Oculta a los jugadores",
+      "description": "Descripción",
+      "effect": "Efecto",
+      "cost": "Coste",
+      "limitations": "Limitaciones",
+      "rules": "Reglas",
+      "history": "Historia",
+      "masterNotes": "Notas del máster"
     }
   }
 }

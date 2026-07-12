@@ -5,6 +5,7 @@ import {
   AddSessionCharacterInput,
   UpdateSessionCharacterInput,
   ChangeMapResult,
+  EndSessionResult,
   SpriteView,
   SpriteDirection,
 } from '../types/session';
@@ -38,6 +39,12 @@ export const sessionService = {
       `${base(campaignId)}/change-map`,
       { mapId },
     );
+    return data;
+  },
+
+  /** Master only. Ends the active session. */
+  async end(campaignId: string): Promise<EndSessionResult> {
+    const { data } = await api.post<EndSessionResult>(`${base(campaignId)}/end`, {});
     return data;
   },
 

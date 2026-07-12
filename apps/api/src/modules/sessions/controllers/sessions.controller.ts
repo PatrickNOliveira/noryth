@@ -15,6 +15,7 @@ import { SessionsService } from '../services/sessions.service';
 import { SessionDto } from '../dto/session.dto';
 import { StartSessionDto } from '../dto/start-session.dto';
 import { ChangeMapDto, ChangeMapResultDto } from '../dto/change-map.dto';
+import { EndSessionResultDto } from '../dto/end-session.dto';
 
 /**
  * Campaign session endpoints. Starting is master-only; reading the active
@@ -49,5 +50,13 @@ export class SessionsController {
     @Body() dto: ChangeMapDto,
   ): Promise<ChangeMapResultDto> {
     return this.sessions.changeMap(user.id, campaignId, dto);
+  }
+
+  @Post('end')
+  end(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+  ): Promise<EndSessionResultDto> {
+    return this.sessions.endSession(user.id, campaignId);
   }
 }

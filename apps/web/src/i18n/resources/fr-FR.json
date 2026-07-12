@@ -610,6 +610,7 @@
       "CITY": "Ville",
       "DISTRICT": "Quartier",
       "BUILDING": "Bâtiment",
+      "INTERIOR": "Intérieur",
       "DUNGEON": "Donjon",
       "ROOM": "Salle",
       "BATTLEFIELD": "Champ de bataille",
@@ -1032,6 +1033,84 @@
     },
     "poi": {
       "error": "Impossible d’enregistrer la position du point."
+    },
+    "end": {
+      "confirmTitle": "Terminer la session ?",
+      "confirmBody": "Tous les joueurs quitteront la session actuelle. Vous pourrez lancer une nouvelle session ensuite.",
+      "cancel": "Annuler",
+      "confirm": "Terminer la session",
+      "ending": "Fin de la session…",
+      "error": "Impossible de terminer la session.",
+      "endedTitle": "Session terminée",
+      "endedMaster": "Vous avez terminé la session. Vous pouvez en lancer une nouvelle à tout moment.",
+      "endedPlayer": "La session a été terminée par le maître.",
+      "back": "Retour à la campagne"
+    },
+    "sheet": {
+      "open": "Ouvrir la fiche",
+      "title": "Fiche du personnage",
+      "loading": "Chargement de la fiche…",
+      "error": "Impossible de charger la fiche du personnage.",
+      "notInformed": "Non renseigné.",
+      "playerCharacter": "Personnage joueur",
+      "npc": "PNJ",
+      "visible": "Visible par les joueurs",
+      "hidden": "Caché aux joueurs",
+      "appearance": "Apparence",
+      "personality": "Personnalité",
+      "motivations": "Motivations",
+      "description": "Description",
+      "history": "Histoire",
+      "attributes": "Attributs",
+      "attribute": "Attribut",
+      "abilities": "Compétences",
+      "secrets": "Secrets",
+      "masterNotes": "Notes du maître"
+    },
+    "inventory": {
+      "open": "Inventaire",
+      "title": "Inventaire",
+      "loading": "Chargement de l’inventaire…",
+      "error": "Impossible de charger l’inventaire.",
+      "emptyTitle": "Inventaire vide",
+      "emptyDescription": "Ce personnage ne porte aucun objet.",
+      "hidden": "Caché",
+      "unknownItem": "Objet"
+    },
+    "itemSheet": {
+      "title": "Objet",
+      "unique": "Unique",
+      "visible": "Visible par les joueurs",
+      "hidden": "Caché aux joueurs",
+      "appearance": "Apparence",
+      "description": "Description",
+      "effect": "Effet",
+      "rules": "Règles",
+      "history": "Histoire",
+      "masterNotes": "Notes du maître"
+    },
+    "abilities": {
+      "open": "Compétences",
+      "title": "Compétences",
+      "loading": "Chargement des compétences…",
+      "error": "Impossible de charger les compétences.",
+      "emptyTitle": "Aucune compétence",
+      "emptyDescription": "Ce personnage n’a aucune compétence."
+    },
+    "abilitySheet": {
+      "title": "Compétence",
+      "loading": "Chargement de la compétence…",
+      "error": "Impossible de charger la compétence.",
+      "unique": "Unique",
+      "visible": "Visible par les joueurs",
+      "hidden": "Cachée aux joueurs",
+      "description": "Description",
+      "effect": "Effet",
+      "cost": "Coût",
+      "limitations": "Limitations",
+      "rules": "Règles",
+      "history": "Histoire",
+      "masterNotes": "Notes du maître"
     }
   }
 }

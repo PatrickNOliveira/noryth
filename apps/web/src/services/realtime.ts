@@ -78,6 +78,7 @@ export const ITEM_IMAGE_EVENTS = {
 export const SESSION_EVENTS = {
   started: 'campaign.session.started',
   mapChanged: 'session.map.changed',
+  ended: 'session.ended',
 } as const;
 
 /** Server → client events for a map's 2.5D session-scene generation. */

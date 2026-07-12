@@ -31,4 +31,7 @@ export class CampaignSession extends BaseEntity {
 
   @Column({ name: 'ended_at', type: 'timestamptz', nullable: true })
   endedAt!: Date | null;
+
+  @Column({ name: 'ended_by_user_id', type: 'uuid', nullable: true })
+  endedByUserId!: string | null;
 }

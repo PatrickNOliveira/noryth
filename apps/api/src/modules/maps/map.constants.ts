@@ -13,6 +13,7 @@ export const MAP_TYPES = [
   'CITY',
   'DISTRICT',
   'BUILDING',
+  'INTERIOR',
   'DUNGEON',
   'ROOM',
   'BATTLEFIELD',

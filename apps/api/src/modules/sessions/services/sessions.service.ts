@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   REALTIME_PROVIDER,
@@ -16,6 +17,7 @@ import { CampaignSession } from '../entities/campaign-session.entity';
 import { SessionDto, toSessionDto } from '../dto/session.dto';
 import { StartSessionDto } from '../dto/start-session.dto';
 import { ChangeMapDto, ChangeMapResultDto } from '../dto/change-map.dto';
+import { EndSessionResultDto } from '../dto/end-session.dto';
 import { SESSION_EVENTS } from '../session.constants';
 import {
   SESSIONS_REPOSITORY,
@@ -161,6 +163,39 @@ export class SessionsService {
     return { session: sessionDto, previousMapId, removedSessionCharacterIds };
   }
 
+  /**
+   * Ends the active session. Master only. Marks it ENDED, stamps who/when, and
+   * clears every placed character so a future session starts clean (removes only
+   * the SessionCharacter links — never the campaign characters). Broadcasts
+   * `session.ended`. No active session → clear error.
+   */
+  async endSession(
+    userId: string,
+    campaignId: string,
+  ): Promise<EndSessionResultDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const session = await this.sessions.findActiveByCampaign(campaignId);
+    if (!session) {
+      throw new NotFoundException('Não existe sessão ativa para encerrar.');
+    }
+
+    // Clear the board first, then flip the session to ENDED.
+    await this.sessionChars.deleteBySession(session.id);
+    session.status = 'ENDED';
+    session.endedAt = new Date();
+    session.endedByUserId = userId;
+    const saved = await this.sessions.save(session);
+
+    await this.emitEnded(saved, userId);
+    return {
+      sessionId: saved.id,
+      tableId: saved.campaignId,
+      status: saved.status,
+      endedAt: saved.endedAt,
+      endedByUserId: saved.endedByUserId,
+    };
+  }
+
   // ── helpers ─────────────────────────────────────────────────
 
   /** Loads the current map and builds the DTO honoring the viewer's role. */
@@ -207,6 +242,30 @@ export class SessionsService {
     } catch (error) {
       this.logger.warn(
         `Realtime emit "${SESSION_EVENTS.mapChanged}" failed: ${(error as Error).message}`,
+      );
+    }
+  }
+
+  private async emitEnded(
+    session: CampaignSession,
+    originUserId: string,
+  ): Promise<void> {
+    try {
+      await this.realtime.emitToRoom(
+        campaignRoom(session.campaignId),
+        SESSION_EVENTS.ended,
+        {
+          tableId: session.campaignId,
+          sessionId: session.id,
+          status: session.status,
+          endedAt: session.endedAt,
+          endedByUserId: session.endedByUserId,
+          originUserId,
+        },
+      );
+    } catch (error) {
+      this.logger.warn(
+        `Realtime emit "${SESSION_EVENTS.ended}" failed: ${(error as Error).message}`,
       );
     }
   }

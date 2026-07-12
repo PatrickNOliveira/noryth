@@ -610,6 +610,7 @@
       "CITY": "City",
       "DISTRICT": "District",
       "BUILDING": "Building",
+      "INTERIOR": "Interior",
       "DUNGEON": "Dungeon",
       "ROOM": "Room",
       "BATTLEFIELD": "Battlefield",
@@ -1032,6 +1033,84 @@
     },
     "poi": {
       "error": "Could not save the point position."
+    },
+    "end": {
+      "confirmTitle": "End session?",
+      "confirmBody": "All players will leave the current session. You can start a new session afterwards.",
+      "cancel": "Cancel",
+      "confirm": "End session",
+      "ending": "Ending the session…",
+      "error": "Could not end the session.",
+      "endedTitle": "Session ended",
+      "endedMaster": "You ended the session. You can start a new one anytime.",
+      "endedPlayer": "The session was ended by the master.",
+      "back": "Back to the campaign"
+    },
+    "sheet": {
+      "open": "Open sheet",
+      "title": "Character sheet",
+      "loading": "Loading sheet…",
+      "error": "Could not load the character sheet.",
+      "notInformed": "Not informed.",
+      "playerCharacter": "Player character",
+      "npc": "NPC",
+      "visible": "Visible to players",
+      "hidden": "Hidden from players",
+      "appearance": "Appearance",
+      "personality": "Personality",
+      "motivations": "Motivations",
+      "description": "Description",
+      "history": "History",
+      "attributes": "Attributes",
+      "attribute": "Attribute",
+      "abilities": "Abilities",
+      "secrets": "Secrets",
+      "masterNotes": "Master notes"
+    },
+    "inventory": {
+      "open": "Inventory",
+      "title": "Inventory",
+      "loading": "Loading inventory…",
+      "error": "Could not load the inventory.",
+      "emptyTitle": "Empty inventory",
+      "emptyDescription": "This character is not carrying any items.",
+      "hidden": "Hidden",
+      "unknownItem": "Item"
+    },
+    "itemSheet": {
+      "title": "Item",
+      "unique": "Unique",
+      "visible": "Visible to players",
+      "hidden": "Hidden from players",
+      "appearance": "Appearance",
+      "description": "Description",
+      "effect": "Effect",
+      "rules": "Rules",
+      "history": "History",
+      "masterNotes": "Master notes"
+    },
+    "abilities": {
+      "open": "Abilities",
+      "title": "Abilities",
+      "loading": "Loading abilities…",
+      "error": "Could not load the abilities.",
+      "emptyTitle": "No abilities",
+      "emptyDescription": "This character has no abilities."
+    },
+    "abilitySheet": {
+      "title": "Ability",
+      "loading": "Loading ability…",
+      "error": "Could not load the ability.",
+      "unique": "Unique",
+      "visible": "Visible to players",
+      "hidden": "Hidden from players",
+      "description": "Description",
+      "effect": "Effect",
+      "cost": "Cost",
+      "limitations": "Limitations",
+      "rules": "Rules",
+      "history": "History",
+      "masterNotes": "Master notes"
     }
   }
 }

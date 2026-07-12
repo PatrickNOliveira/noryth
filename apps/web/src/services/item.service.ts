@@ -81,6 +81,17 @@ export const itemService = {
     });
     return data;
   },
+
+  /** Item instances held by a character (their session inventory). */
+  async listInstancesByHolder(
+    campaignId: string,
+    holderCharacterId: string,
+  ): Promise<ItemInstance[]> {
+    const { data } = await api.get<ItemInstance[]>(inst(campaignId), {
+      params: { holderCharacterId },
+    });
+    return data;
+  },
   async createInstance(
     campaignId: string,
     input: CreateItemInstanceInput,

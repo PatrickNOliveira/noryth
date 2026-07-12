@@ -288,12 +288,15 @@ export function CampaignDetailPage() {
               meta={t('session.hub.waitingMeta')}
             />
           )}
-          <Entry
-            title={t('playerCharacter.hubTitle')}
-            icon={<CompassIcon size={20} />}
-            meta={t('playerCharacter.hubMeta')}
-            onClick={() => navigate(`/campaigns/${c.id}/my-character`)}
-          />
+          {/* The master has no character of their own. */}
+          {!isMaster && (
+            <Entry
+              title={t('playerCharacter.hubTitle')}
+              icon={<CompassIcon size={20} />}
+              meta={t('playerCharacter.hubMeta')}
+              onClick={() => navigate(`/campaigns/${c.id}/my-character`)}
+            />
+          )}
           <Entry
             title={t('participant.title')}
             icon={<CompassIcon size={20} />}

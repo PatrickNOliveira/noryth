@@ -610,6 +610,7 @@
       "CITY": "Stad",
       "DISTRICT": "Wijk",
       "BUILDING": "Gebouw",
+      "INTERIOR": "Interieur",
       "DUNGEON": "Kerker",
       "ROOM": "Kamer",
       "BATTLEFIELD": "Slagveld",
@@ -1032,6 +1033,84 @@
     },
     "poi": {
       "error": "Kon de positie van het punt niet opslaan."
+    },
+    "end": {
+      "confirmTitle": "Sessie beëindigen?",
+      "confirmBody": "Alle spelers verlaten de huidige sessie. Je kunt daarna een nieuwe sessie starten.",
+      "cancel": "Annuleren",
+      "confirm": "Sessie beëindigen",
+      "ending": "Sessie beëindigen…",
+      "error": "Kon de sessie niet beëindigen.",
+      "endedTitle": "Sessie beëindigd",
+      "endedMaster": "Je hebt de sessie beëindigd. Je kunt altijd een nieuwe starten.",
+      "endedPlayer": "De sessie is beëindigd door de spelleider.",
+      "back": "Terug naar de campagne"
+    },
+    "sheet": {
+      "open": "Blad openen",
+      "title": "Personageblad",
+      "loading": "Blad laden…",
+      "error": "Kon het personageblad niet laden.",
+      "notInformed": "Niet opgegeven.",
+      "playerCharacter": "Spelerpersonage",
+      "npc": "NPC",
+      "visible": "Zichtbaar voor spelers",
+      "hidden": "Verborgen voor spelers",
+      "appearance": "Uiterlijk",
+      "personality": "Persoonlijkheid",
+      "motivations": "Motivaties",
+      "description": "Beschrijving",
+      "history": "Geschiedenis",
+      "attributes": "Attributen",
+      "attribute": "Attribuut",
+      "abilities": "Vaardigheden",
+      "secrets": "Geheimen",
+      "masterNotes": "Notities van de spelleider"
+    },
+    "inventory": {
+      "open": "Inventaris",
+      "title": "Inventaris",
+      "loading": "Inventaris laden…",
+      "error": "Kon de inventaris niet laden.",
+      "emptyTitle": "Lege inventaris",
+      "emptyDescription": "Dit personage draagt geen voorwerpen.",
+      "hidden": "Verborgen",
+      "unknownItem": "Voorwerp"
+    },
+    "itemSheet": {
+      "title": "Voorwerp",
+      "unique": "Uniek",
+      "visible": "Zichtbaar voor spelers",
+      "hidden": "Verborgen voor spelers",
+      "appearance": "Uiterlijk",
+      "description": "Beschrijving",
+      "effect": "Effect",
+      "rules": "Regels",
+      "history": "Geschiedenis",
+      "masterNotes": "Notities van de spelleider"
+    },
+    "abilities": {
+      "open": "Vaardigheden",
+      "title": "Vaardigheden",
+      "loading": "Vaardigheden laden…",
+      "error": "Kon de vaardigheden niet laden.",
+      "emptyTitle": "Geen vaardigheden",
+      "emptyDescription": "Dit personage heeft geen vaardigheden."
+    },
+    "abilitySheet": {
+      "title": "Vaardigheid",
+      "loading": "Vaardigheid laden…",
+      "error": "Kon de vaardigheid niet laden.",
+      "unique": "Uniek",
+      "visible": "Zichtbaar voor spelers",
+      "hidden": "Verborgen voor spelers",
+      "description": "Beschrijving",
+      "effect": "Effect",
+      "cost": "Kosten",
+      "limitations": "Beperkingen",
+      "rules": "Regels",
+      "history": "Geschiedenis",
+      "masterNotes": "Notities van de spelleider"
     }
   }
 }

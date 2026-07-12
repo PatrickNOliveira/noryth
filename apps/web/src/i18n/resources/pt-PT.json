@@ -610,6 +610,7 @@
       "CITY": "Cidade",
       "DISTRICT": "Bairro",
       "BUILDING": "Construção",
+      "INTERIOR": "Interior",
       "DUNGEON": "Masmorra",
       "ROOM": "Sala",
       "BATTLEFIELD": "Campo de batalha",
@@ -1032,6 +1033,84 @@
     },
     "poi": {
       "error": "Não foi possível guardar a posição do ponto."
+    },
+    "end": {
+      "confirmTitle": "Encerrar sessão?",
+      "confirmBody": "Todos os jogadores sairão da sessão atual. Poderás iniciar uma nova sessão depois.",
+      "cancel": "Cancelar",
+      "confirm": "Encerrar sessão",
+      "ending": "A encerrar a sessão…",
+      "error": "Não foi possível encerrar a sessão.",
+      "endedTitle": "Sessão encerrada",
+      "endedMaster": "Encerraste a sessão. Podes iniciar uma nova quando quiseres.",
+      "endedPlayer": "A sessão foi encerrada pelo mestre.",
+      "back": "Voltar para a campanha"
+    },
+    "sheet": {
+      "open": "Abrir ficha",
+      "title": "Ficha da personagem",
+      "loading": "A carregar ficha…",
+      "error": "Não foi possível carregar a ficha da personagem.",
+      "notInformed": "Não informado.",
+      "playerCharacter": "Personagem do jogador",
+      "npc": "NPC",
+      "visible": "Visível aos jogadores",
+      "hidden": "Oculto dos jogadores",
+      "appearance": "Aparência",
+      "personality": "Personalidade",
+      "motivations": "Motivações",
+      "description": "Descrição",
+      "history": "História",
+      "attributes": "Atributos",
+      "attribute": "Atributo",
+      "abilities": "Habilidades",
+      "secrets": "Segredos",
+      "masterNotes": "Notas do mestre"
+    },
+    "inventory": {
+      "open": "Inventário",
+      "title": "Inventário",
+      "loading": "A carregar inventário…",
+      "error": "Não foi possível carregar o inventário.",
+      "emptyTitle": "Inventário vazio",
+      "emptyDescription": "Esta personagem não está a carregar itens.",
+      "hidden": "Oculto",
+      "unknownItem": "Item"
+    },
+    "itemSheet": {
+      "title": "Item",
+      "unique": "Único",
+      "visible": "Visível aos jogadores",
+      "hidden": "Oculto dos jogadores",
+      "appearance": "Aparência",
+      "description": "Descrição",
+      "effect": "Efeito",
+      "rules": "Regras",
+      "history": "História",
+      "masterNotes": "Notas do mestre"
+    },
+    "abilities": {
+      "open": "Habilidades",
+      "title": "Habilidades",
+      "loading": "A carregar habilidades…",
+      "error": "Não foi possível carregar as habilidades.",
+      "emptyTitle": "Nenhuma habilidade",
+      "emptyDescription": "Esta personagem não possui habilidades."
+    },
+    "abilitySheet": {
+      "title": "Habilidade",
+      "loading": "A carregar habilidade…",
+      "error": "Não foi possível carregar a habilidade.",
+      "unique": "Única",
+      "visible": "Visível aos jogadores",
+      "hidden": "Oculta dos jogadores",
+      "description": "Descrição",
+      "effect": "Efeito",
+      "cost": "Custo",
+      "limitations": "Limitações",
+      "rules": "Regras",
+      "history": "História",
+      "masterNotes": "Notas do mestre"
     }
   }
 }

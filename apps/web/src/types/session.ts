@@ -79,8 +79,18 @@ export interface CampaignSession {
   currentMapId: string;
   startedAt: string;
   endedAt: string | null;
+  endedByUserId?: string | null;
   /** Current map as the viewer may see it (present on start and active fetch). */
   map: CampaignMap | null;
   createdAt: string;
   updatedAt: string;
+}
+
+/** Result of ending the active session. */
+export interface EndSessionResult {
+  sessionId: string;
+  tableId: string;
+  status: SessionStatus;
+  endedAt: string | null;
+  endedByUserId: string | null;
 }

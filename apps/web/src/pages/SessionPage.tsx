@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button, Loading, Alert, EmptyState, useToast } from '../components/ui';
+import { Button, Loading, Alert, EmptyState, Modal, useToast } from '../components/ui';
 import {
   BookIcon,
   MapIcon,
@@ -20,6 +20,9 @@ import { StartSessionModal } from '../components/session/StartSessionModal';
 import { AddSessionCharacterModal } from '../components/session/AddSessionCharacterModal';
 import { ChangeMapModal } from '../components/session/ChangeMapModal';
 import { SessionCharacterControls } from '../components/session/SessionCharacterControls';
+import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
+import { CharacterInventoryModal } from '../components/session/CharacterInventoryModal';
+import { CharacterAbilitiesModal } from '../components/session/CharacterAbilitiesModal';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   fetchActiveSession,
@@ -135,6 +138,17 @@ const BottomBar = styled.div`
   }
 `;
 
+/** Full-screen blocking overlay while the session is being ended. */
+const EndingOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, ${({ theme }) => theme.colors.background} 65%, transparent);
+`;
+
 /** Centered state (loading / empty / error) inside the game screen. */
 const Centered = styled.div`
   flex: 1 1 auto;
@@ -165,6 +179,12 @@ export function SessionPage() {
   const [changeMapOpen, setChangeMapOpen] = useState(false);
   const [changingMap, setChangingMap] = useState(false);
   const [poiEditMode, setPoiEditMode] = useState(false);
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
+  const [ending, setEnding] = useState(false);
+  const [justEnded, setJustEnded] = useState(false);
+  const [sheetCharacterId, setSheetCharacterId] = useState<string | null>(null);
+  const [inventoryCharacterId, setInventoryCharacterId] = useState<string | null>(null);
+  const [abilitiesCharacterId, setAbilitiesCharacterId] = useState<string | null>(null);
   const pendingRemoveIds = useRef(new Set<string>());
   // POI move concurrency (optimistic drag + cancel + version guard) per pointId.
   const poiControllers = useRef(new Map<string, AbortController>());
@@ -329,11 +349,20 @@ export function SessionPage() {
         sessionPointMoved({ pointId, sceneX: p.sceneX, sceneY: p.sceneY }),
       );
     };
+    // The master ended the session: tear everything down and show the notice.
+    const onEnded = (payload: unknown) => {
+      const p = payload as { originUserId?: string | null };
+      // The acting master already handled it via the request response.
+      if (isOwnEcho(p?.originUserId)) return;
+      resetSessionLocalState();
+      setJustEnded(true);
+    };
     const subs: Array<[string, (payload: unknown) => void]> = [
       [SESSION_CHARACTER_EVENTS.added, onAdded],
       [SESSION_CHARACTER_EVENTS.moved, onMoved],
       [SESSION_CHARACTER_EVENTS.removed, onRemoved],
       [SESSION_EVENTS.mapChanged, onMapChanged],
+      [SESSION_EVENTS.ended, onEnded],
       [MAP_POINT_EVENTS.scenePositionUpdated, onPoiMoved],
       [CHARACTER_SESSION_SPRITE_EVENTS.processing, sprite('processing')],
       [CHARACTER_SESSION_SPRITE_EVENTS.completed, sprite('completed')],
@@ -406,6 +435,10 @@ export function SessionPage() {
     }
     if (isMaster && key === 'editPoints') {
       setPoiEditMode((v) => !v);
+      return;
+    }
+    if (isMaster && key === 'endSession') {
+      setEndConfirmOpen(true);
       return;
     }
     notify(t('session.actionSoon'), { variant: 'info' });
@@ -566,6 +599,44 @@ export function SessionPage() {
       .finally(() => setChangingMap(false));
   };
 
+  // Tear down all local session state (used when the session ends). Aborts every
+  // in-flight mutation and clears the map/characters/points so no stale response
+  // or realtime echo can resurrect the ended session's visuals.
+  const resetSessionLocalState = () => {
+    saveControllers.current.forEach((c) => c.abort());
+    saveControllers.current.clear();
+    poiControllers.current.forEach((c) => c.abort());
+    poiControllers.current.clear();
+    mutationVersions.current.clear();
+    poiVersions.current.clear();
+    draggingIds.current.clear();
+    poiDraggingIds.current.clear();
+    pendingRemoveIds.current.clear();
+    resizeTimers.current.forEach((id) => window.clearTimeout(id));
+    resizeTimers.current.clear();
+    activeMapIdRef.current = null;
+    setSelectedId(null);
+    setPoiEditMode(false);
+    setPendingAddIds([]);
+    dispatch(clearSessionCharacters());
+    dispatch(clearSession());
+  };
+
+  // Master ends the session: block the UI, persist, then show the ended screen.
+  const endSessionNow = () => {
+    if (ending) return;
+    setEnding(true);
+    setEndConfirmOpen(false);
+    sessionService
+      .end(campaignId)
+      .then(() => {
+        resetSessionLocalState();
+        setJustEnded(true);
+      })
+      .catch(() => notify(t('session.end.error'), { variant: 'error' }))
+      .finally(() => setEnding(false));
+  };
+
   // ── points of interest (master, "reposition points" mode) ──
   const onPoiDragStart = (id: string) => {
     poiDraggingIds.current.add(id);
@@ -693,6 +764,33 @@ export function SessionPage() {
 
   const title = campaignName ?? t('session.title');
 
+  // Session ended — a calm notice with a way back to the campaign.
+  if (justEnded) {
+    return (
+      <Screen>
+        <TopBar>
+          <Title>{title}</Title>
+        </TopBar>
+        <Centered>
+          <EmptyState
+            icon={<LeaveIcon size={36} />}
+            title={t('session.end.endedTitle')}
+            description={
+              isMaster
+                ? t('session.end.endedMaster')
+                : t('session.end.endedPlayer')
+            }
+            actions={
+              <Button onClick={() => navigate(`/campaigns/${campaignId}`)}>
+                {t('session.end.back')}
+              </Button>
+            }
+          />
+        </Centered>
+      </Screen>
+    );
+  }
+
   // Not loaded yet.
   if (!loaded && loading) {
     return (
@@ -809,8 +907,34 @@ export function SessionPage() {
           onRegenerate={regenerateSelected}
           onRemove={removeSelected}
           onResize={resizeSelected}
+          onOpenSheet={() => setSheetCharacterId(selected.characterId)}
+          onOpenInventory={() => setInventoryCharacterId(selected.characterId)}
+          onOpenAbilities={() => setAbilitiesCharacterId(selected.characterId)}
           onClose={() => setSelectedId(null)}
         />
+      )}
+
+      {isMaster && (
+        <>
+          <CharacterSheetModal
+            campaignId={campaignId}
+            characterId={sheetCharacterId}
+            isOpen={!!sheetCharacterId}
+            onClose={() => setSheetCharacterId(null)}
+          />
+          <CharacterInventoryModal
+            campaignId={campaignId}
+            characterId={inventoryCharacterId}
+            isOpen={!!inventoryCharacterId}
+            onClose={() => setInventoryCharacterId(null)}
+          />
+          <CharacterAbilitiesModal
+            campaignId={campaignId}
+            characterId={abilitiesCharacterId}
+            isOpen={!!abilitiesCharacterId}
+            onClose={() => setAbilitiesCharacterId(null)}
+          />
+        </>
       )}
 
       {isMaster && (
@@ -830,7 +954,30 @@ export function SessionPage() {
             currentMapId={active.currentMapId}
             onPick={changeMapTo}
           />
+          <Modal
+            isOpen={endConfirmOpen}
+            onClose={() => setEndConfirmOpen(false)}
+            title={t('session.end.confirmTitle')}
+            footer={
+              <>
+                <Button variant="ghost" onClick={() => setEndConfirmOpen(false)}>
+                  {t('session.end.cancel')}
+                </Button>
+                <Button variant="danger" loading={ending} onClick={endSessionNow}>
+                  {t('session.end.confirm')}
+                </Button>
+              </>
+            }
+          >
+            <p>{t('session.end.confirmBody')}</p>
+          </Modal>
         </>
+      )}
+
+      {ending && (
+        <EndingOverlay>
+          <Loading block label={t('session.end.ending')} />
+        </EndingOverlay>
       )}
     </Screen>
   );
@@ -839,20 +986,16 @@ export function SessionPage() {
 type TFn = (key: string) => string;
 
 /** Mocked master actions for this story. */
+/** Only the wired master actions — the mocked placeholders were removed. */
 function masterActions(t: TFn, poiEditMode: boolean): SessionAction[] {
   return [
-    { key: 'narrate', label: t('session.action.narrate'), icon: <BookIcon size={20} /> },
+    { key: 'showCharacter', label: t('session.action.showCharacter'), icon: <CompassIcon size={20} /> },
     { key: 'changeMap', label: t('session.action.changeMap'), icon: <MapIcon size={20} /> },
     {
       key: 'editPoints',
       label: t(poiEditMode ? 'session.action.editPointsDone' : 'session.action.editPoints'),
       icon: <CompassIcon size={20} />,
     },
-    { key: 'showCharacter', label: t('session.action.showCharacter'), icon: <CompassIcon size={20} /> },
-    { key: 'showItem', label: t('session.action.showItem'), icon: <ShieldIcon size={20} /> },
-    { key: 'showHandout', label: t('session.action.showHandout'), icon: <BookIcon size={20} /> },
-    { key: 'masterNotes', label: t('session.action.masterNotes'), icon: <BookIcon size={20} /> },
-    { key: 'manageScene', label: t('session.action.manageScene'), icon: <CompassIcon size={20} /> },
     { key: 'endSession', label: t('session.action.endSession'), icon: <LeaveIcon size={20} /> },
   ];
 }

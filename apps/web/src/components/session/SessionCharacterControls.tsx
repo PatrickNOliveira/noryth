@@ -82,6 +82,9 @@ interface Props {
   onRegenerate: () => void;
   onRemove: () => void;
   onResize: (sizeScale: number) => void;
+  onOpenSheet: () => void;
+  onOpenInventory: () => void;
+  onOpenAbilities: () => void;
   onClose: () => void;
 }
 
@@ -92,6 +95,9 @@ export function SessionCharacterControls({
   onRegenerate,
   onRemove,
   onResize,
+  onOpenSheet,
+  onOpenInventory,
+  onOpenAbilities,
   onClose,
 }: Props) {
   const { t } = useTranslation();
@@ -139,6 +145,15 @@ export function SessionCharacterControls({
         onClick={() => onSetFacing('BACK')}
       >
         {t('session.characters.back')}
+      </Button>
+      <Button size="sm" variant="secondary" onClick={onOpenSheet}>
+        {t('session.sheet.open')}
+      </Button>
+      <Button size="sm" variant="secondary" onClick={onOpenInventory}>
+        {t('session.inventory.open')}
+      </Button>
+      <Button size="sm" variant="secondary" onClick={onOpenAbilities}>
+        {t('session.abilities.open')}
       </Button>
       <Button size="sm" variant="secondary" onClick={onToggleVisibility}>
         {character.isVisibleToPlayers
