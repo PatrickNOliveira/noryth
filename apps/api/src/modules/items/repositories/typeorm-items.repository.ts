@@ -49,6 +49,22 @@ export class TypeOrmItemsRepository implements ItemsRepository {
     return this.instances.countBy({ itemDefinitionId: definitionId });
   }
 
+  async countInstancesByCampaign(
+    campaignId: string,
+  ): Promise<Array<{ itemDefinitionId: string; count: number }>> {
+    const rows = await this.instances
+      .createQueryBuilder('i')
+      .select('i.item_definition_id', 'itemDefinitionId')
+      .addSelect('COUNT(*)', 'count')
+      .where('i.campaign_id = :campaignId', { campaignId })
+      .groupBy('i.item_definition_id')
+      .getRawMany<{ itemDefinitionId: string; count: string }>();
+    return rows.map((r) => ({
+      itemDefinitionId: r.itemDefinitionId,
+      count: Number(r.count),
+    }));
+  }
+
   createInstance(data: Partial<ItemInstance>): ItemInstance {
     return this.instances.create(data as DeepPartial<ItemInstance>);
   }

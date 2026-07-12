@@ -6,6 +6,9 @@ import {
   UpdateItemDefinitionInput,
   CreateItemInstanceInput,
   UpdateItemInstanceInput,
+  ItemDefinitionListItem,
+  ItemSessionDetail,
+  GiveItemToCharacterInput,
 } from '../types/item';
 
 const defs = (campaignId: string) => `/campaigns/${campaignId}/items`;
@@ -109,5 +112,70 @@ export const itemService = {
   },
   async removeInstance(campaignId: string, id: string): Promise<void> {
     await api.delete(`${inst(campaignId)}/${id}`);
+  },
+
+  // ── session item management (master only) ──
+
+  /** Campaign items with instance counts + optional name search. */
+  async sessionList(
+    campaignId: string,
+    search?: string,
+    signal?: AbortSignal,
+  ): Promise<ItemDefinitionListItem[]> {
+    const { data } = await api.get<ItemDefinitionListItem[]>(
+      `${defs(campaignId)}/session-list`,
+      { params: search ? { search } : undefined, signal },
+    );
+    return data;
+  },
+
+  /** Item sheet with all its instances. */
+  async sessionDetail(
+    campaignId: string,
+    id: string,
+  ): Promise<ItemSessionDetail> {
+    const { data } = await api.get<ItemSessionDetail>(
+      `${defs(campaignId)}/${id}/session-detail`,
+    );
+    return data;
+  },
+
+  /** Give this item to a character (creates a new instance / transfers the unique one). */
+  async giveToCharacter(
+    campaignId: string,
+    id: string,
+    input: GiveItemToCharacterInput,
+  ): Promise<ItemInstance> {
+    const { data } = await api.post<ItemInstance>(
+      `${defs(campaignId)}/${id}/give-to-character`,
+      input,
+    );
+    return data;
+  },
+
+  /** Transfer a specific existing instance to a character. */
+  async transferInstance(
+    campaignId: string,
+    instanceId: string,
+    characterId: string,
+  ): Promise<ItemInstance> {
+    const { data } = await api.patch<ItemInstance>(
+      `${inst(campaignId)}/${instanceId}/transfer`,
+      { characterId },
+    );
+    return data;
+  },
+
+  /** Clear the holder of an instance (keeps the instance). */
+  async unassignHolder(
+    campaignId: string,
+    instanceId: string,
+    state?: string,
+  ): Promise<ItemInstance> {
+    const { data } = await api.patch<ItemInstance>(
+      `${inst(campaignId)}/${instanceId}/unassign-holder`,
+      state ? { state } : {},
+    );
+    return data;
   },
 };

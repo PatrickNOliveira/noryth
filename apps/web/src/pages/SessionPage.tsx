@@ -20,6 +20,9 @@ import {
 import { StartSessionModal } from '../components/session/StartSessionModal';
 import { AddSessionCharacterModal } from '../components/session/AddSessionCharacterModal';
 import { CreateSessionCharacterModal } from '../components/session/CreateSessionCharacterModal';
+import { CreateSessionItemModal } from '../components/session/CreateSessionItemModal';
+import { CreateSessionAbilityModal } from '../components/session/CreateSessionAbilityModal';
+import { SessionItemsModal } from '../components/session/SessionItemsModal';
 import { ChangeMapModal } from '../components/session/ChangeMapModal';
 import { SessionCharacterControls } from '../components/session/SessionCharacterControls';
 import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
@@ -53,9 +56,14 @@ import {
   sessionCharacterFormChanged,
   sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
+  sessionSpritesReconciled,
 } from '../store/slices/sessionCharacters.slice';
 import { characterUpserted } from '../store/slices/characters.slice';
+import { itemUpserted } from '../store/slices/items.slice';
+import { abilityUpserted } from '../store/slices/abilities.slice';
 import { sessionService } from '../services/session.service';
+import { SessionItemResult } from '../types/item';
+import { SessionAbilityResult } from '../types/ability';
 import { useCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
 import {
@@ -184,6 +192,10 @@ export function SessionPage() {
   const [startOpen, setStartOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [createItemOpen, setCreateItemOpen] = useState(false);
+  const [createAbilityOpen, setCreateAbilityOpen] = useState(false);
+  const [abilitiesReloadToken, setAbilitiesReloadToken] = useState(0);
+  const [itemsManagerOpen, setItemsManagerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [pendingAddIds, setPendingAddIds] = useState<string[]>([]);
   const [changeMapOpen, setChangeMapOpen] = useState(false);
@@ -233,10 +245,21 @@ export function SessionPage() {
     if (campaignId && activeSessionId) dispatch(fetchSessionCharacters(campaignId));
   }, [campaignId, activeSessionId, currentMapId, dispatch]);
 
+  // Single, stable membership in the campaign room. The listener effects below
+  // only (un)register handlers — they must NOT join/leave the room, otherwise one
+  // effect re-running (e.g. on every `active` change during scene generation)
+  // would `leave` the room and silently drop the OTHER effect's live events
+  // (notably `character.form.session_sprite.completed`).
+  useEffect(() => {
+    if (!campaignId) return;
+    const room = `campaign:${campaignId}`;
+    realtime.join(room);
+    return () => realtime.leave(room);
+  }, [campaignId]);
+
   // Live character updates (session.character.* + character.session_sprite.*).
   useEffect(() => {
     if (!campaignId || !activeSessionId) return;
-    const room = `campaign:${campaignId}`;
     const isOwnEcho = (originUserId?: string | null) =>
       !!originUserId && originUserId === myUserId;
 
@@ -438,18 +461,15 @@ export function SessionPage() {
       [CHARACTER_FORM_SESSION_SPRITE_EVENTS.completed, formSprite('completed')],
       [CHARACTER_FORM_SESSION_SPRITE_EVENTS.failed, formSprite('failed')],
     ];
-    realtime.join(room);
     subs.forEach(([e, h]) => realtime.on(e, h));
     return () => {
       subs.forEach(([e, h]) => realtime.off(e, h));
-      realtime.leave(room);
     };
   }, [campaignId, activeSessionId, dispatch, myUserId]);
 
   // Live scene-generation updates (map.session_scene.*) via the campaign room.
   useEffect(() => {
     if (!campaignId || !active) return;
-    const room = `campaign:${campaignId}`;
     const patch =
       (status: MapImageStatus) =>
       (payload: unknown) => {
@@ -473,11 +493,9 @@ export function SessionPage() {
       [MAP_SESSION_SCENE_EVENTS.completed, patch('completed')],
       [MAP_SESSION_SCENE_EVENTS.failed, patch('failed')],
     ];
-    realtime.join(room);
     subs.forEach(([e, h]) => realtime.on(e, h));
     return () => {
       subs.forEach(([e, h]) => realtime.off(e, h));
-      realtime.leave(room);
     };
   }, [campaignId, active, dispatch]);
 
@@ -485,6 +503,22 @@ export function SessionPage() {
   const sceneBuilding = sceneStatus === 'pending' || sceneStatus === 'processing';
   useImageFallbackPoll(!!sceneBuilding, () => {
     if (campaignId) dispatch(fetchActiveSession(campaignId));
+  });
+
+  // Safety-net poll while any placed character's active-form sprite hasn't
+  // rendered yet — a missed `character.form.session_sprite.completed` event would
+  // otherwise leave a placeholder until the master removes and re-adds the token.
+  // Reconciles ONLY sprite/form data (never positions), so it's drag-safe.
+  const spritesBuilding = useMemo(
+    () => sessionCharacters.some((c) => !c.isOptimistic && spriteNotReady(c)),
+    [sessionCharacters],
+  );
+  useImageFallbackPoll(spritesBuilding, () => {
+    if (!campaignId) return;
+    sessionService
+      .listCharacters(campaignId)
+      .then((list) => dispatch(sessionSpritesReconciled(list)))
+      .catch(() => {});
   });
 
   const actions = useMemo<SessionAction[]>(
@@ -501,6 +535,18 @@ export function SessionPage() {
     }
     if (isMaster && key === 'createCharacter') {
       setCreateOpen(true);
+      return;
+    }
+    if (isMaster && key === 'createItem') {
+      setCreateItemOpen(true);
+      return;
+    }
+    if (isMaster && key === 'createAbility') {
+      setCreateAbilityOpen(true);
+      return;
+    }
+    if (isMaster && key === 'manageItems') {
+      setItemsManagerOpen(true);
       return;
     }
     if (isMaster && key === 'changeMap') {
@@ -644,6 +690,26 @@ export function SessionPage() {
     setCreateOpen(false);
     notify(t('session.createCharacter.created'), { variant: 'success' });
     if (addToMap) addCharacterToMap(character);
+  };
+
+  // An item was improvised during the session: make it available in the campaign
+  // list right away, so the master can use/link it immediately.
+  const onImprovisedItemCreated = (result: SessionItemResult) => {
+    dispatch(itemUpserted(result.definition));
+    setCreateItemOpen(false);
+    notify(t('session.createItem.created'), { variant: 'success' });
+  };
+
+  // An ability was improvised during the session: make it available in the
+  // campaign list; if it was linked to a character, refresh that character's
+  // ability list so the new grant shows on next open.
+  const onImprovisedAbilityCreated = (result: SessionAbilityResult) => {
+    dispatch(abilityUpserted(result.definition));
+    setCreateAbilityOpen(false);
+    notify(t('session.createAbility.created'), { variant: 'success' });
+    if (result.linkTarget !== 'NONE') {
+      setAbilitiesReloadToken((v) => v + 1);
+    }
   };
 
   // Switch the active map: clean the board instantly, then confirm. One switch
@@ -1066,6 +1132,7 @@ export function SessionPage() {
             characterId={abilitiesCharacterId}
             isOpen={!!abilitiesCharacterId}
             onClose={() => setAbilitiesCharacterId(null)}
+            reloadToken={abilitiesReloadToken}
           />
           {(() => {
             const target = sessionCharacters.find((c) => c.id === formModalId) ?? null;
@@ -1098,6 +1165,36 @@ export function SessionPage() {
             isOpen={createOpen}
             onClose={() => setCreateOpen(false)}
             onCreated={onImprovisedCharacterCreated}
+          />
+          <CreateSessionItemModal
+            campaignId={campaignId}
+            currentMapId={active.currentMapId}
+            mapPoints={(active.map?.points ?? []).map((p) => ({ id: p.id, name: p.name }))}
+            isOpen={createItemOpen}
+            onClose={() => setCreateItemOpen(false)}
+            onCreated={onImprovisedItemCreated}
+          />
+          <CreateSessionAbilityModal
+            campaignId={campaignId}
+            selectedCharacter={
+              selected
+                ? {
+                    id: selected.characterId,
+                    name: selected.characterName,
+                    activeForm: selected.activeForm
+                      ? { id: selected.activeForm.id, name: selected.activeForm.name }
+                      : null,
+                  }
+                : null
+            }
+            isOpen={createAbilityOpen}
+            onClose={() => setCreateAbilityOpen(false)}
+            onCreated={onImprovisedAbilityCreated}
+          />
+          <SessionItemsModal
+            campaignId={campaignId}
+            isOpen={itemsManagerOpen}
+            onClose={() => setItemsManagerOpen(false)}
           />
           <ChangeMapModal
             campaignId={campaignId}
@@ -1135,6 +1232,16 @@ export function SessionPage() {
   );
 }
 
+/**
+ * A placed character whose sprite for its CURRENT facing isn't rendered yet — i.e.
+ * still generating (or the row is missing). `failed`/`completed` stop the poll so
+ * it never spins forever.
+ */
+function spriteNotReady(c: SessionCharacter): boolean {
+  const s = c.sprites.find((sp) => sp.direction === c.facing);
+  return !s || (s.imageStatus !== 'completed' && s.imageStatus !== 'failed');
+}
+
 type TFn = (key: string) => string;
 
 /** Mocked master actions for this story. */
@@ -1142,6 +1249,9 @@ type TFn = (key: string) => string;
 function masterActions(t: TFn, poiEditMode: boolean): SessionAction[] {
   return [
     { key: 'createCharacter', label: t('session.action.createCharacter'), icon: <PlusIcon size={20} /> },
+    { key: 'createItem', label: t('session.action.createItem'), icon: <BookIcon size={20} /> },
+    { key: 'createAbility', label: t('session.action.createAbility'), icon: <DiceIcon size={20} /> },
+    { key: 'manageItems', label: t('session.action.manageItems'), icon: <BookIcon size={20} /> },
     { key: 'showCharacter', label: t('session.action.showCharacter'), icon: <CompassIcon size={20} /> },
     { key: 'changeMap', label: t('session.action.changeMap'), icon: <MapIcon size={20} /> },
     {

@@ -3,6 +3,7 @@ import {
   TEXT_GENERATION_PROVIDER,
   TextGenerationProvider,
 } from '@shared/providers/text-generation/text-generation.provider';
+import { buildLanguageRequirement } from '@shared/utils/language.util';
 
 /** Campaign context handed to the improvisation model. */
 export interface ImproviseCampaignContext {
@@ -81,6 +82,8 @@ export interface ImproviseContext {
   factions: ImproviseFactionContext[];
   partial: ImprovisePartialCharacter;
   instructions?: string;
+  /** English name of the language the AI must write completions in. */
+  languageName: string;
 }
 
 const NARRATIVE_KEYS = [
@@ -102,7 +105,7 @@ Your job: propose a complete, believable character that fits the campaign, the c
 
 Hard rules:
 - The master may have already written some fields ("Provided by the master"). Treat those as FIXED CANON. Never contradict them; build the rest of the character around them.
-- Write the narrative fields in the campaign's main language.
+- Write ALL generated text fields in the TARGET LANGUAGE stated in the "Language requirement" section of the user message. Never default to Portuguese. The campaign context may be in another language, but your output must use the target language.
 - Keep it grounded and usable at the table: concise, evocative, not purple prose.
 - "secrets" and "masterNotes" are master-only — put GM-facing hooks/twists there.
 - Attributes: ONLY use the attribute ids given below, and keep each value within its stated range. Do NOT invent attributes. If unsure, pick a sensible mid-range value. Echo the exact attributeId for each.
@@ -166,13 +169,13 @@ export class ImprovisedCharacterAgent {
       if (v) lines.push(`${label}: ${v}`);
     };
 
+    lines.push(buildLanguageRequirement(context.languageName), '');
     lines.push('# Campaign');
     add('Name', campaign.name);
     add('Theme', campaign.theme.replace(/[-_]/g, ' '));
     add('Tone', campaign.tone.replace(/[-_]/g, ' '));
     add('Premise', campaign.premise);
     add('Character art direction', campaign.characterArtDirection);
-    add('Main language (write in this language)', campaign.mainLanguage);
 
     if (map) {
       lines.push('', '# Current scene / map');

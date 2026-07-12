@@ -24,11 +24,19 @@ import { imageGenerationInFlight } from '@shared/utils/image-generation.util';
 import { CampaignsService } from '@modules/campaigns/services/campaigns.service';
 import { campaignRoom } from '@modules/campaigns/campaign.constants';
 import { ItemDefinition } from '../entities/item-definition.entity';
-import { ItemDefinitionDto, toItemDefinitionDto } from '../dto/item.dto';
+import {
+  ItemDefinitionDto,
+  ItemDefinitionListItemDto,
+  ItemSessionDetailDto,
+  toItemDefinitionDto,
+  toItemInstanceDto,
+} from '../dto/item.dto';
 import { CreateItemDefinitionDto } from '../dto/create-item-definition.dto';
 import { UpdateItemDefinitionDto } from '../dto/update-item-definition.dto';
 import {
   itemRoom,
+  ItemCreationSource,
+  ITEM_EVENTS,
   ITEM_IMAGE_EVENTS,
   GENERATE_ITEM_IMAGE_JOB,
   GenerateItemImagePayload,
@@ -69,6 +77,55 @@ export class ItemDefinitionsService {
     return list.map((d) => toItemDefinitionDto(d, isMaster));
   }
 
+  /**
+   * Master-only campaign items list for the session manager: every definition
+   * with its instance count, optionally filtered by a name search. Used by the
+   * session "Items" panel.
+   */
+  async listWithCounts(
+    userId: string,
+    campaignId: string,
+    search?: string,
+  ): Promise<ItemDefinitionListItemDto[]> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    let defs = await this.items.findDefinitionsByCampaign(campaignId);
+    const term = search?.trim().toLowerCase();
+    if (term) {
+      defs = defs.filter((d) => d.name.toLowerCase().includes(term));
+    }
+    const counts = new Map(
+      (await this.items.countInstancesByCampaign(campaignId)).map((r) => [
+        r.itemDefinitionId,
+        r.count,
+      ]),
+    );
+    return defs.map((d) => ({
+      ...toItemDefinitionDto(d, true),
+      instanceCount: counts.get(d.id) ?? 0,
+    }));
+  }
+
+  /**
+   * Master-only item sheet for the session manager: the definition plus all of
+   * its instances (with holder/location/state), so the master can transfer or
+   * unassign them.
+   */
+  async getSessionDetail(
+    userId: string,
+    campaignId: string,
+    definitionId: string,
+  ): Promise<ItemSessionDetailDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const def = await this.loadOrFail(campaignId, definitionId);
+    const instances = await this.items.findInstances(campaignId, {
+      itemDefinitionId: def.id,
+    });
+    return {
+      definition: toItemDefinitionDto(def, true),
+      instances: instances.map((i) => toItemInstanceDto(i, true)),
+    };
+  }
+
   async getDetail(
     userId: string,
     campaignId: string,
@@ -83,16 +140,28 @@ export class ItemDefinitionsService {
     return toItemDefinitionDto(def, isMaster);
   }
 
+  /**
+   * Creates an item definition. `origin` records provenance: campaign prep by
+   * default, or an item improvised during a live session (audit-only — the item
+   * is identical otherwise). Broadcasts `item.created` so watchers' lists update
+   * without a refetch.
+   */
   async create(
     userId: string,
     campaignId: string,
     dto: CreateItemDefinitionDto,
+    origin: {
+      creationSource?: ItemCreationSource;
+      createdDuringSessionId?: string | null;
+    } = {},
   ): Promise<ItemDefinitionDto> {
     await this.campaigns.findForMasterOrFail(userId, campaignId);
     let def = await this.items.saveDefinition(
       this.items.createDefinition({
         campaignId,
         createdByUserId: userId,
+        creationSource: origin.creationSource ?? 'PREPARATION',
+        createdDuringSessionId: origin.createdDuringSessionId ?? null,
         name: dto.name.trim(),
         type: dto.type?.trim() ?? '',
         shortDescription: dto.shortDescription?.trim() ?? '',
@@ -116,6 +185,14 @@ export class ItemDefinitionsService {
         ignoreArtDirection: dto.ignoreCampaignArtDirection,
       });
     }
+
+    await this.emit(def, ITEM_EVENTS.created, {
+      tableId: def.campaignId,
+      itemDefinitionId: def.id,
+      createdDuringSessionId: def.createdDuringSessionId,
+      originUserId: userId,
+    });
+
     return toItemDefinitionDto(def, true);
   }
 

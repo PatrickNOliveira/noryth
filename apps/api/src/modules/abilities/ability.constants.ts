@@ -30,6 +30,15 @@ export const ABILITY_APPROVAL_STATUSES = [
 export type AbilityApprovalStatus =
   (typeof ABILITY_APPROVAL_STATUSES)[number];
 
+/**
+ * Where an ability was authored. `PREPARATION` is the default (campaign prep);
+ * `SESSION` marks an ability improvised by the master during a live session.
+ * Audit-only — it never forks the ability flow.
+ */
+export const ABILITY_CREATION_SOURCES = ['PREPARATION', 'SESSION'] as const;
+export type AbilityCreationSource =
+  (typeof ABILITY_CREATION_SOURCES)[number];
+
 /** State of a character's ability link. */
 export const CHARACTER_ABILITY_STATUSES = [
   'ACTIVE',
@@ -42,10 +51,12 @@ export type CharacterAbilityStatus =
 
 /** Server → client events for abilities (best-effort UI hints). */
 export const ABILITY_EVENTS = {
+  created: 'ability.created',
   proposed: 'ability.proposed',
   approved: 'ability.approved',
   rejected: 'ability.rejected',
   changesRequested: 'ability.changes_requested',
   assigned: 'ability.assigned',
   removed: 'ability.removed',
+  formAbilityAdded: 'character.form.ability.added',
 } as const;

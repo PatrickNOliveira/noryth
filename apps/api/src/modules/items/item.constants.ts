@@ -33,6 +33,14 @@ export const ITEM_STATES = [
 ] as const;
 export type ItemState = (typeof ITEM_STATES)[number];
 
+/**
+ * Where an item was authored. `PREPARATION` is the default (campaign prep);
+ * `SESSION` marks an item improvised by the master during a live session.
+ * Audit-only — it never forks the item flow.
+ */
+export const ITEM_CREATION_SOURCES = ['PREPARATION', 'SESSION'] as const;
+export type ItemCreationSource = (typeof ITEM_CREATION_SOURCES)[number];
+
 /** Async image lifecycle. `none` = no image requested yet. */
 export const ITEM_IMAGE_STATUSES = [
   'none',
@@ -62,4 +70,16 @@ export const ITEM_IMAGE_EVENTS = {
   processing: 'item.image.processing',
   completed: 'item.image.completed',
   failed: 'item.image.failed',
+} as const;
+
+/** Server → client lifecycle events for items (campaign room). */
+export const ITEM_EVENTS = {
+  created: 'item.created',
+} as const;
+
+/** Server → client events for item instance management (campaign room). */
+export const ITEM_INSTANCE_EVENTS = {
+  created: 'item.instance.created',
+  transferred: 'item.instance.transferred',
+  unassigned: 'item.instance.unassigned',
 } as const;

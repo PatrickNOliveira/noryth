@@ -93,6 +93,12 @@ export class CompleteImprovisedCharacterDto {
   @MaxLength(2000)
   instructions?: string;
 
+  /** UI locale (e.g. "en-US") — the language the AI must write completions in. */
+  @IsOptional()
+  @IsString()
+  @MaxLength(16)
+  targetLanguage?: string;
+
   @IsOptional()
   @IsBoolean()
   isVisibleToPlayers?: boolean;

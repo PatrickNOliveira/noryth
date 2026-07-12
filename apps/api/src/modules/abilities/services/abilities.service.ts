@@ -27,7 +27,7 @@ import { CreateAbilityDto } from '../dto/create-ability.dto';
 import { UpdateAbilityDto } from '../dto/update-ability.dto';
 import { ProposeAbilityDto, UpdateProposalDto } from '../dto/propose-ability.dto';
 import { AssignAbilityDto } from '../dto/assign-ability.dto';
-import { ABILITY_EVENTS } from '../ability.constants';
+import { AbilityCreationSource, ABILITY_EVENTS } from '../ability.constants';
 import {
   ABILITIES_REPOSITORY,
   AbilitiesRepository,
@@ -146,10 +146,20 @@ export class AbilitiesService {
 
   // ── master: create/update/remove ────────────────────────────
 
+  /**
+   * Creates a master ability (born APPROVED). `origin` records provenance:
+   * campaign prep by default, or an ability improvised during a live session
+   * (audit-only — the ability is identical otherwise). Broadcasts
+   * `ability.created` so watchers' lists update without a refetch.
+   */
   async create(
     userId: string,
     campaignId: string,
     dto: CreateAbilityDto,
+    origin: {
+      creationSource?: AbilityCreationSource;
+      createdDuringSessionId?: string | null;
+    } = {},
   ): Promise<AbilityDefinitionDto> {
     await this.campaigns.findForMasterOrFail(userId, campaignId);
     await this.assertFaction(campaignId, dto.factionId);
@@ -158,6 +168,8 @@ export class AbilitiesService {
       this.abilities.createDefinition({
         campaignId,
         createdByUserId: userId,
+        creationSource: origin.creationSource ?? 'PREPARATION',
+        createdDuringSessionId: origin.createdDuringSessionId ?? null,
         // Master-created abilities are born approved.
         approvalStatus: 'APPROVED',
         approvedByUserId: userId,
@@ -169,6 +181,11 @@ export class AbilitiesService {
         masterNotes: dto.masterNotes?.trim() ?? '',
       }),
     );
+    await this.emit(campaignId, ABILITY_EVENTS.created, {
+      abilityId: def.id,
+      createdDuringSessionId: def.createdDuringSessionId,
+      originUserId: userId,
+    });
     return toAbilityDefinitionDto(def, true);
   }
 

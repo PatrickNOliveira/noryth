@@ -116,6 +116,15 @@ const abilitiesSlice = createSlice({
     clearCharacterAbilities(state) {
       state.characterAbilities = [];
     },
+    /**
+     * Insert or replace a definition in the list without a refetch — used when an
+     * ability is improvised during a session, so it is immediately available.
+     */
+    abilityUpserted(state, action: PayloadAction<AbilityDefinition>) {
+      const idx = state.list.findIndex((d) => d.id === action.payload.id);
+      if (idx >= 0) state.list[idx] = action.payload;
+      else state.list.unshift(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -205,5 +214,6 @@ const abilitiesSlice = createSlice({
   },
 });
 
-export const { clearSelectedAbility, clearCharacterAbilities } = abilitiesSlice.actions;
+export const { clearSelectedAbility, clearCharacterAbilities, abilityUpserted } =
+  abilitiesSlice.actions;
 export default abilitiesSlice.reducer;

@@ -81,6 +81,13 @@ export const ITEM_IMAGE_EVENTS = {
   failed: 'item.image.failed',
 } as const;
 
+/** Server → client events for item instance management during a session. */
+export const ITEM_INSTANCE_EVENTS = {
+  created: 'item.instance.created',
+  transferred: 'item.instance.transferred',
+  unassigned: 'item.instance.unassigned',
+} as const;
+
 /** Server → client events for the campaign session lifecycle. */
 export const SESSION_EVENTS = {
   started: 'campaign.session.started',

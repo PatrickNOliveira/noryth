@@ -128,6 +128,15 @@ const itemsSlice = createSlice({
       state.selected = null;
       state.instances = [];
     },
+    /**
+     * Insert or replace a definition in the list without a refetch — used when an
+     * item is improvised during a session, so it is immediately available.
+     */
+    itemUpserted(state, action: PayloadAction<ItemDefinition>) {
+      const idx = state.list.findIndex((d) => d.id === action.payload.id);
+      if (idx >= 0) state.list[idx] = action.payload;
+      else state.list.unshift(action.payload);
+    },
     itemImageUpdate(state, action: PayloadAction<ImageUpdate>) {
       const { itemDefinitionId, imageStatus, imageUrl, imageError } = action.payload;
       const patch = (d: ItemDefinition) => {
@@ -242,5 +251,6 @@ const itemsSlice = createSlice({
   },
 });
 
-export const { clearSelectedItem, itemImageUpdate } = itemsSlice.actions;
+export const { clearSelectedItem, itemImageUpdate, itemUpserted } =
+  itemsSlice.actions;
 export default itemsSlice.reducer;

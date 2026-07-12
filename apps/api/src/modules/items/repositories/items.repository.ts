@@ -23,6 +23,10 @@ export interface ItemsRepository {
   findDefinitionsByCampaign(campaignId: string): Promise<ItemDefinition[]>;
   findVisibleDefinitionsByCampaign(campaignId: string): Promise<ItemDefinition[]>;
   countInstancesOfDefinition(definitionId: string): Promise<number>;
+  /** Instance counts per definition for a campaign, in one grouped query. */
+  countInstancesByCampaign(
+    campaignId: string,
+  ): Promise<Array<{ itemDefinitionId: string; count: number }>>;
 
   // ── instances ──
   createInstance(data: Partial<ItemInstance>): ItemInstance;

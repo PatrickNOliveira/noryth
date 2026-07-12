@@ -29,10 +29,15 @@ export const ITEM_STATES = [
   'LOST',
 ] as const;
 
+export type ItemCreationSource = 'PREPARATION' | 'SESSION';
+
 export interface ItemDefinition {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  /** Where it was authored (campaign prep vs. improvised in a live session). */
+  creationSource?: ItemCreationSource;
+  createdDuringSessionId?: string | null;
   name: string;
   type: string;
   shortDescription: string;
@@ -107,3 +112,86 @@ export interface CreateItemInstanceInput {
 export type UpdateItemInstanceInput = Partial<
   Omit<CreateItemInstanceInput, 'itemDefinitionId'>
 >;
+
+// ── session item management ──
+
+/** A definition plus how many instances of it exist (session items list). */
+export interface ItemDefinitionListItem extends ItemDefinition {
+  instanceCount: number;
+}
+
+/** A definition with all its instances (session item sheet). */
+export interface ItemSessionDetail {
+  definition: ItemDefinition;
+  instances: ItemInstance[];
+}
+
+/** Give an item to a character (creates/transfers an instance). */
+export interface GiveItemToCharacterInput {
+  characterId: string;
+  quantity?: number;
+}
+
+// ── improvise an item during a session ──
+
+/** The master's partial item sent to AI completion during a session. */
+export interface ImprovisePartialItemInput {
+  name?: string;
+  type?: string;
+  shortDescription?: string;
+  description?: string;
+  history?: string;
+  appearance?: string;
+  effectDescription?: string;
+  rulesText?: string;
+  masterNotes?: string;
+  isUnique?: boolean;
+  isVisibleToPlayers?: boolean;
+}
+
+/** Body for AI-completing an improvised item. */
+export interface CompleteImprovisedItemInput {
+  item?: ImprovisePartialItemInput;
+  instructions?: string;
+  /** UI locale (e.g. "en-US") — the language the AI must write completions in. */
+  targetLanguage?: string;
+}
+
+/** A completed, not-yet-persisted item draft returned for review. */
+export interface ImprovisedItemDraft {
+  name: string;
+  type: string;
+  shortDescription: string;
+  description: string;
+  history: string;
+  appearance: string;
+  effectDescription: string;
+  rulesText: string;
+  masterNotes: string;
+  isUnique: boolean;
+  isVisibleToPlayers: boolean;
+}
+
+/** Optional first occurrence created alongside the definition. */
+export interface SessionItemInstanceInput {
+  create?: boolean;
+  quantity?: number;
+  state?: string;
+  holderCharacterId?: string | null;
+  mapId?: string | null;
+  mapPointOfInterestId?: string | null;
+  isVisibleToPlayers?: boolean;
+  masterNotes?: string;
+}
+
+/** Body for creating an improvised item (definition + optional first instance). */
+export interface CreateSessionItemInput {
+  item: CreateItemDefinitionInput;
+  instance?: SessionItemInstanceInput;
+}
+
+/** Result of creating an improvised item. */
+export interface SessionItemResult {
+  definition: ItemDefinition;
+  instance: ItemInstance | null;
+}

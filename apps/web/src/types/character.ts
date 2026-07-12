@@ -91,6 +91,8 @@ export interface ImprovisePartialCharacterInput {
 export interface CompleteImprovisedCharacterInput {
   character?: ImprovisePartialCharacterInput;
   instructions?: string;
+  /** UI locale (e.g. "en-US") — the language the AI must write completions in. */
+  targetLanguage?: string;
 }
 
 /** A completed, not-yet-persisted character draft returned for review. */

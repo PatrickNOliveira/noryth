@@ -9,16 +9,24 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import {
   AuthenticatedUser,
   CurrentUser,
 } from '@shared/decorators/current-user.decorator';
 import { ItemDefinitionsService } from '../services/item-definitions.service';
-import { ItemDefinitionDto } from '../dto/item.dto';
+import { ItemInstancesService } from '../services/item-instances.service';
+import {
+  ItemDefinitionDto,
+  ItemDefinitionListItemDto,
+  ItemInstanceDto,
+  ItemSessionDetailDto,
+} from '../dto/item.dto';
 import { CreateItemDefinitionDto } from '../dto/create-item-definition.dto';
 import { UpdateItemDefinitionDto } from '../dto/update-item-definition.dto';
 import { GenerateItemImageDto } from '../dto/generate-item-image.dto';
+import { GiveItemToCharacterDto } from '../dto/give-item-to-character.dto';
 import {
   ItemArtDirectionDto,
   UpdateItemArtDirectionDto,
@@ -30,7 +38,10 @@ import {
  */
 @Controller('campaigns/:campaignId/items')
 export class ItemsController {
-  constructor(private readonly items: ItemDefinitionsService) {}
+  constructor(
+    private readonly items: ItemDefinitionsService,
+    private readonly instances: ItemInstancesService,
+  ) {}
 
   @Get()
   list(
@@ -38,6 +49,17 @@ export class ItemsController {
     @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
   ): Promise<ItemDefinitionDto[]> {
     return this.items.list(user.id, campaignId);
+  }
+
+  // Declared BEFORE ':itemDefinitionId' so "session-list" is not parsed as a UUID.
+  /** Master-only: campaign items with instance counts + name search (session). */
+  @Get('session-list')
+  sessionList(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Query('search') search?: string,
+  ): Promise<ItemDefinitionListItemDto[]> {
+    return this.items.listWithCounts(user.id, campaignId, search);
   }
 
   // Declared BEFORE ':itemDefinitionId' so "art-direction" is not parsed as a UUID.
@@ -80,6 +102,32 @@ export class ItemsController {
     @Param('itemDefinitionId', new ParseUUIDPipe()) itemDefinitionId: string,
   ): Promise<ItemDefinitionDto> {
     return this.items.getDetail(user.id, campaignId, itemDefinitionId);
+  }
+
+  /** Master-only: item sheet with all its instances (session manager). */
+  @Get(':itemDefinitionId/session-detail')
+  sessionDetail(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('itemDefinitionId', new ParseUUIDPipe()) itemDefinitionId: string,
+  ): Promise<ItemSessionDetailDto> {
+    return this.items.getSessionDetail(user.id, campaignId, itemDefinitionId);
+  }
+
+  /** Master-only: give this item to a character (creates/transfers an instance). */
+  @Post(':itemDefinitionId/give-to-character')
+  giveToCharacter(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('itemDefinitionId', new ParseUUIDPipe()) itemDefinitionId: string,
+    @Body() dto: GiveItemToCharacterDto,
+  ): Promise<ItemInstanceDto> {
+    return this.instances.giveToCharacter(
+      user.id,
+      campaignId,
+      itemDefinitionId,
+      dto,
+    );
   }
 
   @Post()

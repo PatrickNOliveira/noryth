@@ -1,6 +1,9 @@
 import { Column, Entity, Index } from 'typeorm';
 import { BaseEntity } from '@shared/abstractions/base.entity';
-import { AbilityApprovalStatus } from '../ability.constants';
+import {
+  AbilityApprovalStatus,
+  AbilityCreationSource,
+} from '../ability.constants';
 
 /**
  * The definition of an ability. Master-created ones are born APPROVED; player
@@ -15,6 +18,19 @@ export class AbilityDefinition extends BaseEntity {
 
   @Column({ name: 'created_by_user_id', type: 'uuid' })
   createdByUserId!: string;
+
+  /** Where this ability was authored (campaign prep vs. improvised in session). */
+  @Column({
+    name: 'creation_source',
+    type: 'varchar',
+    length: 20,
+    default: 'PREPARATION',
+  })
+  creationSource!: AbilityCreationSource;
+
+  /** The session it was improvised in, when `creationSource === 'SESSION'`. */
+  @Column({ name: 'created_during_session_id', type: 'uuid', nullable: true })
+  createdDuringSessionId!: string | null;
 
   @Column({ name: 'proposed_by_user_id', type: 'uuid', nullable: true })
   proposedByUserId!: string | null;

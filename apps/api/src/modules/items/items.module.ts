@@ -35,5 +35,6 @@ import { TypeOrmItemsRepository } from './repositories/typeorm-items.repository'
     ItemImageHandler,
     { provide: ITEMS_REPOSITORY, useClass: TypeOrmItemsRepository },
   ],
+  exports: [ItemDefinitionsService, ItemInstancesService],
 })
 export class ItemsModule {}

@@ -5,6 +5,8 @@ export interface AbilityDefinitionDto {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  creationSource: string;
+  createdDuringSessionId: string | null;
   proposedByUserId: string | null;
   proposedForCharacterId: string | null;
   approvedByUserId: string | null;
@@ -63,6 +65,8 @@ export function toAbilityDefinitionDto(
     id: def.id,
     campaignId: def.campaignId,
     createdByUserId: def.createdByUserId,
+    creationSource: def.creationSource,
+    createdDuringSessionId: def.createdDuringSessionId,
     proposedByUserId: def.proposedByUserId,
     proposedForCharacterId: def.proposedForCharacterId,
     approvedByUserId: def.approvedByUserId,

@@ -15,6 +15,18 @@ import {
   CreateCharacterInput,
   ImprovisedCharacterDraft,
 } from '../types/character';
+import {
+  CompleteImprovisedItemInput,
+  CreateSessionItemInput,
+  ImprovisedItemDraft,
+  SessionItemResult,
+} from '../types/item';
+import {
+  CompleteImprovisedAbilityInput,
+  CreateSessionAbilityInput,
+  ImprovisedAbilityDraft,
+  SessionAbilityResult,
+} from '../types/ability';
 
 const base = (campaignId: string) => `/campaigns/${campaignId}/session`;
 
@@ -134,6 +146,62 @@ export const sessionService = {
   ): Promise<Character> {
     const { data } = await api.post<Character>(
       `${base(campaignId)}/characters/create`,
+      input,
+    );
+    return data;
+  },
+
+  // ── improvise an item during the session (master only) ──
+
+  /** AI-completes the master's partial item, returning a draft to review. */
+  async aiCompleteImprovisedItem(
+    campaignId: string,
+    input: CompleteImprovisedItemInput,
+    signal?: AbortSignal,
+  ): Promise<ImprovisedItemDraft> {
+    const { data } = await api.post<ImprovisedItemDraft>(
+      `${base(campaignId)}/items/ai-complete`,
+      input,
+      { signal },
+    );
+    return data;
+  },
+
+  /** Creates the improvised item (definition + optional first instance). */
+  async createImprovisedItem(
+    campaignId: string,
+    input: CreateSessionItemInput,
+  ): Promise<SessionItemResult> {
+    const { data } = await api.post<SessionItemResult>(
+      `${base(campaignId)}/items/create`,
+      input,
+    );
+    return data;
+  },
+
+  // ── improvise an ability during the session (master only) ──
+
+  /** AI-completes the master's partial ability, returning a draft to review. */
+  async aiCompleteImprovisedAbility(
+    campaignId: string,
+    input: CompleteImprovisedAbilityInput,
+    signal?: AbortSignal,
+  ): Promise<ImprovisedAbilityDraft> {
+    const { data } = await api.post<ImprovisedAbilityDraft>(
+      `${base(campaignId)}/abilities/ai-complete`,
+      input,
+      { signal },
+    );
+    return data;
+  },
+
+  /** Creates the improvised ability (definition + optional character/form link). */
+  async createImprovisedAbility(
+    campaignId: string,
+    input: CreateSessionAbilityInput,
+  ): Promise<SessionAbilityResult> {
+    const { data } = await api.post<SessionAbilityResult>(
+      `${base(campaignId)}/abilities/create`,
       input,
     );
     return data;

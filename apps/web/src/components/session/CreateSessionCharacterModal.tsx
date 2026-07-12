@@ -77,7 +77,7 @@ export function CreateSessionCharacterModal({
   onClose,
   onCreated,
 }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useAppDispatch();
   const { notify } = useToast();
   const factions = useAppSelector((s) => s.factions.list);
@@ -192,6 +192,7 @@ export function CreateSessionCharacterModal({
     const input: CompleteImprovisedCharacterInput = {
       character: collectPartial(),
       instructions: T(instructions) || undefined,
+      targetLanguage: i18n.language,
     };
     try {
       const draft = await sessionService.aiCompleteImprovisedCharacter(

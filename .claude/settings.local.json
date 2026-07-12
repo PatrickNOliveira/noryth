@@ -45,7 +45,14 @@
       "Bash(grep -nA3 -iE \"migration|TypeOrmModule\")",
       "Bash(grep -nA6 \"createCharacter\" apps/api/src/modules/characters/repositories/typeorm-characters.repository.ts)",
       "Bash(npx eslint *)",
-      "Bash(node -e \"const p=require\\('./apps/api/package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,1\\)\\)\")"
+      "Bash(node -e \"const p=require\\('./apps/api/package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,1\\)\\)\")",
+      "Bash(grep -nE \"ITEM_TYPES|ITEM_STATES|item.types|item.states|t\\\\\\(\\\\`item|type\\\\\\)|<Select\" apps/web/src/components/ItemForm.tsx)",
+      "Bash(grep -nA6 \"CHARACTER_FORM_SESSION_SPRITE_EVENTS =\" apps/api/src/modules/character-forms/character-form.constants.ts)",
+      "Bash(grep -nA6 \"CHARACTER_FORM_SESSION_SPRITE_EVENTS =\" apps/web/src/services/realtime.ts)",
+      "Bash(grep -nA6 \"CHARACTER_SESSION_SPRITE_EVENTS =\" apps/web/src/services/realtime.ts)",
+      "Bash(grep -nA22 \"sessionCharacterFormSpriteUpdated\\(\" apps/web/src/store/slices/sessionCharacters.slice.ts)",
+      "Bash(grep -nA18 \"sessionCharacterConfirmed\\(\" apps/web/src/store/slices/sessionCharacters.slice.ts)",
+      "Bash(grep -nA30 \"export function toSessionCharacterDto\" apps/api/src/modules/sessions/dto/session-character.dto.ts)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

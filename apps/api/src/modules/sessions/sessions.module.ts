@@ -5,6 +5,8 @@ import { MapsModule } from '@modules/maps/maps.module';
 import { CharactersModule } from '@modules/characters/characters.module';
 import { FactionsModule } from '@modules/factions/factions.module';
 import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-attributes.module';
+import { ItemsModule } from '@modules/items/items.module';
+import { AbilitiesModule } from '@modules/abilities/abilities.module';
 import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
 import { CampaignSession } from './entities/campaign-session.entity';
 import { SessionCharacter } from './entities/session-character.entity';
@@ -12,11 +14,17 @@ import { CharacterSessionSprite } from './entities/character-session-sprite.enti
 import { SessionsController } from './controllers/sessions.controller';
 import { SessionCharactersController } from './controllers/session-characters.controller';
 import { SessionImprovisedCharactersController } from './controllers/session-improvised-characters.controller';
+import { SessionImprovisedItemsController } from './controllers/session-improvised-items.controller';
+import { SessionImprovisedAbilitiesController } from './controllers/session-improvised-abilities.controller';
 import { CharacterSessionSpritesController } from './controllers/character-session-sprites.controller';
 import { SessionsService } from './services/sessions.service';
 import { SessionCharacterService } from './services/session-character.service';
 import { SessionImprovisedCharacterService } from './services/session-improvised-character.service';
 import { ImprovisedCharacterAgent } from './services/improvised-character.agent';
+import { SessionImprovisedItemService } from './services/session-improvised-item.service';
+import { ImprovisedItemAgent } from './services/improvised-item.agent';
+import { SessionImprovisedAbilityService } from './services/session-improvised-ability.service';
+import { ImprovisedAbilityAgent } from './services/improvised-ability.agent';
 import { CharacterSessionSpriteService } from './services/character-session-sprite.service';
 import { CharacterSessionSpriteAgent } from './services/character-session-sprite.agent';
 import { CharacterSessionSpriteHandler } from './services/character-session-sprite.handler';
@@ -44,12 +52,16 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     CharactersModule,
     FactionsModule,
     CampaignAttributesModule,
+    ItemsModule,
+    AbilitiesModule,
     CharacterFormsModule,
   ],
   controllers: [
     SessionsController,
     SessionCharactersController,
     SessionImprovisedCharactersController,
+    SessionImprovisedItemsController,
+    SessionImprovisedAbilitiesController,
     CharacterSessionSpritesController,
   ],
   providers: [
@@ -57,6 +69,10 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     SessionCharacterService,
     SessionImprovisedCharacterService,
     ImprovisedCharacterAgent,
+    SessionImprovisedItemService,
+    ImprovisedItemAgent,
+    SessionImprovisedAbilityService,
+    ImprovisedAbilityAgent,
     CharacterSessionSpriteService,
     CharacterSessionSpriteAgent,
     CharacterSessionSpriteHandler,

@@ -209,6 +209,23 @@ const slice = createSlice({
         }
       }
     },
+    /**
+     * Fallback-poll reconcile: merge ONLY the sprite/form data from a fresh server
+     * fetch into the existing placed characters, matched by id. Positions, facing,
+     * size, visibility and optimistic flags are preserved — so this can run while
+     * the master is mid-drag without snapping tokens. Safety net for a missed
+     * realtime sprite event (mirrors the scene's fallback poll).
+     */
+    sessionSpritesReconciled(state, action: PayloadAction<SessionCharacter[]>) {
+      const byId = new Map(action.payload.map((c) => [c.id, c]));
+      for (const c of state.list) {
+        const fresh = byId.get(c.id);
+        if (!fresh) continue;
+        c.sprites = fresh.sprites;
+        c.activeForm = fresh.activeForm;
+        c.formsCount = fresh.formsCount;
+      }
+    },
     /** Realtime `character.session_sprite.*` — patch sprites for a character. */
     sessionSpriteUpdated(
       state,
@@ -285,5 +302,6 @@ export const {
   sessionCharacterFormChanged,
   sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
+  sessionSpritesReconciled,
 } = slice.actions;
 export default slice.reducer;

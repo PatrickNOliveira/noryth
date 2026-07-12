@@ -199,6 +199,50 @@ export class CharacterFormService {
     return this.toDto(form);
   }
 
+  /**
+   * Grants a single ability to a form (used by the session "improvise ability"
+   * flow when linking to the active form). Appends to the form's existing grants
+   * — preserving their visibility — and flips the form to use its OWN abilities
+   * (`usesBaseAbilities = false`) so the grant shows immediately in the form's
+   * effective abilities. Master-only. Idempotent per (form, ability).
+   */
+  async linkAbility(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    formId: string,
+    abilityDefinitionId: string,
+    isVisibleToPlayers: boolean,
+  ): Promise<CharacterFormDto> {
+    await this.assertMasterAndCharacter(userId, campaignId, characterId);
+    const form = await this.loadFormOrFail(characterId, formId);
+    const def = await this.abilities.findDefinitionInCampaign(
+      campaignId,
+      abilityDefinitionId,
+    );
+    if (!def) {
+      throw new BadRequestException(
+        'A habilidade informada não pertence a esta campanha.',
+      );
+    }
+
+    const existing = await this.forms.findAbilities(form.id);
+    const merged = existing.map((a) => ({
+      abilityDefinitionId: a.abilityDefinitionId,
+      isVisibleToPlayers: a.isVisibleToPlayers,
+    }));
+    if (!merged.some((a) => a.abilityDefinitionId === abilityDefinitionId)) {
+      merged.push({ abilityDefinitionId, isVisibleToPlayers });
+    }
+
+    // Linking straight to the form makes the form use its own abilities so the
+    // new grant is part of the effective abilities right away.
+    form.usesBaseAbilities = false;
+    await this.forms.save(form);
+    await this.forms.replaceAbilities(form.id, campaignId, merged);
+    return this.toDto(form);
+  }
+
   /** Loads a form for image generation (used by the image service). */
   async loadFormForImage(
     characterId: string,

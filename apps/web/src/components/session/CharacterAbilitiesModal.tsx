@@ -56,11 +56,20 @@ interface Props {
   characterId: string | null;
   isOpen: boolean;
   onClose: () => void;
+  /** Bump to force a refetch (e.g. after an ability was linked to the character). */
+  reloadToken?: number;
 }
 
-export function CharacterAbilitiesModal({ campaignId, characterId, isOpen, onClose }: Props) {
+export function CharacterAbilitiesModal({
+  campaignId,
+  characterId,
+  isOpen,
+  onClose,
+  reloadToken = 0,
+}: Props) {
   const { t } = useTranslation();
   const cache = useRef(new Map<string, CharacterAbility[]>());
+  const lastReload = useRef(reloadToken);
   const [list, setList] = useState<CharacterAbility[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -68,6 +77,11 @@ export function CharacterAbilitiesModal({ campaignId, characterId, isOpen, onClo
 
   useEffect(() => {
     if (!isOpen || !characterId) return;
+    // A new reload token invalidates the cached list so we refetch fresh data.
+    if (reloadToken !== lastReload.current) {
+      cache.current.clear();
+      lastReload.current = reloadToken;
+    }
     const cached = cache.current.get(characterId);
     if (cached) {
       setList(cached);
@@ -90,7 +104,7 @@ export function CharacterAbilitiesModal({ campaignId, characterId, isOpen, onClo
     return () => {
       cancelled = true;
     };
-  }, [isOpen, characterId, campaignId]);
+  }, [isOpen, characterId, campaignId, reloadToken]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={t('session.abilities.title')}>

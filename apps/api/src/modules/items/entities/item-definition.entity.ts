@@ -1,6 +1,6 @@
 import { Column, Entity, Index } from 'typeorm';
 import { BaseEntity } from '@shared/abstractions/base.entity';
-import { ItemImageStatus } from '../item.constants';
+import { ItemCreationSource, ItemImageStatus } from '../item.constants';
 
 /**
  * The concept/base of an item (e.g. "Poção de Sangue Negro"). Holds lore, rules
@@ -14,6 +14,19 @@ export class ItemDefinition extends BaseEntity {
 
   @Column({ name: 'created_by_user_id', type: 'uuid' })
   createdByUserId!: string;
+
+  /** Where this item was authored (campaign prep vs. improvised in session). */
+  @Column({
+    name: 'creation_source',
+    type: 'varchar',
+    length: 20,
+    default: 'PREPARATION',
+  })
+  creationSource!: ItemCreationSource;
+
+  /** The session it was improvised in, when `creationSource === 'SESSION'`. */
+  @Column({ name: 'created_during_session_id', type: 'uuid', nullable: true })
+  createdDuringSessionId!: string | null;
 
   @Column({ type: 'varchar', length: 120 })
   name!: string;

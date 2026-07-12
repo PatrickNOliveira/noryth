@@ -4,6 +4,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
+import { resolveGenerationLanguage } from '@shared/utils/language.util';
 import { CampaignsService } from '@modules/campaigns/services/campaigns.service';
 import { MapsService } from '@modules/maps/services/maps.service';
 import { FactionsService } from '@modules/factions/services/factions.service';
@@ -85,6 +86,14 @@ export class SessionImprovisedCharacterService {
       ? await this.maps.findPointsForMap(map.id, true)
       : [];
 
+    // Completions must be written in the language the user expects: the UI locale
+    // the frontend sends, else the language of what they typed, else the campaign.
+    const languageName = resolveGenerationLanguage(
+      dto.targetLanguage,
+      this.userText(partial, dto.instructions),
+      campaign.mainLanguage,
+    );
+
     let ai: ImprovisedCharacterResult;
     try {
       ai = await this.agent.complete({
@@ -114,6 +123,7 @@ export class SessionImprovisedCharacterService {
         factions: factions.map((f) => ({ id: f.id, name: f.name })),
         partial: this.toAgentPartial(partial),
         instructions: dto.instructions,
+        languageName,
       });
     } catch (error) {
       this.logger.warn(
@@ -161,6 +171,28 @@ export class SessionImprovisedCharacterService {
       throw new BadRequestException('Não há uma sessão ativa nesta campanha.');
     }
     return session;
+  }
+
+  /** Concatenates the master's typed text — used to detect language as a fallback. */
+  private userText(
+    partial: ImprovisePartialCharacterDto,
+    instructions?: string,
+  ): string {
+    return [
+      partial.name,
+      partial.title,
+      partial.shortDescription,
+      partial.description,
+      partial.history,
+      partial.appearance,
+      partial.personality,
+      partial.motivations,
+      partial.secrets,
+      partial.notes,
+      instructions,
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 
   private toAgentPartial(dto: ImprovisePartialCharacterDto) {

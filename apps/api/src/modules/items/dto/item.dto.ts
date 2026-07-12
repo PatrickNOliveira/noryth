@@ -5,6 +5,8 @@ export interface ItemDefinitionDto {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  creationSource: string;
+  createdDuringSessionId: string | null;
   name: string;
   type: string;
   shortDescription: string;
@@ -43,6 +45,17 @@ export interface ItemInstanceDto {
   updatedAt: Date;
 }
 
+/** A definition plus how many instances of it exist (session items list). */
+export interface ItemDefinitionListItemDto extends ItemDefinitionDto {
+  instanceCount: number;
+}
+
+/** A definition with all its instances (session item sheet). */
+export interface ItemSessionDetailDto {
+  definition: ItemDefinitionDto;
+  instances: ItemInstanceDto[];
+}
+
 export function toItemDefinitionDto(
   def: ItemDefinition,
   includePrivate: boolean,
@@ -51,6 +64,8 @@ export function toItemDefinitionDto(
     id: def.id,
     campaignId: def.campaignId,
     createdByUserId: def.createdByUserId,
+    creationSource: def.creationSource,
+    createdDuringSessionId: def.createdDuringSessionId,
     name: def.name,
     type: def.type,
     shortDescription: def.shortDescription,
