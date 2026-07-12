@@ -17,6 +17,7 @@ import { SessionCharacterService } from '../services/session-character.service';
 import { SessionCharacterDto } from '../dto/session-character.dto';
 import { AddSessionCharacterDto } from '../dto/add-session-character.dto';
 import { UpdateSessionCharacterDto } from '../dto/update-session-character.dto';
+import { ChangeFormDto } from '../dto/change-form.dto';
 
 /**
  * Characters placed on the active session map. Reads are open to participants
@@ -51,6 +52,16 @@ export class SessionCharactersController {
     @Body() dto: UpdateSessionCharacterDto,
   ): Promise<SessionCharacterDto> {
     return this.service.update(user.id, campaignId, id, dto);
+  }
+
+  @Patch(':sessionCharacterId/form')
+  changeForm(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('campaignId', new ParseUUIDPipe()) campaignId: string,
+    @Param('sessionCharacterId', new ParseUUIDPipe()) id: string,
+    @Body() dto: ChangeFormDto,
+  ): Promise<SessionCharacterDto> {
+    return this.service.changeForm(user.id, campaignId, id, dto);
   }
 
   @Delete(':sessionCharacterId')

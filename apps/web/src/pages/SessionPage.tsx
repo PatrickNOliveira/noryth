@@ -23,6 +23,8 @@ import { SessionCharacterControls } from '../components/session/SessionCharacter
 import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
 import { CharacterInventoryModal } from '../components/session/CharacterInventoryModal';
 import { CharacterAbilitiesModal } from '../components/session/CharacterAbilitiesModal';
+import { ChangeFormModal } from '../components/session/ChangeFormModal';
+import { CharacterForm } from '../types/characterForm';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   fetchActiveSession,
@@ -45,6 +47,9 @@ import {
   sessionCharacterRemoved,
   sessionCharacterDragged,
   sessionCharacterSized,
+  sessionCharacterFormSet,
+  sessionCharacterFormChanged,
+  sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
 } from '../store/slices/sessionCharacters.slice';
 import { sessionService } from '../services/session.service';
@@ -56,6 +61,7 @@ import {
   SESSION_EVENTS,
   SESSION_CHARACTER_EVENTS,
   CHARACTER_SESSION_SPRITE_EVENTS,
+  CHARACTER_FORM_SESSION_SPRITE_EVENTS,
   MAP_POINT_EVENTS,
 } from '../services/realtime';
 import { mapService } from '../services/map.service';
@@ -185,6 +191,10 @@ export function SessionPage() {
   const [sheetCharacterId, setSheetCharacterId] = useState<string | null>(null);
   const [inventoryCharacterId, setInventoryCharacterId] = useState<string | null>(null);
   const [abilitiesCharacterId, setAbilitiesCharacterId] = useState<string | null>(null);
+  const [formModalId, setFormModalId] = useState<string | null>(null);
+  // Form-change concurrency (optimistic + cancel + version guard) per session char.
+  const formControllers = useRef(new Map<string, AbortController>());
+  const formVersions = useRef(new Map<string, number>());
   const pendingRemoveIds = useRef(new Set<string>());
   // POI move concurrency (optimistic drag + cancel + version guard) per pointId.
   const poiControllers = useRef(new Map<string, AbortController>());
@@ -357,16 +367,72 @@ export function SessionPage() {
       resetSessionLocalState();
       setJustEnded(true);
     };
+    // Active form changed for a placed character (updates its sprites + name).
+    const onFormChanged = (payload: unknown) => {
+      const p = payload as {
+        sessionCharacterId?: string;
+        activeFormId?: string;
+        activeFormName?: string;
+        sprites?: SessionCharacter['sprites'];
+        mapId?: string | null;
+        clientMutationId?: string | null;
+        originUserId?: string | null;
+      };
+      if (!p?.sessionCharacterId) return;
+      if (isOwnEcho(p.originUserId)) return;
+      if (isStaleMap(p.mapId)) return;
+      const localVersion = formVersions.current.get(p.sessionCharacterId);
+      if (
+        localVersion != null &&
+        p.clientMutationId != null &&
+        Number(p.clientMutationId) < localVersion
+      ) {
+        return;
+      }
+      dispatch(
+        sessionCharacterFormChanged({
+          sessionCharacterId: p.sessionCharacterId,
+          activeForm: p.activeFormId
+            ? { id: p.activeFormId, name: p.activeFormName ?? '', imageUrl: null }
+            : null,
+          sprites: p.sprites ?? [],
+        }),
+      );
+    };
+    // A form's session sprite finished generating.
+    const formSprite =
+      (status: SpriteImageStatus) =>
+      (payload: unknown) => {
+        const p = payload as {
+          formId?: string;
+          direction?: SpriteDirection;
+          imageUrl?: string;
+        };
+        if (p?.formId && p.direction) {
+          dispatch(
+            sessionCharacterFormSpriteUpdated({
+              formId: p.formId,
+              direction: p.direction,
+              imageUrl: p.imageUrl,
+              status,
+            }),
+          );
+        }
+      };
     const subs: Array<[string, (payload: unknown) => void]> = [
       [SESSION_CHARACTER_EVENTS.added, onAdded],
       [SESSION_CHARACTER_EVENTS.moved, onMoved],
       [SESSION_CHARACTER_EVENTS.removed, onRemoved],
+      [SESSION_CHARACTER_EVENTS.formChanged, onFormChanged],
       [SESSION_EVENTS.mapChanged, onMapChanged],
       [SESSION_EVENTS.ended, onEnded],
       [MAP_POINT_EVENTS.scenePositionUpdated, onPoiMoved],
       [CHARACTER_SESSION_SPRITE_EVENTS.processing, sprite('processing')],
       [CHARACTER_SESSION_SPRITE_EVENTS.completed, sprite('completed')],
       [CHARACTER_SESSION_SPRITE_EVENTS.failed, sprite('failed')],
+      [CHARACTER_FORM_SESSION_SPRITE_EVENTS.processing, formSprite('processing')],
+      [CHARACTER_FORM_SESSION_SPRITE_EVENTS.completed, formSprite('completed')],
+      [CHARACTER_FORM_SESSION_SPRITE_EVENTS.failed, formSprite('failed')],
     ];
     realtime.join(room);
     subs.forEach(([e, h]) => realtime.on(e, h));
@@ -536,6 +602,8 @@ export function SessionPage() {
         sizeScale: SIZE_SCALE_DEFAULT,
         isVisibleToPlayers: character.isPlayerCharacter,
         isPlayerCharacter: character.isPlayerCharacter,
+        activeForm: null,
+        formsCount: 1,
         sprites: [],
         createdAt: '',
         updatedAt: '',
@@ -583,6 +651,9 @@ export function SessionPage() {
     poiControllers.current.clear();
     poiVersions.current.clear();
     poiDraggingIds.current.clear();
+    formControllers.current.forEach((c) => c.abort());
+    formControllers.current.clear();
+    formVersions.current.clear();
 
     // Optimistic: clear the board and point at the new map immediately.
     dispatch(clearSessionCharacters());
@@ -615,6 +686,9 @@ export function SessionPage() {
     pendingRemoveIds.current.clear();
     resizeTimers.current.forEach((id) => window.clearTimeout(id));
     resizeTimers.current.clear();
+    formControllers.current.forEach((c) => c.abort());
+    formControllers.current.clear();
+    formVersions.current.clear();
     activeMapIdRef.current = null;
     setSelectedId(null);
     setPoiEditMode(false);
@@ -636,6 +710,42 @@ export function SessionPage() {
       })
       .catch(() => notify(t('session.end.error'), { variant: 'error' }))
       .finally(() => setEnding(false));
+  };
+
+  // Change the active form of a placed character: optimistic swap, then confirm.
+  // Cancels a previous change and ignores stale responses/echoes (version guard).
+  const changeFormTo = (sessionCharacterId: string, form: CharacterForm) => {
+    setFormModalId(null);
+    dispatch(
+      sessionCharacterFormSet({
+        id: sessionCharacterId,
+        activeForm: { id: form.id, name: form.name, imageUrl: form.imageUrl },
+      }),
+    );
+    const version = (formVersions.current.get(sessionCharacterId) ?? 0) + 1;
+    formVersions.current.set(sessionCharacterId, version);
+    formControllers.current.get(sessionCharacterId)?.abort();
+    const controller = new AbortController();
+    formControllers.current.set(sessionCharacterId, controller);
+    void sessionService
+      .changeCharacterForm(campaignId, sessionCharacterId, form.id, String(version), controller.signal)
+      .then((res) => {
+        if (formVersions.current.get(sessionCharacterId) !== version) return;
+        dispatch(
+          sessionCharacterFormChanged({
+            sessionCharacterId,
+            activeForm: res.activeForm,
+            sprites: res.sprites,
+          }),
+        );
+      })
+      .catch((err) => {
+        if ((err as { message?: string })?.message === 'canceled') return;
+        if (formVersions.current.get(sessionCharacterId) === version) {
+          notify(t('session.form.error'), { variant: 'error' });
+          dispatch(fetchSessionCharacters(campaignId)); // reconcile with server truth
+        }
+      });
   };
 
   // ── points of interest (master, "reposition points" mode) ──
@@ -911,6 +1021,7 @@ export function SessionPage() {
           onOpenSheet={() => setSheetCharacterId(selected.characterId)}
           onOpenInventory={() => setInventoryCharacterId(selected.characterId)}
           onOpenAbilities={() => setAbilitiesCharacterId(selected.characterId)}
+          onOpenChangeForm={() => setFormModalId(selected.id)}
           onClose={() => setSelectedId(null)}
         />
       )}
@@ -935,6 +1046,19 @@ export function SessionPage() {
             isOpen={!!abilitiesCharacterId}
             onClose={() => setAbilitiesCharacterId(null)}
           />
+          {(() => {
+            const target = sessionCharacters.find((c) => c.id === formModalId) ?? null;
+            return (
+              <ChangeFormModal
+                campaignId={campaignId}
+                characterId={target?.characterId ?? null}
+                activeFormId={target?.activeForm?.id ?? null}
+                isOpen={!!formModalId}
+                onClose={() => setFormModalId(null)}
+                onPick={(form) => target && changeFormTo(target.id, form)}
+              />
+            );
+          })()}
         </>
       )}
 

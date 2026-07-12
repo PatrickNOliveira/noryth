@@ -19,3 +19,18 @@ export const CHARACTER_FORM_IMAGE_EVENTS = {
   completed: 'character.form.image.completed',
   failed: 'character.form.image.failed',
 } as const;
+
+/** Job name for the async 2.5D session sprite of a FORM (shares the AI queue). */
+export const GENERATE_CHARACTER_FORM_SPRITE_JOB = 'generate-character-form-sprite';
+
+export interface GenerateCharacterFormSpritePayload {
+  spriteId: string;
+  requestedBy: string;
+}
+
+/** Server → client events for a form's session-sprite generation. */
+export const CHARACTER_FORM_SESSION_SPRITE_EVENTS = {
+  processing: 'character.form.session_sprite.processing',
+  completed: 'character.form.session_sprite.completed',
+  failed: 'character.form.session_sprite.failed',
+} as const;

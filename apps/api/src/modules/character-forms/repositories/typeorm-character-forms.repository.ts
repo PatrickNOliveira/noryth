@@ -4,6 +4,8 @@ import { DeepPartial, Repository } from 'typeorm';
 import { CharacterForm } from '../entities/character-form.entity';
 import { CharacterFormAttributeValue } from '../entities/character-form-attribute-value.entity';
 import { CharacterFormAbility } from '../entities/character-form-ability.entity';
+import { CharacterFormSessionSprite } from '../entities/character-form-session-sprite.entity';
+import { SpriteDirection } from '@modules/sessions/session-character.constants';
 import {
   CharacterFormsRepository,
   FormAttributeInput,
@@ -20,6 +22,8 @@ export class TypeOrmCharacterFormsRepository implements CharacterFormsRepository
     private readonly values: Repository<CharacterFormAttributeValue>,
     @InjectRepository(CharacterFormAbility)
     private readonly abilities: Repository<CharacterFormAbility>,
+    @InjectRepository(CharacterFormSessionSprite)
+    private readonly sprites: Repository<CharacterFormSessionSprite>,
   ) {}
 
   create(data: Partial<CharacterForm>): CharacterForm {
@@ -95,5 +99,26 @@ export class TypeOrmCharacterFormsRepository implements CharacterFormsRepository
       }),
     );
     return this.abilities.save(rows);
+  }
+
+  createSprite(data: Partial<CharacterFormSessionSprite>): CharacterFormSessionSprite {
+    return this.sprites.create(data as DeepPartial<CharacterFormSessionSprite>);
+  }
+  saveSprite(sprite: CharacterFormSessionSprite): Promise<CharacterFormSessionSprite> {
+    return this.sprites.save(sprite);
+  }
+  findSpriteById(id: string): Promise<CharacterFormSessionSprite | null> {
+    return this.sprites.findOne({ where: { id } });
+  }
+  findSpritesByForm(formId: string): Promise<CharacterFormSessionSprite[]> {
+    return this.sprites.find({ where: { characterFormId: formId } });
+  }
+  findSpriteByFormDirection(
+    formId: string,
+    direction: string,
+  ): Promise<CharacterFormSessionSprite | null> {
+    return this.sprites.findOne({
+      where: { characterFormId: formId, direction: direction as SpriteDirection },
+    });
   }
 }

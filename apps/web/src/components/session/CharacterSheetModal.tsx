@@ -6,10 +6,12 @@ import { CompassIcon } from '../icons';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { characterService } from '../../services/character.service';
 import { abilityService } from '../../services/ability.service';
+import { characterFormService } from '../../services/characterForm.service';
 import { fetchAttributes } from '../../store/slices/campaignAttributes.slice';
 import { fetchFactions } from '../../store/slices/factions.slice';
 import { Character } from '../../types/character';
-import { CharacterAbility } from '../../types/ability';
+import { CharacterAbility, AbilityDefinition } from '../../types/ability';
+import { CharacterForm } from '../../types/characterForm';
 
 /**
  * Read-only character sheet, opened from the session (master only). Reuses the
@@ -115,6 +117,8 @@ interface Props {
 interface SheetData {
   character: Character;
   abilities: CharacterAbility[];
+  forms: CharacterForm[];
+  abilityDefs: AbilityDefinition[];
 }
 
 export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }: Props) {
@@ -147,10 +151,12 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
     Promise.all([
       characterService.getById(campaignId, characterId),
       abilityService.listCharacterAbilities(campaignId, characterId).catch(() => []),
+      characterFormService.list(campaignId, characterId).catch(() => []),
+      abilityService.list(campaignId).catch(() => []),
     ])
-      .then(([character, abilities]) => {
+      .then(([character, abilities, forms, abilityDefs]) => {
         if (cancelled) return;
-        const sheet = { character, abilities };
+        const sheet = { character, abilities, forms, abilityDefs };
         cache.current.set(characterId, sheet);
         setData(sheet);
       })
@@ -164,6 +170,41 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
   const c = data?.character;
   const faction = c?.factionId ? factions.find((f) => f.id === c.factionId) : undefined;
   const na = t('session.sheet.notInformed');
+
+  // Effective (active form) resolution — form overrides fall back to the base.
+  const activeForm =
+    data?.forms.find((f) => f.isActive) ?? data?.forms.find((f) => f.isDefault) ?? null;
+  const effectiveImage = activeForm?.imageUrl ?? c?.imageUrl ?? null;
+  const effectiveAppearance =
+    (activeForm?.appearanceDescription?.trim() || c?.appearance) ?? '';
+  const effectiveAttributes = (() => {
+    if (!c) return [] as { attributeId: string; value: number }[];
+    const overrides = new Map(
+      (activeForm?.attributes ?? []).map((a) => [a.attributeId, a.value]),
+    );
+    return c.attributes.map((av) => ({
+      attributeId: av.attributeId,
+      value: overrides.get(av.attributeId) ?? av.value,
+    }));
+  })();
+  const effectiveAbilities: { key: string; name: string; type: string; extra?: string; status?: string }[] =
+    activeForm && !activeForm.usesBaseAbilities
+      ? activeForm.abilities.map((fa) => {
+          const def = data?.abilityDefs.find((d) => d.id === fa.abilityDefinitionId);
+          return {
+            key: fa.abilityDefinitionId,
+            name: def?.name ?? t('session.sheet.attribute'),
+            type: def?.type ?? '',
+            extra: def?.effectDescription || def?.shortDescription,
+          };
+        })
+      : (data?.abilities ?? []).map((ab) => ({
+          key: ab.id,
+          name: ab.abilityName,
+          type: ab.abilityType,
+          extra: ab.customDescription ?? undefined,
+          status: ab.status,
+        }));
 
   const prose = (label: string, value?: string | null) =>
     value && value.trim() ? (
@@ -188,12 +229,17 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
         <>
           <Head>
             <Portrait>
-              {c.imageUrl ? <img src={c.imageUrl} alt={c.name} /> : <CompassIcon size={28} />}
+              {effectiveImage ? <img src={effectiveImage} alt={c.name} /> : <CompassIcon size={28} />}
             </Portrait>
             <HeadInfo>
               <Name>{c.name}</Name>
               {c.title && <Sub>{c.title}</Sub>}
               <Badges>
+                {activeForm && (
+                  <Badge $tone="accent">
+                    {t('session.form.activeLabel')}: {activeForm.name}
+                  </Badge>
+                )}
                 <Badge $tone={c.isPlayerCharacter ? 'accent' : 'neutral'}>
                   {c.isPlayerCharacter
                     ? t('session.sheet.playerCharacter')
@@ -211,7 +257,7 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
 
           {c.shortDescription && <Prose>{c.shortDescription}</Prose>}
 
-          {prose(t('session.sheet.appearance'), c.appearance)}
+          {prose(t('session.sheet.appearance'), effectiveAppearance)}
           {prose(t('session.sheet.personality'), c.personality)}
           {prose(t('session.sheet.motivations'), c.motivations)}
           {prose(t('session.sheet.description'), c.description)}
@@ -219,10 +265,10 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
 
           <Section>
             <SectionTitle>{t('session.sheet.attributes')}</SectionTitle>
-            {c.attributes.length === 0 ? (
+            {effectiveAttributes.length === 0 ? (
               <Prose>{na}</Prose>
             ) : (
-              c.attributes.map((av) => {
+              effectiveAttributes.map((av) => {
                 const def = attributes.find((a) => a.id === av.attributeId);
                 return (
                   <AttrRow key={av.attributeId}>
@@ -236,21 +282,21 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
             )}
           </Section>
 
-          {data && data.abilities.length > 0 && (
+          {effectiveAbilities.length > 0 && (
             <Section>
               <SectionTitle>{t('session.sheet.abilities')}</SectionTitle>
-              {data.abilities.map((ab) => (
-                <AbilityItem key={ab.id}>
+              {effectiveAbilities.map((ab) => (
+                <AbilityItem key={ab.key}>
                   <AbilityHead>
-                    <AttrVal>{ab.abilityName}</AttrVal>
-                    {ab.abilityType && (
+                    <AttrVal>{ab.name}</AttrVal>
+                    {ab.type && (
                       <Badge $tone="neutral">
-                        {t(`ability.type.${ab.abilityType}`, ab.abilityType)}
+                        {t(`ability.type.${ab.type}`, ab.type)}
                       </Badge>
                     )}
                     {ab.status && <Badge $tone="info">{ab.status}</Badge>}
                   </AbilityHead>
-                  {ab.customDescription && <Prose>{ab.customDescription}</Prose>}
+                  {ab.extra && <Prose>{ab.extra}</Prose>}
                 </AbilityItem>
               ))}
             </Section>

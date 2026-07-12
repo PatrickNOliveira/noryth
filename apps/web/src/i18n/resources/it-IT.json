@@ -1111,6 +1111,16 @@
       "rules": "Regole",
       "history": "Storia",
       "masterNotes": "Note del master"
+    },
+    "form": {
+      "open": "Cambia forma",
+      "title": "Cambia forma",
+      "loading": "Caricamento forme…",
+      "active": "Attiva",
+      "emptyTitle": "Nessuna forma",
+      "emptyDescription": "Questo personaggio non ha forme alternative.",
+      "error": "Impossibile cambiare la forma del personaggio.",
+      "activeLabel": "Forma attiva"
     }
   },
   "characterForm": {

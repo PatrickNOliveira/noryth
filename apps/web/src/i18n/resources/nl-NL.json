@@ -1111,6 +1111,16 @@
       "rules": "Regels",
       "history": "Geschiedenis",
       "masterNotes": "Notities van de spelleider"
+    },
+    "form": {
+      "open": "Vorm wisselen",
+      "title": "Vorm wisselen",
+      "loading": "Vormen laden…",
+      "active": "Actief",
+      "emptyTitle": "Geen vormen",
+      "emptyDescription": "Dit personage heeft geen alternatieve vormen.",
+      "error": "Kon de vorm van het personage niet wijzigen.",
+      "activeLabel": "Actieve vorm"
     }
   },
   "characterForm": {

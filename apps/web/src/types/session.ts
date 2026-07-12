@@ -33,6 +33,11 @@ export interface SessionCharacter {
   isVisibleToPlayers: boolean;
   /** Player character (vs. master NPC) — NPCs can be hidden from players. */
   isPlayerCharacter: boolean;
+  /** The active form driving the sprites (null only if the character has none). */
+  activeForm: { id: string; name: string; imageUrl: string | null } | null;
+  /** How many forms the character has (the "change form" action hides when ≤1). */
+  formsCount: number;
+  /** Per-direction sprites of the ACTIVE FORM. */
   sprites: SpriteView[];
   createdAt: string;
   updatedAt: string;

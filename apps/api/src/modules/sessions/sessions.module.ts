@@ -4,6 +4,7 @@ import { CampaignsModule } from '@modules/campaigns/campaigns.module';
 import { MapsModule } from '@modules/maps/maps.module';
 import { CharactersModule } from '@modules/characters/characters.module';
 import { FactionsModule } from '@modules/factions/factions.module';
+import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
 import { CampaignSession } from './entities/campaign-session.entity';
 import { SessionCharacter } from './entities/session-character.entity';
 import { CharacterSessionSprite } from './entities/character-session-sprite.entity';
@@ -38,6 +39,7 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     MapsModule,
     CharactersModule,
     FactionsModule,
+    CharacterFormsModule,
   ],
   controllers: [
     SessionsController,

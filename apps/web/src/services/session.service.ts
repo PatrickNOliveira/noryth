@@ -85,6 +85,22 @@ export const sessionService = {
     await api.delete(`${base(campaignId)}/characters/${id}`);
   },
 
+  /** Master: change the active form of a placed character (updates sprites). */
+  async changeCharacterForm(
+    campaignId: string,
+    id: string,
+    formId: string,
+    clientMutationId?: string,
+    signal?: AbortSignal,
+  ): Promise<SessionCharacter> {
+    const { data } = await api.patch<SessionCharacter>(
+      `${base(campaignId)}/characters/${id}/form`,
+      { formId, clientMutationId },
+      { signal },
+    );
+    return data;
+  },
+
   /** Master or controller: (re)generate a character's session sprites. */
   async generateSprites(
     campaignId: string,

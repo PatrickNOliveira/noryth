@@ -100,6 +100,7 @@ export const SESSION_CHARACTER_EVENTS = {
   added: 'session.character.added',
   moved: 'session.character.moved',
   removed: 'session.character.removed',
+  formChanged: 'session.character.form_changed',
 } as const;
 
 /** Server → client events for a character's 2.5D session-sprite generation. */
@@ -107,6 +108,13 @@ export const CHARACTER_SESSION_SPRITE_EVENTS = {
   processing: 'character.session_sprite.processing',
   completed: 'character.session_sprite.completed',
   failed: 'character.session_sprite.failed',
+} as const;
+
+/** Server → client events for a FORM's 2.5D session-sprite generation. */
+export const CHARACTER_FORM_SESSION_SPRITE_EVENTS = {
+  processing: 'character.form.session_sprite.processing',
+  completed: 'character.form.session_sprite.completed',
+  failed: 'character.form.session_sprite.failed',
 } as const;
 
 /** Server → client event when a map point's 2.5D scene position is moved. */

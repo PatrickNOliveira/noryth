@@ -16,16 +16,31 @@ export interface SessionCharacterDto {
   isVisibleToPlayers: boolean;
   /** Whether the placed character is a player character (vs. a master NPC). */
   isPlayerCharacter: boolean;
-  /** Per-direction sprite state (FRONT/BACK) for the frontend to pick + placeholder. */
+  /** The active form driving the effective sprite (null only if a character has none). */
+  activeForm: { id: string; name: string; imageUrl: string | null } | null;
+  /** How many forms the character has (the frontend hides "change form" when ≤1). */
+  formsCount: number;
+  /**
+   * Per-direction sprite state (FRONT/BACK) of the ACTIVE FORM, for the frontend
+   * to pick by facing + show a placeholder while it generates.
+   */
   sprites: SpriteView[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ActiveFormSummary {
+  id: string;
+  name: string;
+  imageUrl: string | null;
 }
 
 export function toSessionCharacterDto(
   entity: SessionCharacter,
   characterName: string,
   isPlayerCharacter: boolean,
+  activeForm: ActiveFormSummary | null,
+  formsCount: number,
   sprites: SpriteView[],
 ): SessionCharacterDto {
   return {
@@ -41,6 +56,8 @@ export function toSessionCharacterDto(
     sizeScale: entity.sizeScale,
     isVisibleToPlayers: entity.isVisibleToPlayers,
     isPlayerCharacter,
+    activeForm,
+    formsCount,
     sprites,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,

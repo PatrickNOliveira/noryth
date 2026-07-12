@@ -1111,6 +1111,16 @@
       "rules": "Rules",
       "history": "History",
       "masterNotes": "Master notes"
+    },
+    "form": {
+      "open": "Change form",
+      "title": "Change form",
+      "loading": "Loading forms…",
+      "active": "Active",
+      "emptyTitle": "No forms",
+      "emptyDescription": "This character has no alternative forms.",
+      "error": "Could not change the character form.",
+      "activeLabel": "Active form"
     }
   },
   "characterForm": {

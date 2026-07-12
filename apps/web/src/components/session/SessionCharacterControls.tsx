@@ -85,6 +85,7 @@ interface Props {
   onOpenSheet: () => void;
   onOpenInventory: () => void;
   onOpenAbilities: () => void;
+  onOpenChangeForm: () => void;
   onClose: () => void;
 }
 
@@ -98,6 +99,7 @@ export function SessionCharacterControls({
   onOpenSheet,
   onOpenInventory,
   onOpenAbilities,
+  onOpenChangeForm,
   onClose,
 }: Props) {
   const { t } = useTranslation();
@@ -155,6 +157,11 @@ export function SessionCharacterControls({
       <Button size="sm" variant="secondary" onClick={onOpenAbilities}>
         {t('session.abilities.open')}
       </Button>
+      {character.formsCount > 1 && (
+        <Button size="sm" variant="secondary" onClick={onOpenChangeForm}>
+          {t('session.form.open')}
+        </Button>
+      )}
       {/* Only NPCs can be hidden from players — player characters are always shown. */}
       {!character.isPlayerCharacter && (
         <Button size="sm" variant="secondary" onClick={onToggleVisibility}>

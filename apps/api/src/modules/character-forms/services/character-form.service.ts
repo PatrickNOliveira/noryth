@@ -207,6 +207,25 @@ export class CharacterFormService {
     return this.loadFormOrFail(characterId, formId);
   }
 
+  /** Load a form scoped to a character (raw; permission is the caller's job). */
+  getForm(characterId: string, formId: string): Promise<CharacterForm> {
+    return this.loadFormOrFail(characterId, formId);
+  }
+
+  /** The active form (active ?? default), ensuring a default exists. */
+  async getActiveForm(character: Character): Promise<CharacterForm | null> {
+    await this.ensureDefaultForm(character);
+    return (
+      (await this.forms.findActive(character.id)) ??
+      (await this.forms.findDefault(character.id))
+    );
+  }
+
+  /** Number of forms a character has. */
+  countForms(characterId: string): Promise<number> {
+    return this.forms.countByCharacter(characterId);
+  }
+
   // ── helpers ─────────────────────────────────────────────────
 
   private async toDto(form: CharacterForm): Promise<CharacterFormDto> {

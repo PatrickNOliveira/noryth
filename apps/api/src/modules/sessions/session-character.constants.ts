@@ -54,6 +54,7 @@ export const SESSION_CHARACTER_EVENTS = {
   added: 'session.character.added',
   moved: 'session.character.moved',
   removed: 'session.character.removed',
+  formChanged: 'session.character.form_changed',
 } as const;
 
 /** Server → client events for session-sprite generation. */

@@ -158,6 +158,57 @@ const slice = createSlice({
         c.y = action.payload.y;
       }
     },
+    /** Optimistic active-form switch: swap the form now, sprites load after. */
+    sessionCharacterFormSet(
+      state,
+      action: PayloadAction<{
+        id: string;
+        activeForm: { id: string; name: string; imageUrl: string | null };
+      }>,
+    ) {
+      const c = state.list.find((x) => x.id === action.payload.id);
+      if (c) {
+        c.activeForm = action.payload.activeForm;
+        c.sprites = []; // placeholder until the new form's sprites arrive
+      }
+    },
+    /** Realtime/response `session.character.form_changed`. */
+    sessionCharacterFormChanged(
+      state,
+      action: PayloadAction<{
+        sessionCharacterId: string;
+        activeForm: { id: string; name: string; imageUrl: string | null } | null;
+        sprites: SessionCharacter['sprites'];
+      }>,
+    ) {
+      const c = state.list.find((x) => x.id === action.payload.sessionCharacterId);
+      if (c) {
+        if (action.payload.activeForm) c.activeForm = action.payload.activeForm;
+        c.sprites = action.payload.sprites;
+      }
+    },
+    /** Realtime `character.form.session_sprite.*` — patch the active form's sprites. */
+    sessionCharacterFormSpriteUpdated(
+      state,
+      action: PayloadAction<{
+        formId: string;
+        direction: SpriteDirection;
+        imageUrl?: string | null;
+        status: SpriteImageStatus;
+      }>,
+    ) {
+      const { formId, direction, imageUrl, status } = action.payload;
+      for (const c of state.list) {
+        if (c.activeForm?.id !== formId) continue;
+        const s = c.sprites.find((sp) => sp.direction === direction);
+        if (s) {
+          s.imageStatus = status;
+          if (imageUrl !== undefined) s.imageUrl = imageUrl;
+        } else {
+          c.sprites.push({ direction, imageStatus: status, imageUrl: imageUrl ?? null });
+        }
+      }
+    },
     /** Realtime `character.session_sprite.*` — patch sprites for a character. */
     sessionSpriteUpdated(
       state,
@@ -230,6 +281,9 @@ export const {
   sessionCharacterRemoved,
   sessionCharacterDragged,
   sessionCharacterSized,
+  sessionCharacterFormSet,
+  sessionCharacterFormChanged,
+  sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
 } = slice.actions;
 export default slice.reducer;

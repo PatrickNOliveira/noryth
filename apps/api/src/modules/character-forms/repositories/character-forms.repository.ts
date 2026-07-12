@@ -1,6 +1,7 @@
 import { CharacterForm } from '../entities/character-form.entity';
 import { CharacterFormAttributeValue } from '../entities/character-form-attribute-value.entity';
 import { CharacterFormAbility } from '../entities/character-form-ability.entity';
+import { CharacterFormSessionSprite } from '../entities/character-form-session-sprite.entity';
 
 export interface FormAttributeInput {
   attributeId: string;
@@ -45,6 +46,16 @@ export interface CharacterFormsRepository {
     campaignId: string,
     abilities: FormAbilityInput[],
   ): Promise<CharacterFormAbility[]>;
+
+  // ── session sprites (per form + direction) ──
+  createSprite(data: Partial<CharacterFormSessionSprite>): CharacterFormSessionSprite;
+  saveSprite(sprite: CharacterFormSessionSprite): Promise<CharacterFormSessionSprite>;
+  findSpriteById(id: string): Promise<CharacterFormSessionSprite | null>;
+  findSpritesByForm(formId: string): Promise<CharacterFormSessionSprite[]>;
+  findSpriteByFormDirection(
+    formId: string,
+    direction: string,
+  ): Promise<CharacterFormSessionSprite | null>;
 }
 
 /** DI token used to inject a {@link CharacterFormsRepository}. */

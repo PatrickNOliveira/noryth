@@ -32,6 +32,9 @@ import {
   SessionsRepository,
 } from '../repositories/sessions.repository';
 import { CharacterSessionSpriteService } from './character-session-sprite.service';
+import { CharacterFormService } from '@modules/character-forms/services/character-form.service';
+import { CharacterFormSessionSpriteService } from '@modules/character-forms/services/character-form-session-sprite.service';
+import { ChangeFormDto } from '../dto/change-form.dto';
 
 /**
  * Places campaign characters on the active session map. Master-only writes;
@@ -51,6 +54,8 @@ export class SessionCharacterService {
     private readonly campaigns: CampaignsService,
     private readonly characters: CharactersService,
     private readonly sprites: CharacterSessionSpriteService,
+    private readonly formService: CharacterFormService,
+    private readonly formSprites: CharacterFormSessionSpriteService,
     @Inject(REALTIME_PROVIDER)
     private readonly realtime: RealtimeProvider,
   ) {}
@@ -123,10 +128,11 @@ export class SessionCharacterService {
       }),
     );
 
-    // Kick off sprite generation (both directions) without blocking placement.
-    await this.sprites.ensureSprites(campaignId, character.id, userId, [
-      ...SPRITE_DIRECTIONS,
-    ]);
+    // Kick off the ACTIVE FORM's sprite generation, without blocking placement.
+    const activeForm = await this.formService.getActiveForm(character);
+    if (activeForm) {
+      await this.formSprites.ensureSprites(activeForm, userId, [...SPRITE_DIRECTIONS]);
+    }
 
     const [{ dto: dtoOut }] = await this.buildDtos(campaignId, [entity]);
     if (entity.isVisibleToPlayers) this.emitAdded(dtoOut, userId);
@@ -176,37 +182,76 @@ export class SessionCharacterService {
     if (wasVisible) this.emitRemoved(entity, userId);
   }
 
+  /**
+   * Changes the ACTIVE FORM of a placed character during the session. Master
+   * only. The character stays the same (position/size/facing/visibility keep) —
+   * only the effective visual/mechanical layer changes. Ensures the new form's
+   * sprites and broadcasts so everyone converges.
+   */
+  async changeForm(
+    userId: string,
+    campaignId: string,
+    id: string,
+    dto: ChangeFormDto,
+  ): Promise<SessionCharacterDto> {
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const entity = await this.loadOrFail(campaignId, id);
+
+    // Activates the form on the character (validates ownership + master).
+    await this.formService.activate(userId, campaignId, entity.characterId, dto.formId);
+    const form = await this.formService.getForm(entity.characterId, dto.formId);
+    // Kick off the new form's sprites without blocking (both directions).
+    await this.formSprites.ensureSprites(form, userId, [...SPRITE_DIRECTIONS]);
+
+    const [{ dto: dtoOut }] = await this.buildDtos(campaignId, [entity]);
+    if (entity.isVisibleToPlayers) {
+      void this.emit(entity.campaignId, SESSION_CHARACTER_EVENTS.formChanged, {
+        sessionId: entity.sessionId,
+        mapId: entity.mapId,
+        sessionCharacterId: entity.id,
+        characterId: entity.characterId,
+        activeFormId: form.id,
+        activeFormName: form.name,
+        facing: entity.facing,
+        sprites: dtoOut.sprites,
+        clientMutationId: dto.clientMutationId ?? null,
+        originUserId: userId,
+      });
+    }
+    return dtoOut;
+  }
+
   // ── helpers ─────────────────────────────────────────────────
 
   private async buildDtos(
     campaignId: string,
     placed: SessionCharacter[],
   ): Promise<Array<{ dto: SessionCharacterDto; controllerId: string | null }>> {
-    const characterIds = [...new Set(placed.map((p) => p.characterId))];
-    const spriteRows = await this.repo.findSpritesByCharacters(characterIds);
-    const spritesByChar = new Map<string, typeof spriteRows>();
-    for (const s of spriteRows) {
-      const list = spritesByChar.get(s.characterId) ?? [];
-      list.push(s);
-      spritesByChar.set(s.characterId, list);
-    }
-
     const out: Array<{ dto: SessionCharacterDto; controllerId: string | null }> = [];
     for (const entity of placed) {
       const character = await this.characters.findInCampaign(
         campaignId,
         entity.characterId,
       );
-      const sprites = (spritesByChar.get(entity.characterId) ?? []).map((s) => ({
-        direction: s.direction,
-        imageUrl: s.imageUrl,
-        imageStatus: s.imageStatus,
-      }));
+      // The effective sprites come from the character's ACTIVE FORM.
+      const activeForm = character
+        ? await this.formService.getActiveForm(character)
+        : null;
+      const sprites = activeForm
+        ? await this.formSprites.viewsFor(activeForm.id)
+        : [];
+      const formsCount = character
+        ? await this.formService.countForms(character.id)
+        : 0;
       out.push({
         dto: toSessionCharacterDto(
           entity,
           character?.name ?? 'Personagem',
           character?.isPlayerCharacter ?? false,
+          activeForm
+            ? { id: activeForm.id, name: activeForm.name, imageUrl: activeForm.imageUrl }
+            : null,
+          formsCount,
           sprites,
         ),
         controllerId: character?.controlledByUserId ?? null,
