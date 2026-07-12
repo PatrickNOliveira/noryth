@@ -535,6 +535,7 @@ export function SessionPage() {
         facing: 'FRONT',
         sizeScale: SIZE_SCALE_DEFAULT,
         isVisibleToPlayers: character.isPlayerCharacter,
+        isPlayerCharacter: character.isPlayerCharacter,
         sprites: [],
         createdAt: '',
         updatedAt: '',

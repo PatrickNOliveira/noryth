@@ -138,6 +138,12 @@ export class AbilitiesService {
     return out;
   }
 
+  /** Raw lookup (NO permission) of an ability definition in a campaign. */
+  async findDefinitionInCampaign(campaignId: string, abilityId: string) {
+    const def = await this.abilities.findDefinitionById(abilityId);
+    return def && def.campaignId === campaignId ? def : null;
+  }
+
   // ── master: create/update/remove ────────────────────────────
 
   async create(

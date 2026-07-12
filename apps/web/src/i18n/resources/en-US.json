@@ -1112,5 +1112,42 @@
       "history": "History",
       "masterNotes": "Master notes"
     }
+  },
+  "characterForm": {
+    "eyebrow": "Character",
+    "title": "Forms",
+    "loading": "Loading forms…",
+    "new": "New form",
+    "emptyTitle": "No forms yet",
+    "emptyDescription": "Create alternative forms for this character.",
+    "active": "Active",
+    "default": "Default",
+    "activate": "Activate",
+    "setDefault": "Set as default",
+    "generateImage": "Generate image",
+    "edit": "Edit",
+    "remove": "Remove",
+    "newTitle": "New form",
+    "editTitle": "Edit form",
+    "cancel": "Cancel",
+    "save": "Save",
+    "error": "Could not save the form.",
+    "usesBaseAbilities": "Uses base abilities",
+    "noAttributes": "No attributes configured.",
+    "noAbilities": "No abilities available.",
+    "baseValue": "base",
+    "validation": {
+      "nameRequired": "Give the form a name.",
+      "appearanceRequired": "The appearance description is required."
+    },
+    "fields": {
+      "name": "Form name",
+      "shortDescription": "Short description",
+      "appearance": "Appearance description",
+      "appearanceHint": "Used to generate the form image.",
+      "notes": "Master notes",
+      "attributes": "Attributes",
+      "abilities": "Abilities"
+    }
   }
 }

@@ -17,6 +17,7 @@ import { CharactersModule } from '@modules/characters/characters.module';
 import { MapsModule } from '@modules/maps/maps.module';
 import { ItemsModule } from '@modules/items/items.module';
 import { AbilitiesModule } from '@modules/abilities/abilities.module';
+import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
 import { SessionsModule } from '@modules/sessions/sessions.module';
 
 /**
@@ -43,6 +44,7 @@ import { SessionsModule } from '@modules/sessions/sessions.module';
     MapsModule,
     ItemsModule,
     AbilitiesModule,
+    CharacterFormsModule,
     SessionsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],

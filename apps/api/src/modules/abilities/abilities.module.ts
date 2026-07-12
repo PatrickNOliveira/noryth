@@ -34,5 +34,6 @@ import { TypeOrmAbilitiesRepository } from './repositories/typeorm-abilities.rep
     AbilitiesService,
     { provide: ABILITIES_REPOSITORY, useClass: TypeOrmAbilitiesRepository },
   ],
+  exports: [AbilitiesService],
 })
 export class AbilitiesModule {}

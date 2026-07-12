@@ -206,6 +206,7 @@ export class SessionCharacterService {
         dto: toSessionCharacterDto(
           entity,
           character?.name ?? 'Personagem',
+          character?.isPlayerCharacter ?? false,
           sprites,
         ),
         controllerId: character?.controlledByUserId ?? null,

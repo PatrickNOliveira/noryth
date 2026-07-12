@@ -1112,5 +1112,42 @@
       "history": "Storia",
       "masterNotes": "Note del master"
     }
+  },
+  "characterForm": {
+    "eyebrow": "Personaggio",
+    "title": "Forme",
+    "loading": "Caricamento forme…",
+    "new": "Nuova forma",
+    "emptyTitle": "Ancora nessuna forma",
+    "emptyDescription": "Crea forme alternative per questo personaggio.",
+    "active": "Attiva",
+    "default": "Predefinita",
+    "activate": "Attiva",
+    "setDefault": "Imposta come predefinita",
+    "generateImage": "Genera immagine",
+    "edit": "Modifica",
+    "remove": "Rimuovi",
+    "newTitle": "Nuova forma",
+    "editTitle": "Modifica forma",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "error": "Impossibile salvare la forma.",
+    "usesBaseAbilities": "Usa abilità di base",
+    "noAttributes": "Nessun attributo configurato.",
+    "noAbilities": "Nessuna abilità disponibile.",
+    "baseValue": "base",
+    "validation": {
+      "nameRequired": "Dai un nome alla forma.",
+      "appearanceRequired": "La descrizione dell’aspetto è obbligatoria."
+    },
+    "fields": {
+      "name": "Nome della forma",
+      "shortDescription": "Descrizione breve",
+      "appearance": "Descrizione dell’aspetto",
+      "appearanceHint": "Usata per generare l’immagine della forma.",
+      "notes": "Note del master",
+      "attributes": "Attributi",
+      "abilities": "Abilità"
+    }
   }
 }

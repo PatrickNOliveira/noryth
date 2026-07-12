@@ -155,11 +155,14 @@ export function SessionCharacterControls({
       <Button size="sm" variant="secondary" onClick={onOpenAbilities}>
         {t('session.abilities.open')}
       </Button>
-      <Button size="sm" variant="secondary" onClick={onToggleVisibility}>
-        {character.isVisibleToPlayers
-          ? t('session.characters.hide')
-          : t('session.characters.show')}
-      </Button>
+      {/* Only NPCs can be hidden from players — player characters are always shown. */}
+      {!character.isPlayerCharacter && (
+        <Button size="sm" variant="secondary" onClick={onToggleVisibility}>
+          {character.isVisibleToPlayers
+            ? t('session.characters.hide')
+            : t('session.characters.show')}
+        </Button>
+      )}
       <Button size="sm" variant="ghost" onClick={onRegenerate}>
         {t('session.characters.regenerate')}
       </Button>

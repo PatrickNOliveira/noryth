@@ -14,6 +14,8 @@ export interface SessionCharacterDto {
   facing: string;
   sizeScale: number;
   isVisibleToPlayers: boolean;
+  /** Whether the placed character is a player character (vs. a master NPC). */
+  isPlayerCharacter: boolean;
   /** Per-direction sprite state (FRONT/BACK) for the frontend to pick + placeholder. */
   sprites: SpriteView[];
   createdAt: Date;
@@ -23,6 +25,7 @@ export interface SessionCharacterDto {
 export function toSessionCharacterDto(
   entity: SessionCharacter,
   characterName: string,
+  isPlayerCharacter: boolean,
   sprites: SpriteView[],
 ): SessionCharacterDto {
   return {
@@ -37,6 +40,7 @@ export function toSessionCharacterDto(
     facing: entity.facing,
     sizeScale: entity.sizeScale,
     isVisibleToPlayers: entity.isVisibleToPlayers,
+    isPlayerCharacter,
     sprites,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,

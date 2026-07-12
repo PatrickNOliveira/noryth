@@ -31,6 +31,8 @@ export interface SessionCharacter {
   /** Visual scale of the sprite on the map only (1.0 = base height). */
   sizeScale: number;
   isVisibleToPlayers: boolean;
+  /** Player character (vs. master NPC) — NPCs can be hidden from players. */
+  isPlayerCharacter: boolean;
   sprites: SpriteView[];
   createdAt: string;
   updatedAt: string;

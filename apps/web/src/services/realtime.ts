@@ -60,6 +60,13 @@ export const CHARACTER_IMAGE_EVENTS = {
   failed: 'character.image.failed',
 } as const;
 
+/** Event names emitted by the API for character FORM image generation. */
+export const CHARACTER_FORM_IMAGE_EVENTS = {
+  processing: 'character.form.image.processing',
+  completed: 'character.form.image.completed',
+  failed: 'character.form.image.failed',
+} as const;
+
 /** Event names emitted by the API for map image generation. */
 export const MAP_IMAGE_EVENTS = {
   processing: 'map.image.processing',

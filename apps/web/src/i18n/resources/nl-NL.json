@@ -1112,5 +1112,42 @@
       "history": "Geschiedenis",
       "masterNotes": "Notities van de spelleider"
     }
+  },
+  "characterForm": {
+    "eyebrow": "Personage",
+    "title": "Vormen",
+    "loading": "Vormen laden…",
+    "new": "Nieuwe vorm",
+    "emptyTitle": "Nog geen vormen",
+    "emptyDescription": "Maak alternatieve vormen voor dit personage.",
+    "active": "Actief",
+    "default": "Standaard",
+    "activate": "Activeren",
+    "setDefault": "Als standaard instellen",
+    "generateImage": "Afbeelding genereren",
+    "edit": "Bewerken",
+    "remove": "Verwijderen",
+    "newTitle": "Nieuwe vorm",
+    "editTitle": "Vorm bewerken",
+    "cancel": "Annuleren",
+    "save": "Opslaan",
+    "error": "Kon de vorm niet opslaan.",
+    "usesBaseAbilities": "Gebruikt basisvaardigheden",
+    "noAttributes": "Geen attributen ingesteld.",
+    "noAbilities": "Geen vaardigheden beschikbaar.",
+    "baseValue": "basis",
+    "validation": {
+      "nameRequired": "Geef de vorm een naam.",
+      "appearanceRequired": "De uiterlijkbeschrijving is verplicht."
+    },
+    "fields": {
+      "name": "Naam van de vorm",
+      "shortDescription": "Korte beschrijving",
+      "appearance": "Uiterlijkbeschrijving",
+      "appearanceHint": "Gebruikt om de afbeelding van de vorm te genereren.",
+      "notes": "Notities van de spelleider",
+      "attributes": "Attributen",
+      "abilities": "Vaardigheden"
+    }
   }
 }
