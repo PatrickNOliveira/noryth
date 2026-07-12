@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Inject,
   Injectable,
   Logger,
@@ -22,6 +23,7 @@ import { UpdateSessionCharacterDto } from '../dto/update-session-character.dto';
 import {
   SESSION_CHARACTER_EVENTS,
   SPRITE_DIRECTIONS,
+  SpriteDirection,
 } from '../session-character.constants';
 import {
   SESSION_CHARACTERS_REPOSITORY,
@@ -33,7 +35,10 @@ import {
 } from '../repositories/sessions.repository';
 import { CharacterSessionSpriteService } from './character-session-sprite.service';
 import { CharacterFormService } from '@modules/character-forms/services/character-form.service';
-import { CharacterFormSessionSpriteService } from '@modules/character-forms/services/character-form-session-sprite.service';
+import {
+  CharacterFormSessionSpriteService,
+  FormSpriteView,
+} from '@modules/character-forms/services/character-form-session-sprite.service';
 import { ChangeFormDto } from '../dto/change-form.dto';
 
 /**
@@ -219,6 +224,37 @@ export class SessionCharacterService {
       });
     }
     return dtoOut;
+  }
+
+  /**
+   * Explicit "regenerate sprite" for a placed character. Regenerates the sprites
+   * of the character's ACTIVE FORM (the exact assets shown on the map) — scoped to
+   * that character/form/direction, never touching any other character or form.
+   * Master OR the character's controller may trigger it; `force` re-does even
+   * already-completed directions WITHOUT clearing the current image, so the old
+   * sprite stays visible until the new one is ready. Each direction updates every
+   * client via its own `character.form.session_sprite.*` event (formId+direction).
+   */
+  async regenerateSprites(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    directions: SpriteDirection[] = [...SPRITE_DIRECTIONS],
+  ): Promise<FormSpriteView[]> {
+    const campaign = await this.campaigns.findForMemberOrFail(userId, campaignId);
+    const character = await this.characters.findInCampaign(campaignId, characterId);
+    if (!character) throw new NotFoundException('Personagem não encontrado');
+    const isMaster = campaign.masterId === userId;
+    const isController = character.controlledByUserId === userId;
+    if (!isMaster && !isController) {
+      throw new ForbiddenException(
+        'Apenas o mestre ou o dono do personagem pode gerar os sprites de sessão.',
+      );
+    }
+    const activeForm = await this.formService.getActiveForm(character);
+    if (!activeForm) return [];
+    await this.formSprites.ensureSprites(activeForm, userId, directions, true);
+    return this.formSprites.viewsFor(activeForm.id);
   }
 
   // ── helpers ─────────────────────────────────────────────────

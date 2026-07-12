@@ -69,25 +69,38 @@ export class CharacterFormSessionSpriteService {
     private readonly realtime: RealtimeProvider,
   ) {}
 
-  /** The current sprite views (per direction) of a form. */
+  /**
+   * The current sprite views (per direction) of a form. A sprite left
+   * `pending`/`processing` past the staleness window (dead worker, lost job) is
+   * reported as `failed` — so clients stop showing an infinite "generating" state
+   * and the master can regenerate again.
+   */
   async viewsFor(formId: string): Promise<FormSpriteView[]> {
     const sprites = await this.repo.findSpritesByForm(formId);
     return sprites.map((s) => ({
       direction: s.direction,
       imageUrl: s.imageUrl,
-      imageStatus: s.imageStatus,
+      imageStatus:
+        (s.imageStatus === 'pending' || s.imageStatus === 'processing') &&
+        !imageGenerationInFlight(s.imageStatus, s.updatedAt)
+          ? 'failed'
+          : s.imageStatus,
     }));
   }
 
   /**
    * Ensures the form has session sprites in the given directions. Idempotent and
    * defensive (never throws): enqueues generation only for directions that are
-   * missing/failed and not already in flight. Permission is the caller's job.
+   * missing/failed and not already in flight. When `force` is true (explicit
+   * "regenerate"), it re-generates even directions that are already completed —
+   * WITHOUT clearing the current image, so the old sprite stays visible until the
+   * new one is ready. Permission is the caller's job.
    */
   async ensureSprites(
     form: CharacterForm,
     requestedBy: string,
     directions: SpriteDirection[] = [...SPRITE_DIRECTIONS],
+    force = false,
   ): Promise<void> {
     for (const direction of directions) {
       try {
@@ -103,7 +116,7 @@ export class CharacterFormSessionSpriteService {
             }),
           );
         }
-        if (sprite.imageStatus === 'completed' && sprite.imageUrl) continue;
+        if (!force && sprite.imageStatus === 'completed' && sprite.imageUrl) continue;
         if (imageGenerationInFlight(sprite.imageStatus, sprite.updatedAt)) continue;
         await this.startGeneration(sprite, requestedBy);
       } catch (error) {

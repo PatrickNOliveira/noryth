@@ -43,6 +43,12 @@ export interface SessionCharacter {
   updatedAt: string;
   /** Client-only: a not-yet-confirmed placement (rendered slightly faded). */
   isOptimistic?: boolean;
+  /**
+   * Client-only, BOUNDED flag: the master asked to regenerate this character's
+   * sprite. Auto-cleared on completion/failure OR by a fallback timeout, so the
+   * "regenerating" indicator can never get stuck forever if the job/event is lost.
+   */
+  isRegenerating?: boolean;
 }
 
 /** Visual scale bounds for a placed character (map-only). */

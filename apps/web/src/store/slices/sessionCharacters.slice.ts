@@ -226,6 +226,36 @@ const slice = createSlice({
         c.formsCount = fresh.formsCount;
       }
     },
+    /**
+     * Optimistic "regenerate": mark this character's sprites as processing (KEEP
+     * the current image so the token stays visible + dimmed). Scoped to a single
+     * characterId — never touches other characters. Realtime later flips each
+     * direction to completed; if the request fails, the fallback poll reconciles
+     * back to the server truth.
+     */
+    sessionCharacterSpriteRegenerating(
+      state,
+      action: PayloadAction<{ characterId: string }>,
+    ) {
+      for (const c of state.list) {
+        if (c.characterId !== action.payload.characterId) continue;
+        c.isRegenerating = true;
+        for (const s of c.sprites) s.imageStatus = 'processing';
+      }
+    },
+    /**
+     * Clears the bounded "regenerating" flag for a character (fallback timeout or
+     * a completed/failed realtime event). Never touches sprite images — the poll
+     * and realtime still carry the actual result.
+     */
+    sessionCharacterRegenSettled(
+      state,
+      action: PayloadAction<{ characterId: string }>,
+    ) {
+      for (const c of state.list) {
+        if (c.characterId === action.payload.characterId) c.isRegenerating = false;
+      }
+    },
     /** Realtime `character.session_sprite.*` — patch sprites for a character. */
     sessionSpriteUpdated(
       state,
@@ -303,5 +333,7 @@ export const {
   sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
   sessionSpritesReconciled,
+  sessionCharacterSpriteRegenerating,
+  sessionCharacterRegenSettled,
 } = slice.actions;
 export default slice.reducer;

@@ -104,6 +104,15 @@ export function SessionCharacterControls({
 }: Props) {
   const { t } = useTranslation();
   const scale = character.sizeScale;
+  // Per-character/direction: the regenerate button reflects ONLY this character's
+  // facing sprite — it never disables because another character is regenerating.
+  const facingSprite = character.sprites.find((s) => s.direction === character.facing);
+  // Gated by the bounded isRegenerating flag so the button can't stay disabled
+  // forever if a job/event is lost (the flag auto-clears via a fallback timeout).
+  const regenerating =
+    !!character.isRegenerating &&
+    (facingSprite?.imageStatus === 'pending' ||
+      facingSprite?.imageStatus === 'processing');
   return (
     <Panel>
       <Label>{character.characterName}</Label>
@@ -170,8 +179,17 @@ export function SessionCharacterControls({
             : t('session.characters.show')}
         </Button>
       )}
-      <Button size="sm" variant="ghost" onClick={onRegenerate}>
-        {t('session.characters.regenerate')}
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={onRegenerate}
+        disabled={regenerating}
+      >
+        {t(
+          regenerating
+            ? 'session.characters.regeneratingButton'
+            : 'session.characters.regenerate',
+        )}
       </Button>
       <Button size="sm" variant="ghost" onClick={onRemove}>
         {t('session.characters.remove')}

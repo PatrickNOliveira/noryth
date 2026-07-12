@@ -57,6 +57,8 @@ import {
   sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
   sessionSpritesReconciled,
+  sessionCharacterSpriteRegenerating,
+  sessionCharacterRegenSettled,
 } from '../store/slices/sessionCharacters.slice';
 import { characterUpserted } from '../store/slices/characters.slice';
 import { itemUpserted } from '../store/slices/items.slice';
@@ -85,6 +87,14 @@ import {
 } from '../types/session';
 import { Character } from '../types/character';
 import { media } from '../styles/media';
+
+/**
+ * Upper bound for the sprite-regeneration "loading" state. If neither the
+ * realtime completion nor the fallback poll clears it within this window (lost
+ * job, dead worker, missed event), the indicator is force-cleared so it never
+ * gets stuck forever. Comfortably longer than a normal generation.
+ */
+const REGEN_FALLBACK_MS = 90_000;
 
 /** Full-viewport, no page scroll — this is a game screen, not an admin page. */
 const Screen = styled.div`
@@ -434,6 +444,7 @@ export function SessionPage() {
           formId?: string;
           direction?: SpriteDirection;
           imageUrl?: string;
+          characterId?: string;
         };
         if (p?.formId && p.direction) {
           dispatch(
@@ -444,6 +455,15 @@ export function SessionPage() {
               status,
             }),
           );
+          // A finished/failed sprite ends the regeneration state and its fallback.
+          if ((status === 'completed' || status === 'failed') && p.characterId) {
+            const timer = regenTimers.current.get(p.characterId);
+            if (timer !== undefined) {
+              window.clearTimeout(timer);
+              regenTimers.current.delete(p.characterId);
+            }
+            dispatch(sessionCharacterRegenSettled({ characterId: p.characterId }));
+          }
         }
       };
     const subs: Array<[string, (payload: unknown) => void]> = [
@@ -576,12 +596,25 @@ export function SessionPage() {
   const mutationVersions = useRef(new Map<string, number>());
   const draggingIds = useRef(new Set<string>());
   const resizeTimers = useRef(new Map<string, number>());
+  // Fallback timers for sprite regeneration, keyed by characterId — clear the
+  // "regenerating" state if the job/event never lands (see regenerateSelected).
+  const regenTimers = useRef(new Map<string, number>());
+  const clearRegenTimer = (characterId: string) => {
+    const id = regenTimers.current.get(characterId);
+    if (id !== undefined) {
+      window.clearTimeout(id);
+      regenTimers.current.delete(characterId);
+    }
+  };
 
   useEffect(() => {
     const timers = resizeTimers.current;
+    const regen = regenTimers.current;
     return () => {
       timers.forEach((id) => window.clearTimeout(id));
       timers.clear();
+      regen.forEach((id) => window.clearTimeout(id));
+      regen.clear();
     };
   }, []);
 
@@ -951,13 +984,46 @@ export function SessionPage() {
       ),
     );
   };
+  const reconcileSprites = () =>
+    sessionService
+      .listCharacters(campaignId)
+      .then((list) => dispatch(sessionSpritesReconciled(list)))
+      .catch(() => {});
+
   const regenerateSelected = () => {
-    if (selected) {
-      void sessionService
-        .generateSprites(campaignId, selected.characterId)
-        .catch(() => {});
-      notify(t('session.characters.regenerating'), { variant: 'info' });
-    }
+    if (!selected) return;
+    const characterId = selected.characterId;
+    const facingSprite = selected.sprites.find((s) => s.direction === selected.facing);
+    // Per-character guard: ignore repeated clicks only while ACTIVELY regenerating
+    // (bounded flag + processing). A timed-out/stale state lets the master retry.
+    const activelyRegenerating =
+      !!selected.isRegenerating &&
+      (facingSprite?.imageStatus === 'pending' ||
+        facingSprite?.imageStatus === 'processing');
+    if (activelyRegenerating) return;
+
+    // Optimistic: mark ONLY this character as regenerating (image kept, dimmed).
+    dispatch(sessionCharacterSpriteRegenerating({ characterId }));
+
+    // Fallback: if the job/realtime never lands, clear the "regenerating" state
+    // after a bounded delay and reconcile with the server so it can never stick.
+    clearRegenTimer(characterId);
+    regenTimers.current.set(
+      characterId,
+      window.setTimeout(() => {
+        regenTimers.current.delete(characterId);
+        dispatch(sessionCharacterRegenSettled({ characterId }));
+        void reconcileSprites();
+      }, REGEN_FALLBACK_MS),
+    );
+
+    void sessionService.generateSprites(campaignId, characterId).catch(() => {
+      notify(t('session.characters.regenerateError'), { variant: 'error' });
+      clearRegenTimer(characterId);
+      dispatch(sessionCharacterRegenSettled({ characterId }));
+      void reconcileSprites();
+    });
+    notify(t('session.characters.regenerating'), { variant: 'info' });
   };
 
   const title = campaignName ?? t('session.title');

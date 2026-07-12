@@ -1013,6 +1013,8 @@
       "hide": "Hide from players",
       "regenerate": "Regenerate sprite",
       "regenerating": "Regenerating the sprite…",
+      "regeneratingButton": "Regenerating…",
+      "regenerateError": "Could not regenerate the sprite.",
       "remove": "Remove from map",
       "size": "Size",
       "smaller": "Smaller",

@@ -42,12 +42,34 @@ const Anchor = styled.div<{
   }
 `;
 
-const Sprite = styled.img`
+const Sprite = styled.img<{ $regenerating: boolean }>`
   height: 100%;
   width: auto;
   display: block;
   pointer-events: none;
   filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.6));
+  /* Keep the old sprite visible while a new one generates — just dim it. */
+  opacity: ${({ $regenerating }) => ($regenerating ? 0.55 : 1)};
+  transition: opacity ${({ theme }) => theme.transitions.fast};
+`;
+
+/** Small pulsing dot shown over the sprite while its image is (re)generating. */
+const RegenDot = styled.div`
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.primary};
+  box-shadow: 0 0 0 2px color-mix(in srgb, ${({ theme }) => theme.colors.surface} 70%, transparent);
+  pointer-events: none;
+  animation: sprite-regen-pulse 1s ease-in-out infinite;
+
+  @keyframes sprite-regen-pulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 1; }
+  }
 `;
 
 const Placeholder = styled.div`
@@ -139,7 +161,15 @@ export function SessionCharacterSprite({
 }: Props) {
   const { t } = useTranslation();
   const sprite = character.sprites.find((s) => s.direction === character.facing);
-  const ready = sprite?.imageStatus === 'completed' && !!sprite.imageUrl;
+  // Show the current image whenever one exists — even while a new one is being
+  // generated — so the character never disappears during regeneration. Only fall
+  // back to the placeholder when there is genuinely no image yet.
+  const hasImage = !!sprite?.imageUrl;
+  // Gated by the BOUNDED isRegenerating flag so the indicator can never stick
+  // forever if a job/event is lost (the flag auto-clears via a fallback timeout).
+  const regenerating =
+    !!character.isRegenerating &&
+    (sprite?.imageStatus === 'pending' || sprite?.imageStatus === 'processing');
   const initial = character.characterName.trim().charAt(0).toUpperCase() || '•';
   const z = Math.round(character.y * 100);
   const height = `calc(${BASE_HEIGHT} * ${character.sizeScale})`;
@@ -161,11 +191,16 @@ export function SessionCharacterSprite({
       {!character.isVisibleToPlayers && (
         <HiddenBadge>{t('session.characters.hiddenTag')}</HiddenBadge>
       )}
-      {ready ? (
-        <Sprite src={sprite!.imageUrl as string} alt={character.characterName} />
+      {hasImage ? (
+        <Sprite
+          src={sprite!.imageUrl as string}
+          alt={character.characterName}
+          $regenerating={regenerating}
+        />
       ) : (
         <Placeholder>{initial}</Placeholder>
       )}
+      {regenerating && <RegenDot />}
       <Shadow />
       <NameTag $hidden={!character.isVisibleToPlayers}>{character.characterName}</NameTag>
     </Anchor>
