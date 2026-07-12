@@ -15,6 +15,15 @@ export const CHARACTER_IMAGE_STATUSES = [
 ] as const;
 export type CharacterImageStatus = (typeof CHARACTER_IMAGE_STATUSES)[number];
 
+/**
+ * Where a character was authored. `PREPARATION` is the default (campaign prep);
+ * `SESSION` marks a character improvised by the master during a live session.
+ * Audit-only — it never forks the character flow.
+ */
+export const CHARACTER_CREATION_SOURCES = ['PREPARATION', 'SESSION'] as const;
+export type CharacterCreationSource =
+  (typeof CHARACTER_CREATION_SOURCES)[number];
+
 /** Job name for the async character portrait generation (shares the AI queue). */
 export const GENERATE_CHARACTER_PORTRAIT_JOB = 'generate-character-portrait';
 
@@ -36,4 +45,9 @@ export const CHARACTER_IMAGE_EVENTS = {
   processing: 'character.image.processing',
   completed: 'character.image.completed',
   failed: 'character.image.failed',
+} as const;
+
+/** Server → client lifecycle events for characters (campaign room). */
+export const CHARACTER_EVENTS = {
+  created: 'character.created',
 } as const;

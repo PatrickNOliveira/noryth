@@ -9,6 +9,12 @@ import {
   SpriteView,
   SpriteDirection,
 } from '../types/session';
+import {
+  Character,
+  CompleteImprovisedCharacterInput,
+  CreateCharacterInput,
+  ImprovisedCharacterDraft,
+} from '../types/character';
 
 const base = (campaignId: string) => `/campaigns/${campaignId}/session`;
 
@@ -97,6 +103,38 @@ export const sessionService = {
       `${base(campaignId)}/characters/${id}/form`,
       { formId, clientMutationId },
       { signal },
+    );
+    return data;
+  },
+
+  // ── improvise a character during the session (master only) ──
+
+  /**
+   * AI-completes the master's partial character, returning a draft to review
+   * (nothing is persisted yet). The backend guarantees master-filled fields are
+   * preserved verbatim.
+   */
+  async aiCompleteImprovisedCharacter(
+    campaignId: string,
+    input: CompleteImprovisedCharacterInput,
+    signal?: AbortSignal,
+  ): Promise<ImprovisedCharacterDraft> {
+    const { data } = await api.post<ImprovisedCharacterDraft>(
+      `${base(campaignId)}/characters/ai-complete`,
+      input,
+      { signal },
+    );
+    return data;
+  },
+
+  /** Creates the improvised character as a normal campaign character. */
+  async createImprovisedCharacter(
+    campaignId: string,
+    input: CreateCharacterInput,
+  ): Promise<Character> {
+    const { data } = await api.post<Character>(
+      `${base(campaignId)}/characters/create`,
+      input,
     );
     return data;
   },

@@ -10,6 +10,7 @@ import {
   DiceIcon,
   ShieldIcon,
   LeaveIcon,
+  PlusIcon,
 } from '../components/icons';
 import { SessionGameViewport } from '../components/session/SessionGameViewport';
 import {
@@ -18,6 +19,7 @@ import {
 } from '../components/session/SessionActionMenu';
 import { StartSessionModal } from '../components/session/StartSessionModal';
 import { AddSessionCharacterModal } from '../components/session/AddSessionCharacterModal';
+import { CreateSessionCharacterModal } from '../components/session/CreateSessionCharacterModal';
 import { ChangeMapModal } from '../components/session/ChangeMapModal';
 import { SessionCharacterControls } from '../components/session/SessionCharacterControls';
 import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
@@ -52,6 +54,7 @@ import {
   sessionCharacterFormSpriteUpdated,
   sessionSpriteUpdated,
 } from '../store/slices/sessionCharacters.slice';
+import { characterUpserted } from '../store/slices/characters.slice';
 import { sessionService } from '../services/session.service';
 import { useCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
@@ -180,6 +183,7 @@ export function SessionPage() {
   });
   const [startOpen, setStartOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [pendingAddIds, setPendingAddIds] = useState<string[]>([]);
   const [changeMapOpen, setChangeMapOpen] = useState(false);
@@ -495,6 +499,10 @@ export function SessionPage() {
       setAddOpen(true);
       return;
     }
+    if (isMaster && key === 'createCharacter') {
+      setCreateOpen(true);
+      return;
+    }
     if (isMaster && key === 'changeMap') {
       setChangeMapOpen(true);
       return;
@@ -623,6 +631,19 @@ export function SessionPage() {
         notify(t('session.characters.addError'), { variant: 'error' });
       })
       .finally(done);
+  };
+
+  // A character was improvised during the session: make it available in the
+  // campaign list right away (so "Mostrar personagem" shows it), then optionally
+  // drop it on the map immediately.
+  const onImprovisedCharacterCreated = (
+    character: Character,
+    addToMap: boolean,
+  ) => {
+    dispatch(characterUpserted(character));
+    setCreateOpen(false);
+    notify(t('session.createCharacter.created'), { variant: 'success' });
+    if (addToMap) addCharacterToMap(character);
   };
 
   // Switch the active map: clean the board instantly, then confirm. One switch
@@ -1072,6 +1093,12 @@ export function SessionPage() {
             pendingCharacterIds={pendingAddIds}
             onPick={addCharacterToMap}
           />
+          <CreateSessionCharacterModal
+            campaignId={campaignId}
+            isOpen={createOpen}
+            onClose={() => setCreateOpen(false)}
+            onCreated={onImprovisedCharacterCreated}
+          />
           <ChangeMapModal
             campaignId={campaignId}
             isOpen={changeMapOpen}
@@ -1114,6 +1141,7 @@ type TFn = (key: string) => string;
 /** Only the wired master actions — the mocked placeholders were removed. */
 function masterActions(t: TFn, poiEditMode: boolean): SessionAction[] {
   return [
+    { key: 'createCharacter', label: t('session.action.createCharacter'), icon: <PlusIcon size={20} /> },
     { key: 'showCharacter', label: t('session.action.showCharacter'), icon: <CompassIcon size={20} /> },
     { key: 'changeMap', label: t('session.action.changeMap'), icon: <MapIcon size={20} /> },
     {

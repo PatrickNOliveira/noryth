@@ -4,15 +4,19 @@ import { CampaignsModule } from '@modules/campaigns/campaigns.module';
 import { MapsModule } from '@modules/maps/maps.module';
 import { CharactersModule } from '@modules/characters/characters.module';
 import { FactionsModule } from '@modules/factions/factions.module';
+import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-attributes.module';
 import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
 import { CampaignSession } from './entities/campaign-session.entity';
 import { SessionCharacter } from './entities/session-character.entity';
 import { CharacterSessionSprite } from './entities/character-session-sprite.entity';
 import { SessionsController } from './controllers/sessions.controller';
 import { SessionCharactersController } from './controllers/session-characters.controller';
+import { SessionImprovisedCharactersController } from './controllers/session-improvised-characters.controller';
 import { CharacterSessionSpritesController } from './controllers/character-session-sprites.controller';
 import { SessionsService } from './services/sessions.service';
 import { SessionCharacterService } from './services/session-character.service';
+import { SessionImprovisedCharacterService } from './services/session-improvised-character.service';
+import { ImprovisedCharacterAgent } from './services/improvised-character.agent';
 import { CharacterSessionSpriteService } from './services/character-session-sprite.service';
 import { CharacterSessionSpriteAgent } from './services/character-session-sprite.agent';
 import { CharacterSessionSpriteHandler } from './services/character-session-sprite.handler';
@@ -39,16 +43,20 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     MapsModule,
     CharactersModule,
     FactionsModule,
+    CampaignAttributesModule,
     CharacterFormsModule,
   ],
   controllers: [
     SessionsController,
     SessionCharactersController,
+    SessionImprovisedCharactersController,
     CharacterSessionSpritesController,
   ],
   providers: [
     SessionsService,
     SessionCharacterService,
+    SessionImprovisedCharacterService,
+    ImprovisedCharacterAgent,
     CharacterSessionSpriteService,
     CharacterSessionSpriteAgent,
     CharacterSessionSpriteHandler,

@@ -971,6 +971,7 @@
     },
     "action": {
       "narrate": "Narrate",
+      "createCharacter": "Create character",
       "changeMap": "Change map",
       "showCharacter": "Show character",
       "showItem": "Show item",
@@ -1030,6 +1031,20 @@
       "emptyDescription": "Create maps in the campaign first.",
       "current": "Current",
       "error": "Could not change the map."
+    },
+    "createCharacter": {
+      "title": "Improvise a character",
+      "ideaLabel": "Quick idea for the AI",
+      "ideaHint": "Optional. Describe the idea and let the AI fill the empty fields.",
+      "ideaPlaceholder": "An old castle servant who knows something about the crypt.",
+      "completeWithAi": "Complete with AI",
+      "create": "Create character",
+      "cancel": "Cancel",
+      "addToMap": "Add to the map now",
+      "aiDone": "Empty fields filled by the AI. Review before creating.",
+      "aiError": "Could not complete the character with AI.",
+      "createError": "Could not create the character.",
+      "created": "Character created. The portrait is being generated."
     },
     "poi": {
       "error": "Could not save the point position."

@@ -40,7 +40,12 @@
       "Bash(node -e \"const j=require\\('./i18n/resources/pt-BR.json'\\); console.log\\(JSON.stringify\\(j.map.type\\)\\)\")",
       "Bash(\" services/ability.service.ts | head && echo \"\" && echo \"=== CharacterAbility type ===\" && grep -n -A18 \"export interface CharacterAbility \" types/ability.ts && echo \"=== campaignAttribute id field ===\" && sed -n '1,12p' types/campaignAttribute.ts && echo \"=== faction type ===\" && grep -n \"id\\\\|name\\\\|type\" types/faction.ts | head)",
       "Bash(grep -n \"charBase\\\\|listCharacter\\\\|assign\\\\|CharacterAbility\\\\|abilities`\" services/ability.service.ts | head && echo \"\" && echo \"=== CharacterAbility type ===\" && grep -n -A18 \"export interface CharacterAbility \" types/ability.ts && echo \"=== campaignAttribute id field ===\" && sed -n '1,12p' types/campaignAttribute.ts && echo \"=== faction type ===\" && grep -n \"id\\\\|name\\\\|type\" types/faction.ts | head)",
-      "Bash(grep -n \"getById\\\\|abilities/\\\\$\" services/ability.service.ts)"
+      "Bash(grep -n \"getById\\\\|abilities/\\\\$\" services/ability.service.ts)",
+      "Bash(grep -nA4 \"getForCampaign\" apps/api/src/modules/campaign-attributes/services/campaign-attributes.service.ts)",
+      "Bash(grep -nA3 -iE \"migration|TypeOrmModule\")",
+      "Bash(grep -nA6 \"createCharacter\" apps/api/src/modules/characters/repositories/typeorm-characters.repository.ts)",
+      "Bash(npx eslint *)",
+      "Bash(node -e \"const p=require\\('./apps/api/package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,1\\)\\)\")"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

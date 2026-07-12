@@ -10,10 +10,15 @@ export interface CharacterAttributeValue {
   value: number;
 }
 
+export type CharacterCreationSource = 'PREPARATION' | 'SESSION';
+
 export interface Character {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  /** Where it was authored (campaign prep vs. improvised in a live session). */
+  creationSource?: CharacterCreationSource;
+  createdDuringSessionId?: string | null;
   controlledByUserId: string | null;
   isPlayerCharacter: boolean;
   attributePointsBudget: number | null;
@@ -65,6 +70,44 @@ export type UpdateCharacterInput = Partial<
   playerNotes?: string;
   attributePointsBudget?: number | null;
 };
+
+/** The master's partial character sent to AI completion during a session. */
+export interface ImprovisePartialCharacterInput {
+  name?: string;
+  title?: string;
+  shortDescription?: string;
+  description?: string;
+  history?: string;
+  appearance?: string;
+  personality?: string;
+  motivations?: string;
+  secrets?: string;
+  notes?: string;
+  factionId?: string | null;
+  attributes?: CharacterAttributeValue[];
+}
+
+/** Body for AI-completing an improvised character. */
+export interface CompleteImprovisedCharacterInput {
+  character?: ImprovisePartialCharacterInput;
+  instructions?: string;
+}
+
+/** A completed, not-yet-persisted character draft returned for review. */
+export interface ImprovisedCharacterDraft {
+  name: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  history: string;
+  appearance: string;
+  personality: string;
+  motivations: string;
+  secrets: string;
+  notes: string;
+  factionId: string | null;
+  attributes: CharacterAttributeValue[];
+}
 
 /** A player creating their own character (no attributes/visibility/budget). */
 export interface CreatePlayerCharacterInput {

@@ -971,6 +971,7 @@
     },
     "action": {
       "narrate": "Narrar",
+      "createCharacter": "Criar personagem",
       "changeMap": "Trocar mapa",
       "showCharacter": "Mostrar personagem",
       "showItem": "Mostrar item",
@@ -1030,6 +1031,20 @@
       "emptyDescription": "Crie mapas na campanha primeiro.",
       "current": "Atual",
       "error": "Não foi possível trocar o mapa."
+    },
+    "createCharacter": {
+      "title": "Criar personagem improvisado",
+      "ideaLabel": "Ideia rápida para a IA",
+      "ideaHint": "Opcional. Descreva a ideia e deixe a IA completar os campos vazios.",
+      "ideaPlaceholder": "Um criado antigo do castelo que sabe algo sobre a cripta.",
+      "completeWithAi": "Completar com IA",
+      "create": "Criar personagem",
+      "cancel": "Cancelar",
+      "addToMap": "Adicionar ao mapa agora",
+      "aiDone": "Campos vazios preenchidos pela IA. Revise antes de criar.",
+      "aiError": "Não foi possível completar o personagem com IA.",
+      "createError": "Não foi possível criar o personagem.",
+      "created": "Personagem criado. A imagem está sendo gerada."
     },
     "poi": {
       "error": "Não foi possível salvar a posição do ponto."

@@ -1,6 +1,9 @@
 import { Column, Entity, Index } from 'typeorm';
 import { BaseEntity } from '@shared/abstractions/base.entity';
-import { CharacterImageStatus } from '../character.constants';
+import {
+  CharacterCreationSource,
+  CharacterImageStatus,
+} from '../character.constants';
 
 /**
  * A master-authored campaign character (NPC in the broad sense). Belongs to a
@@ -18,6 +21,19 @@ export class Character extends BaseEntity {
 
   @Column({ name: 'created_by_user_id', type: 'uuid' })
   createdByUserId!: string;
+
+  /** Where this character was authored (campaign prep vs. improvised in session). */
+  @Column({
+    name: 'creation_source',
+    type: 'varchar',
+    length: 20,
+    default: 'PREPARATION',
+  })
+  creationSource!: CharacterCreationSource;
+
+  /** The session it was improvised in, when `creationSource === 'SESSION'`. */
+  @Column({ name: 'created_during_session_id', type: 'uuid', nullable: true })
+  createdDuringSessionId!: string | null;
 
   /** Player who controls this character (a player character); null for NPCs. */
   @Column({ name: 'controlled_by_user_id', type: 'uuid', nullable: true })

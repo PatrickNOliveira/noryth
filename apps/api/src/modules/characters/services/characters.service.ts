@@ -36,6 +36,8 @@ import { UpdatePlayerCharacterDto } from '../dto/update-player-character.dto';
 import { CharacterAttributeInput } from '../dto/character-attribute.input';
 import {
   characterRoom,
+  CharacterCreationSource,
+  CHARACTER_EVENTS,
   CHARACTER_IMAGE_EVENTS,
   GENERATE_CHARACTER_PORTRAIT_JOB,
   GenerateCharacterPortraitPayload,
@@ -109,10 +111,20 @@ export class CharactersService {
 
   // ── writes (master only) ────────────────────────────────────
 
+  /**
+   * Creates a master character. `origin` records provenance: campaign prep by
+   * default, or a character improvised during a live session (audit-only — the
+   * resulting character is identical in every other respect). A `character.created`
+   * event is broadcast so other watchers' lists update without a refetch.
+   */
   async create(
     userId: string,
     campaignId: string,
     dto: CreateCharacterDto,
+    origin: {
+      creationSource?: CharacterCreationSource;
+      createdDuringSessionId?: string | null;
+    } = {},
   ): Promise<CharacterDto> {
     await this.campaigns.findForMasterOrFail(userId, campaignId);
     await this.assertFaction(campaignId, dto.factionId);
@@ -122,6 +134,8 @@ export class CharactersService {
       this.characters.createCharacter({
         campaignId,
         createdByUserId: userId,
+        creationSource: origin.creationSource ?? 'PREPARATION',
+        createdDuringSessionId: origin.createdDuringSessionId ?? null,
         name: dto.name.trim(),
         title: dto.title?.trim() ?? '',
         shortDescription: dto.shortDescription?.trim() ?? '',
@@ -152,6 +166,13 @@ export class CharactersService {
         ignoreArtDirection: dto.ignoreCampaignArtDirection,
       });
     }
+
+    await this.emit(character, CHARACTER_EVENTS.created, {
+      tableId: character.campaignId,
+      characterId: character.id,
+      createdDuringSessionId: character.createdDuringSessionId,
+      originUserId: userId,
+    });
 
     return toCharacterDto(character, values, true);
   }

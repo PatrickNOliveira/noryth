@@ -185,6 +185,16 @@ const charactersSlice = createSlice({
     clearSelectedCharacter(state) {
       state.selected = null;
     },
+    /**
+     * Insert or replace a character in the list without a refetch — used when a
+     * character is improvised during a session, so it is immediately available
+     * to place on the map.
+     */
+    characterUpserted(state, action: PayloadAction<Character>) {
+      const idx = state.list.findIndex((c) => c.id === action.payload.id);
+      if (idx >= 0) state.list[idx] = action.payload;
+      else state.list.unshift(action.payload);
+    },
     /** Realtime: patch a character's portrait state without a refetch. */
     characterImageUpdate(state, action: PayloadAction<ImageUpdate>) {
       const { characterId, imageStatus, imageUrl, imageError } = action.payload;
@@ -360,6 +370,6 @@ const charactersSlice = createSlice({
   },
 });
 
-export const { clearSelectedCharacter, characterImageUpdate } =
+export const { clearSelectedCharacter, characterImageUpdate, characterUpserted } =
   charactersSlice.actions;
 export default charactersSlice.reducer;

@@ -10,6 +10,8 @@ export interface CharacterDto {
   id: string;
   campaignId: string;
   createdByUserId: string;
+  creationSource: string;
+  createdDuringSessionId: string | null;
   controlledByUserId: string | null;
   isPlayerCharacter: boolean;
   attributePointsBudget: number | null;
@@ -53,6 +55,8 @@ export function toCharacterDto(
     id: character.id,
     campaignId: character.campaignId,
     createdByUserId: character.createdByUserId,
+    creationSource: character.creationSource,
+    createdDuringSessionId: character.createdDuringSessionId,
     controlledByUserId: character.controlledByUserId,
     isPlayerCharacter: character.isPlayerCharacter,
     attributePointsBudget: character.attributePointsBudget,
