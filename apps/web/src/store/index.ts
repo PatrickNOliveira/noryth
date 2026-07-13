@@ -16,6 +16,7 @@ import uiReducer from './slices/ui.slice';
 import languageReducer from './slices/language.slice';
 import campaignsReducer from './slices/campaigns.slice';
 import campaignAttributesReducer from './slices/campaignAttributes.slice';
+import resourcesReducer from './slices/resources.slice';
 import participantsReducer from './slices/participants.slice';
 import factionsReducer from './slices/factions.slice';
 import charactersReducer from './slices/characters.slice';
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   language: languageReducer,
   campaigns: campaignsReducer,
   campaignAttributes: campaignAttributesReducer,
+  resources: resourcesReducer,
   participants: participantsReducer,
   factions: factionsReducer,
   characters: charactersReducer,

@@ -3,6 +3,12 @@ import {
   TEXT_GENERATION_PROVIDER,
   TextGenerationProvider,
 } from '@shared/providers/text-generation/text-generation.provider';
+import {
+  SPRITE_FRAMING_CLAUSE,
+  SPRITE_NEGATIVE_PROMPT,
+  SPRITE_STYLE_CLAUSE,
+  withSpriteFraming,
+} from '@shared/utils/sprite-prompt.util';
 import { SpriteDirection } from '../session-character.constants';
 
 export interface SpriteCampaignContext {
@@ -31,41 +37,6 @@ export interface CharacterSpritePrompt {
   negativePrompt: string;
 }
 
-/** Negative prompt — steers away from portraits, tokens, cards and cropped bodies. */
-const NEGATIVE_PROMPT = [
-  'portrait',
-  'bust',
-  'close-up',
-  'face-only',
-  'circular token',
-  'token border',
-  'card frame',
-  'UI',
-  'text',
-  'letters',
-  'watermark',
-  'signature',
-  'background scene',
-  'landscape',
-  'large illustration',
-  '3d render',
-  'realistic photo',
-  'anime chibi',
-  'oversized head',
-  'cropped body',
-  'missing legs',
-  'cut off feet',
-  'blurry',
-  'low quality',
-  'multiple characters',
-  'extra limbs',
-  'distorted anatomy',
-].join(', ');
-
-/** The clause that fixes the asset type + framing; always ends the prompt. */
-const SPRITE_STYLE_CLAUSE =
-  'Third-person game asset, Ragnarok-like readability, small tactical RPG sprite, full body visible from head to feet, clear silhouette, transparent background, isolated character sprite, no base, no circular token, no portrait frame. Dark fantasy medieval style, muted cold colors, readable details, designed to be placed on an isometric game map.';
-
 const FACING_CLAUSE: Record<SpriteDirection, string> = {
   FRONT: 'facing the camera (front view)',
   BACK: 'viewed from behind, facing away from the camera (back view)',
@@ -76,15 +47,16 @@ Turn a character's lore into ONE concise, visual, English prompt for a 2.5D ISOM
 
 Hard rules:
 - The output is a FULL-BODY 2.5D isometric RPG character sprite (head to feet visible), third-person, readable at small size, with a clear silhouette and a TRANSPARENT background. Never a portrait/bust/close-up, never a circular token or card frame, never a big illustration or a background scene.
+- FRAMING IS CRITICAL: the ENTIRE character must fit inside the canvas with safe margins. The whole head — helmet, hood, hair, horns or crown — and the feet must be fully visible. Leave visible empty space ABOVE the head; the character must never touch the top edge or be cropped. Center it, occupying about 70–80% of the canvas height.
 - Respect the requested FACING (front or back) exactly.
 - VISUAL, not literary. Compress lore into short visual tokens; never copy sentences.
 - Inputs may be in another language (e.g. Portuguese); the final prompt MUST be in English.
 - Derive the look from the character's appearance/description (build, clothing, gear, colors), the faction if any, and the campaign art direction/tone. Muted dark-fantasy palette.
-- ALWAYS end with the fixed sprite style clause provided in the request.
+- ALWAYS end with the fixed sprite style clause AND the framing clause provided in the request.
 - No text, no watermark, no UI.
 
 Structure as a single natural sentence in this spirit:
-"Full-body 2.5D isometric RPG character sprite of [name], [facing], based on a dark fantasy character design. [Build, clothing, gear, colors]. [Sprite style clause]."
+"Full-body 2.5D isometric RPG character sprite of [name], [facing], based on a dark fantasy character design. [Build, clothing, gear, colors]. [Sprite style clause]. [Framing clause]."
 
 Respond with a STRICT JSON object, no markdown, exactly:
 { "imagePrompt": string }`;
@@ -140,17 +112,12 @@ export class CharacterSessionSpriteAgent {
       .replace(/```$/i, '')
       .trim();
     const parsed = JSON.parse(cleaned) as { imagePrompt?: string };
-    let imagePrompt = (parsed.imagePrompt ?? '').trim();
-    if (imagePrompt.length < 30) {
+    const raw = (parsed.imagePrompt ?? '').trim();
+    if (raw.length < 30) {
       throw new Error('LLM returned an empty or too-short imagePrompt');
     }
-    if (!/full[- ]body|sprite/i.test(imagePrompt)) {
-      imagePrompt = `Full-body 2.5D isometric RPG character sprite. ${imagePrompt}`;
-    }
-    if (!/transparent background/i.test(imagePrompt)) {
-      imagePrompt = `${imagePrompt} ${SPRITE_STYLE_CLAUSE}`;
-    }
-    return { imagePrompt, negativePrompt: NEGATIVE_PROMPT };
+    // Guarantee the format AND the framing/headroom clauses are always present.
+    return { imagePrompt: withSpriteFraming(raw), negativePrompt: SPRITE_NEGATIVE_PROMPT };
   }
 
   private buildUserPrompt(
@@ -175,7 +142,8 @@ export class CharacterSessionSpriteAgent {
     add('Character art direction (apply)', options.artDirection);
     add('Facing (respect exactly)', FACING_CLAUSE[direction]);
     add('Input language (translate to English)', campaign.mainLanguage);
-    add('Fixed sprite style clause (end the prompt with this)', SPRITE_STYLE_CLAUSE);
+    add('Fixed sprite style clause (include this)', SPRITE_STYLE_CLAUSE);
+    add('Fixed framing clause (MUST include — full head + headroom, no cropping)', SPRITE_FRAMING_CLAUSE);
     lines.push('', 'Return the JSON object as instructed.');
     return lines.join('\n');
   }
@@ -195,7 +163,10 @@ export class CharacterSessionSpriteAgent {
     const art = (options.artDirection ?? '').trim();
     if (art) parts.push(`Art direction: ${firstSentence(art) || art}.`);
     parts.push(SPRITE_STYLE_CLAUSE);
-    return { imagePrompt: parts.join(' '), negativePrompt: NEGATIVE_PROMPT };
+    return {
+      imagePrompt: withSpriteFraming(parts.join(' ')),
+      negativePrompt: SPRITE_NEGATIVE_PROMPT,
+    };
   }
 }
 

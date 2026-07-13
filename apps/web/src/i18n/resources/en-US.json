@@ -254,6 +254,46 @@
       "configured_one": "{{count}} attribute configured",
       "configured_other": "{{count}} attributes configured"
     },
+    "resources": {
+      "eyebrow": "Character sheet",
+      "title": "Resources",
+      "lead": "Define variable resources (Health, Mana, Sanity…) that characters spend, accumulate or lose.",
+      "loading": "Gathering resources…",
+      "emptyTitle": "No resources yet",
+      "emptyDescription": "Add the first resource for this table (e.g. Health, Mana, Sanity).",
+      "addEyebrow": "New resource",
+      "addTitle": "Add resource",
+      "range": "{{min}} to {{max}}",
+      "visible": "Visible to players",
+      "hidden": "Hidden",
+      "confirmRemove": "Removing this resource deletes its values on every character and form. Continue?",
+      "fields": {
+        "name": "Name",
+        "description": "Description",
+        "min": "Minimum",
+        "max": "Default maximum",
+        "visible": "Visible to players?"
+      },
+      "placeholders": {
+        "name": "e.g. Health"
+      },
+      "validation": {
+        "nameRequired": "Give the resource a name",
+        "range": "The minimum can't be greater than the maximum"
+      },
+      "actions": {
+        "add": "Add resource",
+        "edit": "Edit",
+        "remove": "Remove",
+        "save": "Save",
+        "cancel": "Cancel",
+        "confirmYes": "Remove",
+        "confirmNo": "Keep"
+      },
+      "back": "Back to the campaign",
+      "configured_one": "{{count}} resource configured",
+      "configured_other": "{{count}} resources configured"
+    },
     "sheet": {
       "eyebrow": "Rules of play",
       "title": "Character sheet"
@@ -684,6 +724,21 @@
       "noBudget": "The master hasn't defined how many points you can distribute yet.",
       "noAttributes": "This campaign has no attributes configured yet.",
       "over": "You have exceeded the point limit set by the master."
+    },
+    "resources": {
+      "eyebrow": "Sheet",
+      "title": "Resources",
+      "loading": "Loading resources…",
+      "loadError": "Could not load resources.",
+      "emptyTitle": "No resources",
+      "emptyDescription": "Configure resources in the campaign to see them here.",
+      "fromForm": "form",
+      "hidden": "Hidden",
+      "current": "Current",
+      "max": "Maximum",
+      "save": "Save resources",
+      "saved": "Resources saved.",
+      "saveError": "Could not save the resources."
     },
     "budget": {
       "title": "Attribute-point budget",
@@ -1152,6 +1207,9 @@
       "motivations": "Motivations",
       "description": "Description",
       "history": "History",
+      "resources": "Resources",
+      "noResources": "No resources configured for this campaign.",
+      "fromForm": "active form",
       "attributes": "Attributes",
       "attribute": "Attribute",
       "abilities": "Abilities",
@@ -1248,7 +1306,9 @@
       "appearanceHint": "Used to generate the form image.",
       "notes": "Master notes",
       "attributes": "Attributes",
-      "abilities": "Abilities"
-    }
+      "abilities": "Abilities",
+      "resources": "Resources"
+    },
+    "resourceBaseHint": "empty = use base maximum"
   }
 }

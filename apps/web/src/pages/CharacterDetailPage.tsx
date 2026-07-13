@@ -32,6 +32,7 @@ import { useIsCampaignMaster } from '../hooks/useIsCampaignMaster';
 import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
 import { CharacterAbilitiesSection } from '../components/CharacterAbilitiesSection';
 import { CharacterFormsSection } from '../components/CharacterFormsSection';
+import { CharacterResourcesSection } from '../components/CharacterResourcesSection';
 import { realtime, CHARACTER_IMAGE_EVENTS } from '../services/realtime';
 import { CharacterImageStatus } from '../types/character';
 import { media } from '../styles/media';
@@ -449,6 +450,14 @@ export function CharacterDetailPage() {
             <Prose>{entry.value}</Prose>
           </Chapter>
         ))}
+
+      <Chapter>
+        <CharacterResourcesSection
+          campaignId={campaignId}
+          characterId={characterId}
+          canManage={isMaster}
+        />
+      </Chapter>
 
       {isMaster && (
         <Chapter>

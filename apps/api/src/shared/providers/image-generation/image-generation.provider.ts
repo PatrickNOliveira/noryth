@@ -39,6 +39,13 @@ export interface ImageGenerationProvider {
    * math stays inside the adapter, never in domain code.
    */
   landscapeSize(): string;
+  /**
+   * A valid PORTRAIT/vertical size string for this provider's model (e.g.
+   * "1024x1536"). Callers that need a tall image (like a full-body standing
+   * character sprite, which would clip the head on a square canvas) pass this as
+   * {@link ImageGenerationRequest.size}.
+   */
+  portraitSize(): string;
   generateImage(request: ImageGenerationRequest): Promise<GeneratedImage>;
   /**
    * Whether this provider can edit from a base image (image-to-image). When

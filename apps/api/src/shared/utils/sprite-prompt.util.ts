@@ -11,11 +11,13 @@ export const SPRITE_STYLE_CLAUSE =
   'Third-person game asset, Ragnarok-like readability, small tactical RPG sprite, full body visible from head to feet, clear silhouette, transparent background, isolated character sprite, no base, no circular token, no portrait frame. Dark fantasy medieval style, muted cold colors, readable details, designed to be placed on an isometric game map.';
 
 /**
- * Framing/headroom clause — forces the ENTIRE character (head to feet) inside the
- * canvas with safe margins, so the top of the head/helmet is never cut off.
+ * Framing/headroom clause — forces the ENTIRE character (head to feet) inside a
+ * TALL/portrait canvas, standing with the feet near the bottom and clear empty
+ * space above the head, so the top of the head/helmet is never cut off. The
+ * feet-at-bottom framing matches how the sprite is anchored on the map.
  */
 export const SPRITE_FRAMING_CLAUSE =
-  'Complete character visible from head to feet, entire head fully visible inside the canvas, helmet, hair, hood, horns or crown fully visible, feet fully visible, character centered with safe margins, visible empty space above the head, small transparent padding around the full body, character occupies about 70 to 80 percent of the canvas height, isolated standing pose, the character must not touch the top edge, not cropped, not close-up, not portrait.';
+  'Vertical full-length composition: the complete character standing head to feet, feet near the BOTTOM edge, with clear EMPTY SPACE ABOVE THE HEAD. The entire head — helmet, hair, hood, horns or crown — and the feet must be fully visible inside the frame. The character must NEVER touch or cross the top edge and must never be cropped. Center it horizontally, occupying about 85 percent of the canvas HEIGHT with visible headroom at the top. Isolated standing full-body pose, not cropped, not close-up, not a portrait or bust.';
 
 /** Negative prompt — steers away from portraits/tokens AND from any cropping. */
 export const SPRITE_NEGATIVE_PROMPT = [
@@ -29,9 +31,10 @@ export const SPRITE_NEGATIVE_PROMPT = [
   'cropped body', 'cropped head', 'cut off head', 'head out of frame',
   'top of head cut off', 'cropped helmet', 'cut off helmet', 'helmet out of frame',
   'cropped hair', 'cut off hair', 'cropped hood', 'cut off hood', 'cropped horns',
-  'cut off crown', 'cropped top', 'cut off top', 'body touching top edge',
-  'no headroom', 'tight crop', 'close-up crop', 'partial body', 'missing head',
-  'missing legs', 'missing feet', 'cropped feet', 'cut off feet', 'out of frame',
+  'cut off horns', 'cropped crown', 'cut off crown', 'cropped top', 'cut off top',
+  'body touching top edge', 'head touching top edge', 'no headroom', 'tight crop',
+  'close-up crop', 'partial body', 'missing head', 'missing legs', 'missing feet',
+  'cropped feet', 'cut off feet', 'out of frame',
 ].join(', ');
 
 /**

@@ -173,6 +173,9 @@ export class CharacterFormSessionSpriteService {
       );
       this.logger.log(`Form sprite prompt ${form.id}/${sprite.direction}:\n  ${prompt.imagePrompt}`);
 
+      // Vertical canvas: a full-body standing sprite needs headroom — a square
+      // canvas makes the model clip the top of the head/helmet.
+      const size = this.imageProvider.portraitSize();
       // Prefer the form's ficha image as reference when i2i is supported.
       const useI2I = this.imageProvider.supportsImageToImage() && !!form.imageUrl;
       const generated = useI2I
@@ -180,10 +183,12 @@ export class CharacterFormSessionSpriteService {
             prompt: prompt.imagePrompt,
             negativePrompt: prompt.negativePrompt,
             baseImageUrl: form.imageUrl as string,
+            size,
           })
         : await this.imageProvider.generateImage({
             prompt: prompt.imagePrompt,
             negativePrompt: prompt.negativePrompt,
+            size,
           });
 
       const path = `campaigns/${sprite.campaignId}/characters/${sprite.characterId}/forms/${form.id}/session-sprite/${sprite.direction.toLowerCase()}/${randomUUID()}.png`;

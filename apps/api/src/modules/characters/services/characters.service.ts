@@ -261,6 +261,15 @@ export class CharactersService {
     return character && character.campaignId === campaignId ? character : null;
   }
 
+  /**
+   * Raw list (NO permission check) of every character in a campaign — for other
+   * modules to fan out over them (e.g. seeding resource states for a new
+   * campaign resource).
+   */
+  findAllInCampaign(campaignId: string): Promise<Character[]> {
+    return this.characters.findByCampaign(campaignId);
+  }
+
   // ── player characters ───────────────────────────────────────
 
   /** The authenticated user's own player character in the campaign, or null. */

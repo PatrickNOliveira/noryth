@@ -254,6 +254,46 @@
       "configured_one": "{{count}} atributo configurado",
       "configured_other": "{{count}} atributos configurados"
     },
+    "resources": {
+      "eyebrow": "Ficha de personagem",
+      "title": "Recursos",
+      "lead": "Defina recursos variáveis (Vida, Mana, Sanidade…) que os personagens gastam, acumulam ou perdem.",
+      "loading": "Reunindo os recursos…",
+      "emptyTitle": "Nenhum recurso ainda",
+      "emptyDescription": "Adicione o primeiro recurso desta mesa (ex.: Vida, Mana, Sanidade).",
+      "addEyebrow": "Novo recurso",
+      "addTitle": "Adicionar recurso",
+      "range": "{{min}} a {{max}}",
+      "visible": "Visível aos jogadores",
+      "hidden": "Oculto",
+      "confirmRemove": "Remover este recurso apagará os valores dele em todos os personagens e formas. Continuar?",
+      "fields": {
+        "name": "Nome",
+        "description": "Descrição",
+        "min": "Mínimo",
+        "max": "Máximo padrão",
+        "visible": "Visível para jogadores?"
+      },
+      "placeholders": {
+        "name": "ex.: Vida"
+      },
+      "validation": {
+        "nameRequired": "Dê um nome ao recurso",
+        "range": "O mínimo não pode ser maior que o máximo"
+      },
+      "actions": {
+        "add": "Adicionar recurso",
+        "edit": "Editar",
+        "remove": "Remover",
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "confirmYes": "Remover",
+        "confirmNo": "Manter"
+      },
+      "back": "Voltar para a mesa",
+      "configured_one": "{{count}} recurso configurado",
+      "configured_other": "{{count}} recursos configurados"
+    },
     "sheet": {
       "eyebrow": "Regras da mesa",
       "title": "Ficha de personagem"
@@ -684,6 +724,21 @@
       "noBudget": "O mestre ainda não definiu quantos pontos você pode distribuir.",
       "noAttributes": "Esta campanha ainda não tem atributos configurados.",
       "over": "Você ultrapassou o limite de pontos definido pelo mestre."
+    },
+    "resources": {
+      "eyebrow": "Ficha",
+      "title": "Recursos",
+      "loading": "Carregando recursos…",
+      "loadError": "Não foi possível carregar os recursos.",
+      "emptyTitle": "Nenhum recurso",
+      "emptyDescription": "Configure recursos na campanha para vê-los aqui.",
+      "fromForm": "forma",
+      "hidden": "Oculto",
+      "current": "Atual",
+      "max": "Máximo",
+      "save": "Salvar recursos",
+      "saved": "Recursos salvos.",
+      "saveError": "Não foi possível salvar os recursos."
     },
     "budget": {
       "title": "Orçamento de pontos de atributo",
@@ -1152,6 +1207,9 @@
       "motivations": "Motivações",
       "description": "Descrição",
       "history": "História",
+      "resources": "Recursos",
+      "noResources": "Nenhum recurso configurado para esta campanha.",
+      "fromForm": "forma ativa",
       "attributes": "Atributos",
       "attribute": "Atributo",
       "abilities": "Habilidades",
@@ -1248,7 +1306,9 @@
       "appearanceHint": "Usada para gerar a imagem da forma.",
       "notes": "Notas do mestre",
       "attributes": "Atributos",
-      "abilities": "Habilidades"
-    }
+      "abilities": "Habilidades",
+      "resources": "Recursos"
+    },
+    "resourceBaseHint": "vazio = usa o máximo base"
   }
 }

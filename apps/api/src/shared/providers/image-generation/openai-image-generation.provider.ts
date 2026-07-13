@@ -55,6 +55,18 @@ export class OpenAIImageGenerationProvider implements ImageGenerationProvider {
   }
 
   /**
+   * Best valid portrait/vertical size for the configured model. gpt-image-1
+   * accepts 1024x1536; dall-e-3 accepts 1024x1792. The extra vertical room lets a
+   * full-body standing sprite fit head-to-feet with headroom instead of clipping
+   * the head on a square canvas. Falls back to the configured default otherwise.
+   */
+  portraitSize(): string {
+    if (this.model.includes('dall-e-3')) return '1024x1792';
+    if (this.model.includes('gpt-image')) return '1024x1536';
+    return this.size;
+  }
+
+  /**
    * This adapter uses the text-to-image endpoint only. Image-to-image is not
    * enabled, so callers rebuild a coherent prompt and regenerate instead. A
    * future provider can flip this on without any domain change.

@@ -3,6 +3,12 @@ import {
   TEXT_GENERATION_PROVIDER,
   TextGenerationProvider,
 } from '@shared/providers/text-generation/text-generation.provider';
+import {
+  SPRITE_FRAMING_CLAUSE,
+  SPRITE_NEGATIVE_PROMPT,
+  SPRITE_STYLE_CLAUSE,
+  withSpriteFraming,
+} from '@shared/utils/sprite-prompt.util';
 import { SpriteDirection } from '@modules/sessions/session-character.constants';
 
 export interface FormSpriteCampaignContext {
@@ -28,17 +34,6 @@ export interface FormSpritePrompt {
   negativePrompt: string;
 }
 
-const NEGATIVE_PROMPT = [
-  'portrait', 'bust', 'close-up', 'face-only', 'circular token', 'token border',
-  'card frame', 'UI', 'text', 'letters', 'watermark', 'signature', 'background scene',
-  'landscape', 'large illustration', '3d render', 'realistic photo', 'anime chibi',
-  'oversized head', 'cropped body', 'missing legs', 'cut off feet', 'blurry',
-  'low quality', 'multiple characters', 'extra limbs', 'distorted anatomy',
-].join(', ');
-
-const STYLE_CLAUSE =
-  'Third-person game asset, Ragnarok-like readability, small tactical RPG sprite, full body visible from head to feet, clear silhouette, transparent background, isolated character sprite, no base, no circular token, no portrait frame. Dark fantasy medieval style, muted cold colors, readable details, designed to be placed on an isometric game map.';
-
 const FACING_CLAUSE: Record<SpriteDirection, string> = {
   FRONT: 'facing the camera (front view)',
   BACK: 'viewed from behind, facing away from the camera (back view)',
@@ -49,12 +44,13 @@ Turn a character and one of their ALTERNATIVE FORMS into ONE concise, visual, En
 
 Hard rules:
 - FULL-BODY 2.5D isometric RPG character sprite (head to feet), third-person, readable at small size, clear silhouette, TRANSPARENT background. Never a portrait/bust/close-up, never a token or card frame.
+- FRAMING IS CRITICAL: the ENTIRE character must fit inside the canvas with safe margins. The whole head — helmet, hood, hair, horns or crown — and the feet must be fully visible. Leave visible empty space ABOVE the head; the character must never touch the top edge or be cropped. Center it, occupying about 70–80% of the canvas height.
 - The image is the SAME character in an alternative form: PRESERVE the character's identity but APPLY the form's appearance.
 - Respect the requested FACING (front or back) exactly.
 - VISUAL, not literary. Compress lore into short visual tokens; never copy sentences.
 - Inputs may be in another language; the final prompt MUST be in English.
 - Muted dark-fantasy palette. Apply the character art direction. No text, no watermark, no UI.
-- ALWAYS end with the fixed sprite style clause provided in the request.
+- ALWAYS end with the fixed sprite style clause AND the framing clause provided in the request.
 
 Respond with a STRICT JSON object, no markdown, exactly:
 { "imagePrompt": string }`;
@@ -109,15 +105,10 @@ export class CharacterFormSessionSpriteAgent {
     });
     const cleaned = text.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
     const parsed = JSON.parse(cleaned) as { imagePrompt?: string };
-    let imagePrompt = (parsed.imagePrompt ?? '').trim();
-    if (imagePrompt.length < 30) throw new Error('LLM returned a too-short imagePrompt');
-    if (!/full[- ]body|sprite/i.test(imagePrompt)) {
-      imagePrompt = `Full-body 2.5D isometric RPG character sprite. ${imagePrompt}`;
-    }
-    if (!/transparent background/i.test(imagePrompt)) {
-      imagePrompt = `${imagePrompt} ${STYLE_CLAUSE}`;
-    }
-    return { imagePrompt, negativePrompt: NEGATIVE_PROMPT };
+    const raw = (parsed.imagePrompt ?? '').trim();
+    if (raw.length < 30) throw new Error('LLM returned a too-short imagePrompt');
+    // Guarantee the format AND the framing/headroom clauses are always present.
+    return { imagePrompt: withSpriteFraming(raw), negativePrompt: SPRITE_NEGATIVE_PROMPT };
   }
 
   private buildUserPrompt(
@@ -143,7 +134,8 @@ export class CharacterFormSessionSpriteAgent {
     add('Character art direction (apply)', options.artDirection);
     add('Facing (respect exactly)', FACING_CLAUSE[direction]);
     add('Input language (translate to English)', campaign.mainLanguage);
-    add('Fixed sprite style clause (end the prompt with this)', STYLE_CLAUSE);
+    add('Fixed sprite style clause (include this)', SPRITE_STYLE_CLAUSE);
+    add('Fixed framing clause (MUST include — full head + headroom, no cropping)', SPRITE_FRAMING_CLAUSE);
     lines.push('', 'Return the JSON object as instructed.');
     return lines.join('\n');
   }
@@ -163,8 +155,11 @@ export class CharacterFormSessionSpriteAgent {
     if (options.factionName) parts.push(`Member of ${options.factionName}.`);
     const art = (options.artDirection ?? '').trim();
     if (art) parts.push(`Art direction: ${firstSentence(art) || art}.`);
-    parts.push(STYLE_CLAUSE);
-    return { imagePrompt: parts.join(' '), negativePrompt: NEGATIVE_PROMPT };
+    parts.push(SPRITE_STYLE_CLAUSE);
+    return {
+      imagePrompt: withSpriteFraming(parts.join(' ')),
+      negativePrompt: SPRITE_NEGATIVE_PROMPT,
+    };
   }
 }
 

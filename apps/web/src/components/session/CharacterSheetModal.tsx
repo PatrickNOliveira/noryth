@@ -7,11 +7,13 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { characterService } from '../../services/character.service';
 import { abilityService } from '../../services/ability.service';
 import { characterFormService } from '../../services/characterForm.service';
+import { resourceService } from '../../services/resource.service';
 import { fetchAttributes } from '../../store/slices/campaignAttributes.slice';
 import { fetchFactions } from '../../store/slices/factions.slice';
 import { Character } from '../../types/character';
 import { CharacterAbility, AbilityDefinition } from '../../types/ability';
 import { CharacterForm } from '../../types/characterForm';
+import { CharacterResource } from '../../types/resource';
 
 /**
  * Read-only character sheet, opened from the session (master only). Reuses the
@@ -119,6 +121,8 @@ interface SheetData {
   abilities: CharacterAbility[];
   forms: CharacterForm[];
   abilityDefs: AbilityDefinition[];
+  /** Effective resources (active-form overrides applied + visibility filtered). */
+  resources: CharacterResource[];
 }
 
 export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }: Props) {
@@ -153,10 +157,13 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
       abilityService.listCharacterAbilities(campaignId, characterId).catch(() => []),
       characterFormService.list(campaignId, characterId).catch(() => []),
       abilityService.list(campaignId).catch(() => []),
+      // Effective resources come ready from the backend (form overrides applied,
+      // private ones filtered by role) — the modal never resolves overrides itself.
+      resourceService.listForCharacter(campaignId, characterId).catch(() => []),
     ])
-      .then(([character, abilities, forms, abilityDefs]) => {
+      .then(([character, abilities, forms, abilityDefs, resources]) => {
         if (cancelled) return;
-        const sheet = { character, abilities, forms, abilityDefs };
+        const sheet = { character, abilities, forms, abilityDefs, resources };
         cache.current.set(characterId, sheet);
         setData(sheet);
       })
@@ -256,6 +263,26 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
           </Head>
 
           {c.shortDescription && <Prose>{c.shortDescription}</Prose>}
+
+          <Section>
+            <SectionTitle>{t('session.sheet.resources')}</SectionTitle>
+            {(data?.resources ?? []).length === 0 ? (
+              <AttrName>{t('session.sheet.noResources')}</AttrName>
+            ) : (
+              (data?.resources ?? []).map((r) => (
+                <AttrRow key={r.resourceDefinitionId}>
+                  <AttrName>
+                    {r.name}
+                    {r.isOverriddenByActiveForm && ` · ${t('session.sheet.fromForm')}`}
+                    {!r.isVisibleToPlayers && ` · ${t('session.sheet.hidden')}`}
+                  </AttrName>
+                  <AttrVal>
+                    {r.effectiveCurrentValue} / {r.effectiveMaxValue}
+                  </AttrVal>
+                </AttrRow>
+              ))
+            )}
+          </Section>
 
           {prose(t('session.sheet.appearance'), effectiveAppearance)}
           {prose(t('session.sheet.personality'), c.personality)}

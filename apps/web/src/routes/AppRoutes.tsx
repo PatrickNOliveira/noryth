@@ -11,6 +11,7 @@ import { NewCampaignPage } from '../pages/NewCampaignPage';
 import { CampaignDetailPage } from '../pages/CampaignDetailPage';
 import { CampaignJoinPage } from '../pages/CampaignJoinPage';
 import { CampaignAttributesPage } from '../pages/CampaignAttributesPage';
+import { CampaignResourcesPage } from '../pages/CampaignResourcesPage';
 import { CampaignParticipantsPage } from '../pages/CampaignParticipantsPage';
 import { FactionsListPage } from '../pages/FactionsListPage';
 import { NewFactionPage } from '../pages/NewFactionPage';
@@ -67,6 +68,7 @@ export function AppRoutes() {
           <Route path="/campaigns/:id" element={<CampaignDetailPage />} />
           <Route path="/campaigns/:id/join" element={<CampaignJoinPage />} />
           <Route path="/campaigns/:id/attributes" element={<CampaignAttributesPage />} />
+          <Route path="/campaigns/:id/resources" element={<CampaignResourcesPage />} />
           <Route path="/campaigns/:id/participants" element={<CampaignParticipantsPage />} />
           <Route path="/campaigns/:campaignId/factions" element={<FactionsListPage />} />
           <Route path="/campaigns/:campaignId/factions/new" element={<NewFactionPage />} />

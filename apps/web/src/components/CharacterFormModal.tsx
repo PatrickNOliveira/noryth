@@ -15,8 +15,10 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchAttributes } from '../store/slices/campaignAttributes.slice';
 import { characterFormService } from '../services/characterForm.service';
 import { abilityService } from '../services/ability.service';
+import { resourceService } from '../services/resource.service';
 import { CharacterForm } from '../types/characterForm';
 import { AbilityDefinition } from '../types/ability';
+import { ResourceDefinition } from '../types/resource';
 
 const Body = styled.div`
   display: flex;
@@ -77,6 +79,9 @@ export function CharacterFormModal({
   const [attrValues, setAttrValues] = useState<Record<string, string>>({});
   const [abilityDefs, setAbilityDefs] = useState<AbilityDefinition[]>([]);
   const [selectedAbilities, setSelectedAbilities] = useState<Set<string>>(new Set());
+  const [resourceDefs, setResourceDefs] = useState<ResourceDefinition[]>([]);
+  // Per-resource max override for this form; empty string = no override (use base).
+  const [resourceMax, setResourceMax] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,6 +89,24 @@ export function CharacterFormModal({
     if (!isOpen) return;
     dispatch(fetchAttributes(campaignId));
     abilityService.list(campaignId).then(setAbilityDefs).catch(() => setAbilityDefs([]));
+    resourceService.list(campaignId).then(setResourceDefs).catch(() => setResourceDefs([]));
+    // Load this form's existing max overrides (only when editing an existing form).
+    if (form) {
+      resourceService
+        .listForForm(campaignId, characterId, form.id)
+        .then((rows) =>
+          setResourceMax(
+            Object.fromEntries(
+              rows
+                .filter((r) => r.maxValue != null)
+                .map((r) => [r.resourceDefinitionId, String(r.maxValue)]),
+            ),
+          ),
+        )
+        .catch(() => setResourceMax({}));
+    } else {
+      setResourceMax({});
+    }
     setName(form?.name ?? '');
     setShortDescription(form?.shortDescription ?? '');
     setAppearance(form?.appearanceDescription ?? '');
@@ -144,6 +167,21 @@ export function CharacterFormModal({
         usesBaseAbilities,
         usesBaseAbilities ? [] : [...selectedAbilities],
       );
+      // Persist per-resource max overrides (empty input = no override).
+      if (resourceDefs.length > 0) {
+        await resourceService.updateForForm(
+          campaignId,
+          characterId,
+          saved.id,
+          resourceDefs.map((d) => {
+            const raw = resourceMax[d.id]?.trim();
+            return {
+              resourceDefinitionId: d.id,
+              maxValue: raw && !Number.isNaN(Number(raw)) ? Number(raw) : null,
+            };
+          }),
+        );
+      }
       onSaved(saved);
       onClose();
     } catch (err) {
@@ -233,6 +271,28 @@ export function CharacterFormModal({
               ))
             ))}
         </Group>
+
+        {resourceDefs.length > 0 && (
+          <Group>
+            <GroupTitle>{t('characterForm.fields.resources')}</GroupTitle>
+            {resourceDefs.map((r) => (
+              <AttrRow key={r.id}>
+                <AttrName>
+                  {r.name} <small>({t('characterForm.resourceBaseHint')})</small>
+                </AttrName>
+                <NumInput
+                  type="number"
+                  inputMode="numeric"
+                  value={resourceMax[r.id] ?? ''}
+                  placeholder={String(r.defaultMaxValue)}
+                  onChange={(e) =>
+                    setResourceMax((prev) => ({ ...prev, [r.id]: e.target.value }))
+                  }
+                />
+              </AttrRow>
+            ))}
+          </Group>
+        )}
       </Body>
     </Modal>
   );

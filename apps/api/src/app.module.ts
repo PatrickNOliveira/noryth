@@ -18,6 +18,7 @@ import { MapsModule } from '@modules/maps/maps.module';
 import { ItemsModule } from '@modules/items/items.module';
 import { AbilitiesModule } from '@modules/abilities/abilities.module';
 import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
+import { CampaignResourcesModule } from '@modules/campaign-resources/campaign-resources.module';
 import { SessionsModule } from '@modules/sessions/sessions.module';
 
 /**
@@ -45,6 +46,7 @@ import { SessionsModule } from '@modules/sessions/sessions.module';
     ItemsModule,
     AbilitiesModule,
     CharacterFormsModule,
+    CampaignResourcesModule,
     SessionsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],

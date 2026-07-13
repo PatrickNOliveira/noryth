@@ -211,6 +211,9 @@ export class CharacterSessionSpriteService {
         `Sprite prompt for ${character.id}/${sprite.direction}:\n  ${prompt.imagePrompt}`,
       );
 
+      // Vertical canvas: a full-body standing sprite needs headroom — a square
+      // canvas makes the model clip the top of the head/helmet.
+      const size = this.imageProvider.portraitSize();
       // Use the portrait as a reference when the provider supports i2i.
       const useI2I =
         this.imageProvider.supportsImageToImage() && !!character.imageUrl;
@@ -219,10 +222,12 @@ export class CharacterSessionSpriteService {
             prompt: prompt.imagePrompt,
             negativePrompt: prompt.negativePrompt,
             baseImageUrl: character.imageUrl as string,
+            size,
           })
         : await this.imageProvider.generateImage({
             prompt: prompt.imagePrompt,
             negativePrompt: prompt.negativePrompt,
+            size,
           });
 
       const path = `campaigns/${sprite.campaignId}/characters/${sprite.characterId}/session-sprite/${sprite.direction.toLowerCase()}/${randomUUID()}.png`;

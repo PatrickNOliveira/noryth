@@ -20,6 +20,7 @@ import {
   fetchAttributes,
   clearAttributes,
 } from '../store/slices/campaignAttributes.slice';
+import { fetchResources, clearResources } from '../store/slices/resources.slice';
 import { fetchActiveSession, clearSession } from '../store/slices/session.slice';
 import { useSessionRedirect } from '../hooks/useSessionRedirect';
 import { StartSessionModal } from '../components/session/StartSessionModal';
@@ -138,6 +139,7 @@ export function CampaignDetailPage() {
   const dispatch = useAppDispatch();
   const { selectedCampaign, loading, error } = useAppSelector((s) => s.campaigns);
   const attributes = useAppSelector((s) => s.campaignAttributes.list);
+  const resources = useAppSelector((s) => s.resources.list);
   const activeSession = useAppSelector((s) => s.session.active);
   const myId = useAppSelector((s) => s.auth.user?.id);
   const { notify } = useToast();
@@ -160,11 +162,13 @@ export function CampaignDetailPage() {
     if (id) {
       dispatch(fetchCampaign(id));
       dispatch(fetchAttributes(id));
+      dispatch(fetchResources(id));
       dispatch(fetchActiveSession(id));
     }
     return () => {
       dispatch(clearSelectedCampaign());
       dispatch(clearAttributes());
+      dispatch(clearResources());
       dispatch(clearSession());
     };
   }, [id, dispatch]);
@@ -191,6 +195,7 @@ export function CampaignDetailPage() {
 
   const isMaster = !!myId && c.masterId === myId;
   const attrCount = attributes.filter((a) => a.campaignId === c.id).length;
+  const resourceCount = resources.filter((r) => r.campaignId === c.id).length;
   const themeKey = themeLabelKey(c.theme);
   const toneKey = toneLabelKey(c.tone);
   const langLabel = SUPPORTED_LANGUAGES.find((l) => l.code === c.mainLanguage)?.label ?? c.mainLanguage;
@@ -254,6 +259,19 @@ export function CampaignDetailPage() {
                 ) : undefined
               }
               onClick={() => navigate(`/campaigns/${c.id}/attributes`)}
+            />
+            <Entry
+              title={t('campaign.resources.title')}
+              icon={<DiceIcon size={20} />}
+              meta={t('campaign.resources.lead')}
+              trailing={
+                resourceCount > 0 ? (
+                  <Badge $tone="neutral">
+                    {t('campaign.resources.configured', { count: resourceCount })}
+                  </Badge>
+                ) : undefined
+              }
+              onClick={() => navigate(`/campaigns/${c.id}/resources`)}
             />
           </EntryList>
           <Divider variant="ornament" />
