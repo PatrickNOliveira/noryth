@@ -8,6 +8,7 @@ import { CampaignAttributesModule } from '@modules/campaign-attributes/campaign-
 import { ItemsModule } from '@modules/items/items.module';
 import { AbilitiesModule } from '@modules/abilities/abilities.module';
 import { CharacterFormsModule } from '@modules/character-forms/character-forms.module';
+import { CampaignResourcesModule } from '@modules/campaign-resources/campaign-resources.module';
 import { CampaignSession } from './entities/campaign-session.entity';
 import { SessionCharacter } from './entities/session-character.entity';
 import { CharacterSessionSprite } from './entities/character-session-sprite.entity';
@@ -17,8 +18,10 @@ import { SessionImprovisedCharactersController } from './controllers/session-imp
 import { SessionImprovisedItemsController } from './controllers/session-improvised-items.controller';
 import { SessionImprovisedAbilitiesController } from './controllers/session-improvised-abilities.controller';
 import { CharacterSessionSpritesController } from './controllers/character-session-sprites.controller';
+import { SessionCharacterResourcesController } from './controllers/session-character-resources.controller';
 import { SessionsService } from './services/sessions.service';
 import { SessionCharacterService } from './services/session-character.service';
+import { SessionCharacterResourceService } from './services/session-character-resource.service';
 import { SessionImprovisedCharacterService } from './services/session-improvised-character.service';
 import { ImprovisedCharacterAgent } from './services/improvised-character.agent';
 import { SessionImprovisedItemService } from './services/session-improvised-item.service';
@@ -55,6 +58,7 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     ItemsModule,
     AbilitiesModule,
     CharacterFormsModule,
+    CampaignResourcesModule,
   ],
   controllers: [
     SessionsController,
@@ -63,10 +67,12 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     SessionImprovisedItemsController,
     SessionImprovisedAbilitiesController,
     CharacterSessionSpritesController,
+    SessionCharacterResourcesController,
   ],
   providers: [
     SessionsService,
     SessionCharacterService,
+    SessionCharacterResourceService,
     SessionImprovisedCharacterService,
     ImprovisedCharacterAgent,
     SessionImprovisedItemService,

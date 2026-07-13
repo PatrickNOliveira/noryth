@@ -112,6 +112,49 @@ export class CharacterResourceService {
   }
 
   /**
+   * Applies a signed delta to a single resource's CURRENT value during a session
+   * (master only). The delta lands on the EFFECTIVE current (base clamped to the
+   * active form's max) and the result is clamped to [minValue, effectiveMax]; the
+   * clamped result is persisted back on the character's BASE current value — this
+   * story never introduces a per-form current. Returns the updated effective row.
+   */
+  async adjust(
+    userId: string,
+    campaignId: string,
+    characterId: string,
+    resourceDefinitionId: string,
+    delta: number,
+  ): Promise<CharacterResourceDto> {
+    if (!Number.isInteger(delta)) {
+      throw new BadRequestException('A alteração deve ser um número inteiro.');
+    }
+    await this.campaigns.findForMasterOrFail(userId, campaignId);
+    const character = await this.loadCharacter(campaignId, characterId);
+
+    const def = await this.repo.findDefinitionById(resourceDefinitionId);
+    if (!def || def.campaignId !== campaignId) {
+      throw new BadRequestException(
+        'Este recurso não pertence a esta campanha.',
+      );
+    }
+
+    // Ensure a state exists (old characters may predate the resource), then
+    // resolve the effective max from the active form's override, if any.
+    const state = await this.ensureState(character, def);
+    const override = await this.activeFormOverride(character, def.id);
+    const effectiveMaxValue = override ?? state.maxValue;
+    const effectiveCurrentValue = Math.min(state.currentValue, effectiveMaxValue);
+
+    state.currentValue = this.clamp(
+      effectiveCurrentValue + delta,
+      def.minValue,
+      effectiveMaxValue,
+    );
+    await this.repo.saveState(state);
+    return this.toDto(def, state, override);
+  }
+
+  /**
    * Seeds a state for a brand-new campaign resource across all existing
    * characters (called when a resource is created). Skips characters that already
    * have one. Reused shape as the lazy ensure.
@@ -150,25 +193,57 @@ export class CharacterResourceService {
       for (const o of overrides) overrideByDef.set(o.resourceDefinitionId, o.maxValue);
     }
 
-    return defs.map((def) => {
-      const state = stateByDef.get(def.id)!;
-      const override = overrideByDef.get(def.id);
-      const effectiveMaxValue = override ?? state.maxValue;
-      return {
-        resourceDefinitionId: def.id,
-        name: def.name,
-        description: def.description,
-        type: def.type,
-        minValue: def.minValue,
-        currentValue: state.currentValue,
-        baseMaxValue: state.maxValue,
-        effectiveMaxValue,
-        effectiveCurrentValue: Math.min(state.currentValue, effectiveMaxValue),
-        isOverriddenByActiveForm: override !== undefined,
-        isVisibleToPlayers: def.isVisibleToPlayers,
-        displayOrder: def.displayOrder,
-      };
-    });
+    return defs.map((def) =>
+      this.toDto(def, stateByDef.get(def.id)!, overrideByDef.get(def.id)),
+    );
+  }
+
+  /** Builds the effective DTO for one resource from its state + optional form override. */
+  private toDto(
+    def: CampaignResourceDefinition,
+    state: CharacterResourceState,
+    override: number | undefined,
+  ): CharacterResourceDto {
+    const effectiveMaxValue = override ?? state.maxValue;
+    return {
+      resourceDefinitionId: def.id,
+      name: def.name,
+      description: def.description,
+      type: def.type,
+      minValue: def.minValue,
+      currentValue: state.currentValue,
+      baseMaxValue: state.maxValue,
+      effectiveMaxValue,
+      effectiveCurrentValue: Math.min(state.currentValue, effectiveMaxValue),
+      isOverriddenByActiveForm: override !== undefined,
+      isVisibleToPlayers: def.isVisibleToPlayers,
+      displayOrder: def.displayOrder,
+    };
+  }
+
+  /** The active form's max override for one resource, or undefined when none. */
+  private async activeFormOverride(
+    character: Character,
+    resourceDefinitionId: string,
+  ): Promise<number | undefined> {
+    const activeForm = await this.forms.getActiveForm(character);
+    if (!activeForm) return undefined;
+    const overrides = await this.repo.findOverridesByForm(activeForm.id);
+    return overrides.find((o) => o.resourceDefinitionId === resourceDefinitionId)
+      ?.maxValue;
+  }
+
+  /** Loads a character's single resource state, creating a default if missing. */
+  private async ensureState(
+    character: Character,
+    def: CampaignResourceDefinition,
+  ): Promise<CharacterResourceState> {
+    const existing = await this.repo.findStateByCharacterAndDefinition(
+      character.id,
+      def.id,
+    );
+    if (existing) return existing;
+    return this.repo.saveState(this.newState(character.id, def));
   }
 
   /** Loads the character's states, creating any missing ones with defaults. */

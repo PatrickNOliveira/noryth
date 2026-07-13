@@ -54,6 +54,30 @@ export interface CharacterResourceValueInput {
   maxValue: number;
 }
 
+/**
+ * Result / realtime payload of a session resource adjustment. `currentValue` /
+ * `maxValue` are the effective (post-clamp) values ready to display; the base
+ * fields are echoed for completeness.
+ */
+export interface SessionResourceUpdate {
+  tableId: string;
+  sessionId: string;
+  sessionCharacterId: string;
+  characterId: string;
+  resourceDefinitionId: string;
+  name: string;
+  currentValue: number;
+  maxValue: number;
+  baseCurrentValue: number;
+  baseMaxValue: number;
+  effectiveCurrentValue: number;
+  effectiveMaxValue: number;
+  isOverriddenByActiveForm: boolean;
+  isVisibleToPlayers: boolean;
+  originUserId: string;
+  clientMutationId: string | null;
+}
+
 /** A form's resource max override alongside the character's base max. */
 export interface FormResourceOverride {
   resourceDefinitionId: string;

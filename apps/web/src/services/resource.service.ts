@@ -7,6 +7,7 @@ import {
   CharacterResourceValueInput,
   FormResourceOverride,
   FormResourceOverrideValueInput,
+  SessionResourceUpdate,
 } from '../types/resource';
 
 const base = (campaignId: string) => `/campaigns/${campaignId}/resources`;
@@ -62,6 +63,23 @@ export const resourceService = {
     const { data } = await api.put<CharacterResource[]>(
       charBase(campaignId, characterId),
       { resources },
+    );
+    return data;
+  },
+
+  // ── session resource adjustment (spend/add during a live session) ──
+  async adjustSessionResource(
+    campaignId: string,
+    sessionCharacterId: string,
+    resourceDefinitionId: string,
+    delta: number,
+    clientMutationId: string,
+    signal?: AbortSignal,
+  ): Promise<SessionResourceUpdate> {
+    const { data } = await api.patch<SessionResourceUpdate>(
+      `/campaigns/${campaignId}/session/characters/${sessionCharacterId}/resources/${resourceDefinitionId}/adjust`,
+      { delta, clientMutationId },
+      { signal },
     );
     return data;
   },

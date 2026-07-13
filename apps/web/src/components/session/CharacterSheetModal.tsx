@@ -1,19 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Modal, Loading, Alert, Badge } from '../ui';
+import { Modal, Loading, Alert, Badge, Button, Input, useToast } from '../ui';
 import { CompassIcon } from '../icons';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { characterService } from '../../services/character.service';
 import { abilityService } from '../../services/ability.service';
 import { characterFormService } from '../../services/characterForm.service';
 import { resourceService } from '../../services/resource.service';
+import { realtime, SESSION_CHARACTER_EVENTS } from '../../services/realtime';
 import { fetchAttributes } from '../../store/slices/campaignAttributes.slice';
 import { fetchFactions } from '../../store/slices/factions.slice';
 import { Character } from '../../types/character';
 import { CharacterAbility, AbilityDefinition } from '../../types/ability';
 import { CharacterForm } from '../../types/characterForm';
-import { CharacterResource } from '../../types/resource';
+import { CharacterResource, SessionResourceUpdate } from '../../types/resource';
 
 /**
  * Read-only character sheet, opened from the session (master only). Reuses the
@@ -96,6 +97,33 @@ const AttrVal = styled.span`
   font-family: ${({ theme }) => theme.typography.fontFamily.heading};
   color: ${({ theme }) => theme.colors.text};
 `;
+const ResourceItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.xxs};
+  padding: ${({ theme }) => theme.spacing.xs} 0;
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
+`;
+const ResourceTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+`;
+const ResourceControls = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.xxs};
+`;
+const QtyInput = styled(Input)`
+  width: 76px;
+  min-height: 38px;
+`;
+const Saving = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSize.xs};
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
 const AbilityItem = styled.div`
   padding: ${({ theme }) => theme.spacing.xs} 0;
   border-bottom: 1px dashed ${({ theme }) => theme.colors.border};
@@ -114,6 +142,11 @@ interface Props {
   characterId: string | null;
   isOpen: boolean;
   onClose: () => void;
+  /**
+   * The placed-character id on the session map. When provided (master, in a live
+   * session), the resource rows expose spend/add controls scoped to this token.
+   */
+  sessionCharacterId?: string | null;
 }
 
 interface SheetData {
@@ -125,16 +158,33 @@ interface SheetData {
   resources: CharacterResource[];
 }
 
-export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }: Props) {
+export function CharacterSheetModal({
+  campaignId,
+  characterId,
+  isOpen,
+  onClose,
+  sessionCharacterId,
+}: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { notify } = useToast();
   const attributes = useAppSelector((s) => s.campaignAttributes.list);
   const factions = useAppSelector((s) => s.factions.list);
+  const myUserId = useAppSelector((s) => s.auth.user?.id);
 
   const cache = useRef(new Map<string, SheetData>());
   const [data, setData] = useState<SheetData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  // Resource spend/add is available only inside a live session (sessionCharacterId
+  // present). Pending is per-resource so one in-flight change doesn't block others.
+  const canEditResources = !!sessionCharacterId;
+  const [pendingResources, setPendingResources] = useState<Set<string>>(new Set());
+  const [adjustOpenId, setAdjustOpenId] = useState<string | null>(null);
+  const [adjustQty, setAdjustQty] = useState(1);
+  // Per-resource local mutation version — lets stale responses/echoes be ignored.
+  const resourceVersions = useRef(new Map<string, number>());
 
   useEffect(() => {
     if (!isOpen || !characterId) return;
@@ -173,6 +223,112 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
       cancelled = true;
     };
   }, [isOpen, characterId, campaignId, dispatch]);
+
+  // Reset the inline adjust panel whenever the target character / open state changes.
+  useEffect(() => {
+    setAdjustOpenId(null);
+    setAdjustQty(1);
+  }, [characterId, isOpen]);
+
+  // Patch a single resource in local state (and the per-character cache) so a
+  // change shows without refetching the whole sheet. Keyed by resourceDefinitionId.
+  const applyResource = useCallback(
+    (patch: Partial<CharacterResource> & { resourceDefinitionId: string }) => {
+      setData((prev) => {
+        if (!prev) return prev;
+        const resources = prev.resources.map((r) =>
+          r.resourceDefinitionId === patch.resourceDefinitionId
+            ? { ...r, ...patch }
+            : r,
+        );
+        const next = { ...prev, resources };
+        if (characterId) cache.current.set(characterId, next);
+        return next;
+      });
+    },
+    [characterId],
+  );
+
+  // Spend (delta<0) / add (delta>0) on a resource: optimistic + clamp to the
+  // effective bounds, then confirm or roll back only this resource. Persisted
+  // current mirrors the effective value (no per-form current in this story).
+  const adjustResource = (r: CharacterResource, delta: number) => {
+    if (!canEditResources || !sessionCharacterId || !characterId) return;
+    const key = r.resourceDefinitionId;
+    if (pendingResources.has(key)) return; // block while this resource is in flight
+    const target = Math.min(
+      Math.max(r.effectiveCurrentValue + delta, r.minValue),
+      r.effectiveMaxValue,
+    );
+    if (target === r.effectiveCurrentValue) return; // already at the bound — no-op
+    const snapshot = r;
+    setAdjustOpenId(null);
+    applyResource({
+      resourceDefinitionId: key,
+      currentValue: target,
+      effectiveCurrentValue: target,
+    });
+    const version = (resourceVersions.current.get(key) ?? 0) + 1;
+    resourceVersions.current.set(key, version);
+    setPendingResources((s) => new Set(s).add(key));
+
+    resourceService
+      .adjustSessionResource(campaignId, sessionCharacterId, key, delta, String(version))
+      .then((res) => {
+        if (resourceVersions.current.get(key) !== version) return; // superseded
+        applyResource({
+          resourceDefinitionId: key,
+          currentValue: res.effectiveCurrentValue,
+          baseMaxValue: res.baseMaxValue,
+          effectiveMaxValue: res.effectiveMaxValue,
+          effectiveCurrentValue: res.effectiveCurrentValue,
+          isOverriddenByActiveForm: res.isOverriddenByActiveForm,
+        });
+      })
+      .catch(() => {
+        if (resourceVersions.current.get(key) !== version) return;
+        applyResource(snapshot); // roll back only this resource
+        notify(t('session.sheet.resourceError'), { variant: 'error' });
+      })
+      .finally(() => {
+        setPendingResources((s) => {
+          const n = new Set(s);
+          n.delete(key);
+          return n;
+        });
+      });
+  };
+
+  // Live resource updates from other clients (e.g. a second master tab). Own
+  // echoes are ignored (already applied optimistically); a stale echo never
+  // overrides a newer local mutation for the same resource.
+  useEffect(() => {
+    if (!isOpen || !sessionCharacterId) return;
+    const onResourceUpdated = (payload: unknown) => {
+      const p = payload as SessionResourceUpdate;
+      if (!p || p.sessionCharacterId !== sessionCharacterId) return;
+      if (p.originUserId && p.originUserId === myUserId) return;
+      const localVersion = resourceVersions.current.get(p.resourceDefinitionId);
+      if (
+        localVersion != null &&
+        p.clientMutationId != null &&
+        Number(p.clientMutationId) < localVersion
+      ) {
+        return;
+      }
+      applyResource({
+        resourceDefinitionId: p.resourceDefinitionId,
+        currentValue: p.effectiveCurrentValue,
+        baseMaxValue: p.baseMaxValue,
+        effectiveMaxValue: p.effectiveMaxValue,
+        effectiveCurrentValue: p.effectiveCurrentValue,
+        isOverriddenByActiveForm: p.isOverriddenByActiveForm,
+      });
+    };
+    realtime.on(SESSION_CHARACTER_EVENTS.resourceUpdated, onResourceUpdated);
+    return () =>
+      realtime.off(SESSION_CHARACTER_EVENTS.resourceUpdated, onResourceUpdated);
+  }, [isOpen, sessionCharacterId, myUserId, applyResource]);
 
   const c = data?.character;
   const faction = c?.factionId ? factions.find((f) => f.id === c.factionId) : undefined;
@@ -269,18 +425,92 @@ export function CharacterSheetModal({ campaignId, characterId, isOpen, onClose }
             {(data?.resources ?? []).length === 0 ? (
               <AttrName>{t('session.sheet.noResources')}</AttrName>
             ) : (
-              (data?.resources ?? []).map((r) => (
-                <AttrRow key={r.resourceDefinitionId}>
-                  <AttrName>
-                    {r.name}
-                    {r.isOverriddenByActiveForm && ` · ${t('session.sheet.fromForm')}`}
-                    {!r.isVisibleToPlayers && ` · ${t('session.sheet.hidden')}`}
-                  </AttrName>
-                  <AttrVal>
-                    {r.effectiveCurrentValue} / {r.effectiveMaxValue}
-                  </AttrVal>
-                </AttrRow>
-              ))
+              (data?.resources ?? []).map((r) => {
+                const isPending = pendingResources.has(r.resourceDefinitionId);
+                const atMin = r.effectiveCurrentValue <= r.minValue;
+                const atMax = r.effectiveCurrentValue >= r.effectiveMaxValue;
+                return (
+                  <ResourceItem key={r.resourceDefinitionId}>
+                    <ResourceTop>
+                      <AttrName>
+                        {r.name}
+                        {r.isOverriddenByActiveForm && ` · ${t('session.sheet.fromForm')}`}
+                        {!r.isVisibleToPlayers && ` · ${t('session.sheet.hidden')}`}
+                      </AttrName>
+                      <AttrVal>
+                        {r.effectiveCurrentValue} / {r.effectiveMaxValue}
+                      </AttrVal>
+                    </ResourceTop>
+                    {canEditResources && (
+                      <ResourceControls>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          disabled={isPending || atMin}
+                          onClick={() => adjustResource(r, -1)}
+                        >
+                          -1
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          disabled={isPending || atMax}
+                          onClick={() => adjustResource(r, 1)}
+                        >
+                          +1
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() =>
+                            setAdjustOpenId((id) =>
+                              id === r.resourceDefinitionId
+                                ? null
+                                : r.resourceDefinitionId,
+                            )
+                          }
+                        >
+                          {t('session.sheet.adjust')}
+                        </Button>
+                        {isPending && <Saving>{t('session.sheet.saving')}</Saving>}
+                      </ResourceControls>
+                    )}
+                    {canEditResources && adjustOpenId === r.resourceDefinitionId && (
+                      <ResourceControls>
+                        <QtyInput
+                          type="number"
+                          min={1}
+                          step={1}
+                          value={adjustQty}
+                          aria-label={t('session.sheet.quantity')}
+                          onChange={(e) =>
+                            setAdjustQty(
+                              Math.max(1, Math.floor(Number(e.target.value) || 1)),
+                            )
+                          }
+                        />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() => adjustResource(r, -adjustQty)}
+                        >
+                          {t('session.sheet.spend')}
+                        </Button>
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() => adjustResource(r, adjustQty)}
+                        >
+                          {t('session.sheet.add')}
+                        </Button>
+                      </ResourceControls>
+                    )}
+                  </ResourceItem>
+                );
+              })
             )}
           </Section>
 

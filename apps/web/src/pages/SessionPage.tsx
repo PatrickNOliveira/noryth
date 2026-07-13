@@ -1184,6 +1184,10 @@ export function SessionPage() {
           <CharacterSheetModal
             campaignId={campaignId}
             characterId={sheetCharacterId}
+            sessionCharacterId={
+              sessionCharacters.find((sc) => sc.characterId === sheetCharacterId)?.id ??
+              null
+            }
             isOpen={!!sheetCharacterId}
             onClose={() => setSheetCharacterId(null)}
           />
