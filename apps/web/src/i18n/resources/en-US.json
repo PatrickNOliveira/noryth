@@ -1056,6 +1056,11 @@
       "none": "No session scene yet.",
       "generate": "Build session scene"
     },
+    "viewport": {
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "reset": "Center map"
+    },
     "characters": {
       "addTitle": "Add character to the map",
       "loading": "Loading characters…",
@@ -1071,6 +1076,8 @@
       "regeneratingButton": "Regenerating…",
       "regenerateError": "Could not regenerate the sprite.",
       "remove": "Remove from map",
+      "removeConfirm": "Remove character from the map?",
+      "cancel": "Cancel",
       "size": "Size",
       "smaller": "Smaller",
       "larger": "Larger",

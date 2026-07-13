@@ -25,6 +25,7 @@ import { CreateSessionAbilityModal } from '../components/session/CreateSessionAb
 import { SessionItemsModal } from '../components/session/SessionItemsModal';
 import { ChangeMapModal } from '../components/session/ChangeMapModal';
 import { SessionCharacterControls } from '../components/session/SessionCharacterControls';
+import { SessionCharacterMobileActionSheet } from '../components/session/SessionCharacterMobileActionSheet';
 import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
 import { RollDiceModal } from '../components/session/RollDiceModal';
 import { DiceRollOverlay } from '../components/session/DiceRollOverlay';
@@ -69,6 +70,7 @@ import { sessionService } from '../services/session.service';
 import { SessionItemResult } from '../types/item';
 import { SessionAbilityResult } from '../types/ability';
 import { useCampaignMaster } from '../hooks/useIsCampaignMaster';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { useImageFallbackPoll } from '../hooks/useImageFallbackPoll';
 import {
   realtime,
@@ -100,10 +102,13 @@ import { media } from '../styles/media';
  */
 const REGEN_FALLBACK_MS = 90_000;
 
-/** Full-viewport, no page scroll — this is a game screen, not an admin page. */
+/** Full-viewport, no page scroll — this is a game screen, not an admin page.
+ * `100dvh` tracks the *dynamic* mobile viewport (URL bar shown/hidden) so the
+ * bottom action bar never hides under the browser chrome. */
 const Screen = styled.div`
   position: fixed;
   inset: 0;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -161,6 +166,8 @@ const Sidebar = styled.aside`
 const BottomBar = styled.div`
   flex: 0 0 auto;
   padding: ${({ theme }) => theme.spacing.sm};
+  /* Clear the phone's home indicator so actions aren't under the system gesture bar. */
+  padding-bottom: calc(${({ theme }) => theme.spacing.sm} + env(safe-area-inset-bottom));
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.surface};
 
@@ -198,6 +205,7 @@ export function SessionPage() {
 
   const { active, loaded, loading, error } = useAppSelector((s) => s.session);
   const { isMaster } = useCampaignMaster(campaignId);
+  const isMobile = useIsMobile();
   const campaignName = useAppSelector((s) => {
     const sel = s.campaigns.selectedCampaign;
     if (sel?.id === campaignId) return sel.name;
@@ -957,6 +965,9 @@ export function SessionPage() {
   // Drag: the frontend leads; the backend confirms only at drag end.
   const onDragCharacterStart = (id: string) => {
     draggingIds.current.add(id);
+    // Mobile: the bottom sheet covers the map, so a drag closes it to free the
+    // view (it stays closed until the next tap). Desktop keeps its small panel.
+    if (isMobile) setSelectedId(null);
   };
   const onDragCharacterLocal = (id: string, x: number, y: number) =>
     dispatch(sessionCharacterDragged({ id, x, y }));
@@ -1207,7 +1218,12 @@ export function SessionPage() {
           onPoiDragLocal={onPoiDragLocal}
           onPoiCommit={onPoiCommit}
         />
-        <BottomBar>
+        {/* Bubble-phase stopPropagation (never capture — the buttons must handle
+            their own click first) keeps footer taps from leaking to the map. */}
+        <BottomBar
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
           <SessionActionMenu
             actions={actions}
             orientation="horizontal"
@@ -1216,21 +1232,30 @@ export function SessionPage() {
         </BottomBar>
       </Main>
 
-      {isMaster && selected && (
-        <SessionCharacterControls
-          character={selected}
-          onSetFacing={setFacing}
-          onToggleVisibility={toggleVisibility}
-          onRegenerate={regenerateSelected}
-          onRemove={removeSelected}
-          onResize={resizeSelected}
-          onOpenSheet={() => setSheetCharacterId(selected.characterId)}
-          onOpenInventory={() => setInventoryCharacterId(selected.characterId)}
-          onOpenAbilities={() => setAbilitiesCharacterId(selected.characterId)}
-          onOpenChangeForm={() => setFormModalId(selected.id)}
-          onClose={() => setSelectedId(null)}
-        />
-      )}
+      {isMaster && selected && (() => {
+        // Same handlers drive both surfaces — desktop floating pill and the
+        // mobile bottom sheet — each self-hides at the other's breakpoint (CSS),
+        // so exactly one is visible. Pure presentation; no behavior differs.
+        const controlProps = {
+          character: selected,
+          onSetFacing: setFacing,
+          onToggleVisibility: toggleVisibility,
+          onRegenerate: regenerateSelected,
+          onRemove: removeSelected,
+          onResize: resizeSelected,
+          onOpenSheet: () => setSheetCharacterId(selected.characterId),
+          onOpenInventory: () => setInventoryCharacterId(selected.characterId),
+          onOpenAbilities: () => setAbilitiesCharacterId(selected.characterId),
+          onOpenChangeForm: () => setFormModalId(selected.id),
+          onClose: () => setSelectedId(null),
+        };
+        return (
+          <>
+            <SessionCharacterControls {...controlProps} />
+            <SessionCharacterMobileActionSheet {...controlProps} />
+          </>
+        );
+      })()}
 
       {isMaster && (
         <>

@@ -8,7 +8,17 @@ import { viewportPositionToMapPercent } from './isoProjection';
  * The character layer, above the scene image and the point-of-interest markers.
  * Fills the scene box exactly, so percentage positions map onto the real image.
  * The master can drag sprites; players only see updates.
+ *
+ * Tap vs. drag: a pointerdown does NOT select — it waits. If the pointer moves
+ * past {@link DRAG_THRESHOLD_PX} it becomes a DRAG (move the token, never select);
+ * otherwise, on release, it's a TAP (select → opens the mobile bottom sheet /
+ * desktop panel). This stops the sheet from popping up the instant the master
+ * grabs a token to reposition it, and avoids the ghost-click-after-drag opening
+ * the sheet (selection is our own pointerup decision, not a click handler).
  */
+
+/** Movement (px) beyond which a touch is treated as a drag, not a tap. */
+const DRAG_THRESHOLD_PX = 8;
 const Layer = styled.div<{ $interactive: boolean }>`
   position: absolute;
   inset: 0;
@@ -48,7 +58,6 @@ export function SessionCharacterLayer({
   onCommit,
 }: Props) {
   const layerRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
 
   const toPercent = (clientX: number, clientY: number) => {
     const el = layerRef.current;
@@ -62,24 +71,51 @@ export function SessionCharacterLayer({
     });
   };
 
-  const startDrag = (e: PointerEvent, character: SessionCharacter) => {
-    if (!isMaster) return;
-    e.preventDefault();
-    dragging.current = true;
+  // Wait to classify the gesture: only a real tap selects; a drag moves the token
+  // (and never selects), so grabbing a sprite doesn't open the sheet mid-drag.
+  const startInteraction = (e: PointerEvent, character: SessionCharacter) => {
     const id = character.id;
-    onDragStart(id);
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const canDrag = isMaster;
+    const target = e.currentTarget as HTMLElement;
+    const pointerId = e.pointerId;
+    let dragStarted = false;
+    // Own the whole gesture: stop it bubbling into map/pan layers, and CAPTURE the
+    // pointer so pointerup — and the synthetic click the browser fires after it —
+    // is delivered to THIS sprite even if the finger lifts over the bottom bar.
+    // Without capture, tapping/dropping a token near the footer would also trigger
+    // the bottom-bar button underneath (click-through).
+    e.preventDefault();
+    e.stopPropagation();
+    target.setPointerCapture?.(pointerId);
 
     const move = (ev: globalThis.PointerEvent) => {
-      if (!dragging.current) return;
+      if (!dragStarted) {
+        if (!canDrag) return;
+        const distance = Math.hypot(ev.clientX - startX, ev.clientY - startY);
+        if (distance <= DRAG_THRESHOLD_PX) return;
+        // Crossed the threshold → this is a drag. onDragStart also closes the
+        // mobile sheet (via the parent) so the map stays visible while moving.
+        dragStarted = true;
+        onDragStart(id);
+      }
       const { x, y } = toPercent(ev.clientX, ev.clientY);
       onDragLocal(id, x, y);
     };
     const up = (ev: globalThis.PointerEvent) => {
-      dragging.current = false;
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
-      const { x, y } = toPercent(ev.clientX, ev.clientY);
-      onCommit(id, x, y);
+      if (target.hasPointerCapture?.(pointerId)) {
+        target.releasePointerCapture(pointerId);
+      }
+      if (dragStarted) {
+        const { x, y } = toPercent(ev.clientX, ev.clientY);
+        onCommit(id, x, y);
+      } else {
+        // A real tap (no movement past the threshold) → select.
+        onSelect(character);
+      }
     };
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
@@ -93,8 +129,7 @@ export function SessionCharacterLayer({
           character={c}
           selected={selectedId === c.id}
           draggable={isMaster}
-          onSelect={onSelect}
-          onPointerDown={startDrag}
+          onPointerDown={startInteraction}
         />
       ))}
     </Layer>

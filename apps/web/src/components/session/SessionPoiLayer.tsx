@@ -61,8 +61,13 @@ export function SessionPoiLayer({
 
   const startDrag = (e: PointerEvent, id: string) => {
     if (!editable) return;
+    const target = e.currentTarget as HTMLElement;
+    const pointerId = e.pointerId;
     e.preventDefault();
     e.stopPropagation();
+    // Capture so the drop's pointerup/click stays on the marker, never leaking to
+    // the bottom bar when a point is dragged/released near the footer.
+    target.setPointerCapture?.(pointerId);
     dragging.current = true;
     onDragStart(id);
 
@@ -75,6 +80,9 @@ export function SessionPoiLayer({
       dragging.current = false;
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
+      if (target.hasPointerCapture?.(pointerId)) {
+        target.releasePointerCapture(pointerId);
+      }
       const { x, y } = toPercent(ev.clientX, ev.clientY);
       onCommit(id, x, y);
     };

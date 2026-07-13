@@ -148,8 +148,12 @@ interface Props {
   character: SessionCharacter;
   selected: boolean;
   draggable: boolean;
+  /**
+   * Receives the raw pointerdown; the layer classifies it as tap (→ select) or
+   * drag (→ move). Selection is intentionally NOT done here, so grabbing a token
+   * to reposition it doesn't open the actions panel/sheet.
+   */
   onPointerDown?: (e: PointerEvent, character: SessionCharacter) => void;
-  onSelect?: (character: SessionCharacter) => void;
 }
 
 export function SessionCharacterSprite({
@@ -157,7 +161,6 @@ export function SessionCharacterSprite({
   selected,
   draggable,
   onPointerDown,
-  onSelect,
 }: Props) {
   const { t } = useTranslation();
   const sprite = character.sprites.find((s) => s.direction === character.facing);
@@ -183,10 +186,7 @@ export function SessionCharacterSprite({
       $draggable={draggable}
       $selected={selected}
       $optimistic={!!character.isOptimistic}
-      onPointerDown={(e) => {
-        onSelect?.(character);
-        if (draggable) onPointerDown?.(e, character);
-      }}
+      onPointerDown={(e) => onPointerDown?.(e, character)}
     >
       {!character.isVisibleToPlayers && (
         <HiddenBadge>{t('session.characters.hiddenTag')}</HiddenBadge>

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, IconButton } from '../ui';
+import { media } from '../../styles/media';
 import {
   SessionCharacter,
   SpriteDirection,
@@ -13,6 +14,9 @@ import {
  * Compact master panel for the selected placed character: flip facing, toggle
  * player visibility, (re)generate its sprites, or remove it from the map.
  * Utilitarian by design — this is an in-game control, not a form.
+ *
+ * DESKTOP ONLY: on phones (< tablet) this floating pill is hidden in favor of the
+ * {@link SessionCharacterMobileActionSheet} bottom sheet, which is easier to tap.
  */
 const Panel = styled.div`
   position: absolute;
@@ -20,7 +24,10 @@ const Panel = styled.div`
   bottom: ${({ theme }) => theme.spacing.md};
   transform: translateX(-50%);
   z-index: 50;
-  display: flex;
+  display: none;
+  ${media.tablet} {
+    display: flex;
+  }
   flex-wrap: wrap;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xs};

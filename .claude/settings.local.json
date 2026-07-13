@@ -56,7 +56,8 @@
       "Bash(grep -nA6 \"findSpriteByCharacterAndDirection|findSpritesByCharacter|createSprite\" apps/api/src/modules/sessions/repositories/typeorm-session-characters.repository.ts)",
       "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/en-US.json','utf8'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/pt-BR.json','utf8'\\)\\); console.log\\('JSON OK'\\)\")",
       "Read(//e/web/src/components/icons/**)",
-      "Read(//e/web/src/components/**)"
+      "Read(//e/web/src/components/**)",
+      "Bash(node -e \"const j=require\\('./src/i18n/resources/en-US.json'\\); console.log\\('common:', JSON.stringify\\(j.common\\)\\); console.log\\('session.form:', JSON.stringify\\(j.session.form\\)\\);\")"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"
