@@ -27,6 +27,7 @@ import {
   ImprovisedAbilityDraft,
   SessionAbilityResult,
 } from '../types/ability';
+import { DiceRoll, RollDiceInput } from '../types/dice';
 
 const base = (campaignId: string) => `/campaigns/${campaignId}/session`;
 
@@ -202,6 +203,18 @@ export const sessionService = {
   ): Promise<SessionAbilityResult> {
     const { data } = await api.post<SessionAbilityResult>(
       `${base(campaignId)}/abilities/create`,
+      input,
+    );
+    return data;
+  },
+
+  /**
+   * Master only. Rolls dice on the backend (source of truth). PUBLIC rolls are
+   * also broadcast to everyone; SECRET rolls come back only in this response.
+   */
+  async rollDice(campaignId: string, input: RollDiceInput): Promise<DiceRoll> {
+    const { data } = await api.post<DiceRoll>(
+      `${base(campaignId)}/dice-rolls`,
       input,
     );
     return data;

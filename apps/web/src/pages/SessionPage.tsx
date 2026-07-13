@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -26,6 +26,8 @@ import { SessionItemsModal } from '../components/session/SessionItemsModal';
 import { ChangeMapModal } from '../components/session/ChangeMapModal';
 import { SessionCharacterControls } from '../components/session/SessionCharacterControls';
 import { CharacterSheetModal } from '../components/session/CharacterSheetModal';
+import { RollDiceModal } from '../components/session/RollDiceModal';
+import { DiceRollOverlay } from '../components/session/DiceRollOverlay';
 import { CharacterInventoryModal } from '../components/session/CharacterInventoryModal';
 import { CharacterAbilitiesModal } from '../components/session/CharacterAbilitiesModal';
 import { ChangeFormModal } from '../components/session/ChangeFormModal';
@@ -73,6 +75,7 @@ import {
   MAP_SESSION_SCENE_EVENTS,
   SESSION_EVENTS,
   SESSION_CHARACTER_EVENTS,
+  SESSION_DICE_EVENTS,
   CHARACTER_SESSION_SPRITE_EVENTS,
   CHARACTER_FORM_SESSION_SPRITE_EVENTS,
   MAP_POINT_EVENTS,
@@ -86,6 +89,7 @@ import {
   SIZE_SCALE_DEFAULT,
 } from '../types/session';
 import { Character } from '../types/character';
+import { DiceRoll, RollDiceInput } from '../types/dice';
 import { media } from '../styles/media';
 
 /**
@@ -218,6 +222,13 @@ export function SessionPage() {
   const [inventoryCharacterId, setInventoryCharacterId] = useState<string | null>(null);
   const [abilitiesCharacterId, setAbilitiesCharacterId] = useState<string | null>(null);
   const [formModalId, setFormModalId] = useState<string | null>(null);
+  // Dice: the picker modal, the currently-animating roll, and a pending guard.
+  const [rollModalOpen, setRollModalOpen] = useState(false);
+  const [rolling, setRolling] = useState(false);
+  const [activeRoll, setActiveRoll] = useState<DiceRoll | null>(null);
+  // Roll ids already animated — dedups the master's own public roll (HTTP
+  // response vs. realtime echo) and any repeated event, regardless of arrival order.
+  const recentRollIds = useRef(new Set<string>());
   // Form-change concurrency (optimistic + cancel + version guard) per session char.
   const formControllers = useRef(new Map<string, AbortController>());
   const formVersions = useRef(new Map<string, number>());
@@ -487,6 +498,24 @@ export function SessionPage() {
     };
   }, [campaignId, activeSessionId, dispatch, myUserId]);
 
+  // Animate a roll once, keyed by its backend id. Whichever source arrives first
+  // (HTTP response for the master, or realtime for everyone else) wins; any later
+  // duplicate with the same id is ignored — so the master never sees it twice.
+  const showRoll = useCallback((roll: DiceRoll) => {
+    if (!roll?.id || recentRollIds.current.has(roll.id)) return;
+    recentRollIds.current.add(roll.id);
+    setActiveRoll(roll);
+  }, []);
+
+  // Live PUBLIC dice rolls (session.dice.rolled). Secret rolls are never emitted,
+  // so players simply never receive one. Everyone (master + players) animates.
+  useEffect(() => {
+    if (!campaignId || !activeSessionId) return;
+    const onRolled = (payload: unknown) => showRoll(payload as DiceRoll);
+    realtime.on(SESSION_DICE_EVENTS.rolled, onRolled);
+    return () => realtime.off(SESSION_DICE_EVENTS.rolled, onRolled);
+  }, [campaignId, activeSessionId, showRoll]);
+
   // Live scene-generation updates (map.session_scene.*) via the campaign room.
   useEffect(() => {
     if (!campaignId || !active) return;
@@ -567,6 +596,10 @@ export function SessionPage() {
     }
     if (isMaster && key === 'manageItems') {
       setItemsManagerOpen(true);
+      return;
+    }
+    if (isMaster && key === 'rollDice') {
+      setRollModalOpen(true);
       return;
     }
     if (isMaster && key === 'changeMap') {
@@ -813,6 +846,9 @@ export function SessionPage() {
     setSelectedId(null);
     setPoiEditMode(false);
     setPendingAddIds([]);
+    setRollModalOpen(false);
+    setActiveRoll(null);
+    recentRollIds.current.clear();
     dispatch(clearSessionCharacters());
     dispatch(clearSession());
   };
@@ -866,6 +902,23 @@ export function SessionPage() {
           dispatch(fetchSessionCharacters(campaignId)); // reconcile with server truth
         }
       });
+  };
+
+  // Master rolls dice: the backend computes the result (source of truth). While
+  // the request is pending the modal's button shows loading (no double submit).
+  // The master animates from the HTTP response; a PUBLIC roll's realtime echo is
+  // de-duplicated by id, so it never animates twice.
+  const rollDice = (input: RollDiceInput) => {
+    if (rolling) return;
+    setRolling(true);
+    sessionService
+      .rollDice(campaignId, input)
+      .then((roll) => {
+        setRollModalOpen(false);
+        showRoll(roll);
+      })
+      .catch(() => notify(t('session.dice.error'), { variant: 'error' }))
+      .finally(() => setRolling(false));
   };
 
   // ── points of interest (master, "reposition points" mode) ──
@@ -1273,6 +1326,12 @@ export function SessionPage() {
             currentMapId={active.currentMapId}
             onPick={changeMapTo}
           />
+          <RollDiceModal
+            isOpen={rollModalOpen}
+            onClose={() => setRollModalOpen(false)}
+            loading={rolling}
+            onRoll={rollDice}
+          />
           <Modal
             isOpen={endConfirmOpen}
             onClose={() => setEndConfirmOpen(false)}
@@ -1291,6 +1350,12 @@ export function SessionPage() {
             <p>{t('session.end.confirmBody')}</p>
           </Modal>
         </>
+      )}
+
+      {/* Central dice animation — shown to master and players alike (public rolls
+          arrive via realtime; the master's own roll via the HTTP response). */}
+      {activeRoll && (
+        <DiceRollOverlay roll={activeRoll} onClose={() => setActiveRoll(null)} />
       )}
 
       {ending && (
@@ -1322,6 +1387,7 @@ function masterActions(t: TFn, poiEditMode: boolean): SessionAction[] {
     { key: 'createItem', label: t('session.action.createItem'), icon: <BookIcon size={20} /> },
     { key: 'createAbility', label: t('session.action.createAbility'), icon: <DiceIcon size={20} /> },
     { key: 'manageItems', label: t('session.action.manageItems'), icon: <BookIcon size={20} /> },
+    { key: 'rollDice', label: t('session.action.rollDice'), icon: <DiceIcon size={20} /> },
     { key: 'showCharacter', label: t('session.action.showCharacter'), icon: <CompassIcon size={20} /> },
     { key: 'changeMap', label: t('session.action.changeMap'), icon: <MapIcon size={20} /> },
     {

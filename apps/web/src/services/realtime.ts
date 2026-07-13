@@ -111,6 +111,11 @@ export const SESSION_CHARACTER_EVENTS = {
   resourceUpdated: 'session.character.resource.updated',
 } as const;
 
+/** Server → client event for a PUBLIC dice roll during a session. */
+export const SESSION_DICE_EVENTS = {
+  rolled: 'session.dice.rolled',
+} as const;
+
 /** Server → client events for a character's 2.5D session-sprite generation. */
 export const CHARACTER_SESSION_SPRITE_EVENTS = {
   processing: 'character.session_sprite.processing',

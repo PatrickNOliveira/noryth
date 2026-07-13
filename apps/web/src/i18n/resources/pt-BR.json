@@ -1192,6 +1192,24 @@
       "endedPlayer": "A sessão foi encerrada pelo mestre.",
       "back": "Voltar para a campanha"
     },
+    "dice": {
+      "title": "Rolar Dados",
+      "die": "Dado",
+      "quantity": "Quantidade",
+      "quantityHint": "Entre {{min}} e {{max}} dados.",
+      "visibility": "Visibilidade",
+      "public": "Pública",
+      "secret": "Secreta",
+      "roll": "Rolar",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "total": "Total",
+      "results": "Resultados",
+      "secretRoll": "Rolagem secreta",
+      "rolledBy": "{{name}} rolou",
+      "masterFallback": "Mestre",
+      "error": "Não foi possível rolar os dados."
+    },
     "sheet": {
       "open": "Abrir ficha",
       "title": "Ficha do personagem",

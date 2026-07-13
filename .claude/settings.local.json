@@ -54,7 +54,9 @@
       "Bash(grep -nA18 \"sessionCharacterConfirmed\\(\" apps/web/src/store/slices/sessionCharacters.slice.ts)",
       "Bash(grep -nA30 \"export function toSessionCharacterDto\" apps/api/src/modules/sessions/dto/session-character.dto.ts)",
       "Bash(grep -nA6 \"findSpriteByCharacterAndDirection|findSpritesByCharacter|createSprite\" apps/api/src/modules/sessions/repositories/typeorm-session-characters.repository.ts)",
-      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/en-US.json','utf8'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/pt-BR.json','utf8'\\)\\); console.log\\('JSON OK'\\)\")"
+      "Bash(node -e \"JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/en-US.json','utf8'\\)\\); JSON.parse\\(require\\('fs'\\).readFileSync\\('src/i18n/resources/pt-BR.json','utf8'\\)\\); console.log\\('JSON OK'\\)\")",
+      "Read(//e/web/src/components/icons/**)",
+      "Read(//e/web/src/components/**)"
     ],
     "additionalDirectories": [
       "E:\\Noryth\\apps\\api"

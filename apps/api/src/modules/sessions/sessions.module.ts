@@ -19,9 +19,12 @@ import { SessionImprovisedItemsController } from './controllers/session-improvis
 import { SessionImprovisedAbilitiesController } from './controllers/session-improvised-abilities.controller';
 import { CharacterSessionSpritesController } from './controllers/character-session-sprites.controller';
 import { SessionCharacterResourcesController } from './controllers/session-character-resources.controller';
+import { SessionDiceRollsController } from './controllers/session-dice-rolls.controller';
 import { SessionsService } from './services/sessions.service';
 import { SessionCharacterService } from './services/session-character.service';
 import { SessionCharacterResourceService } from './services/session-character-resource.service';
+import { DiceRollService } from './services/dice-roll.service';
+import { SessionDiceRollService } from './services/session-dice-roll.service';
 import { SessionImprovisedCharacterService } from './services/session-improvised-character.service';
 import { ImprovisedCharacterAgent } from './services/improvised-character.agent';
 import { SessionImprovisedItemService } from './services/session-improvised-item.service';
@@ -68,11 +71,14 @@ import { TypeOrmSessionCharactersRepository } from './repositories/typeorm-sessi
     SessionImprovisedAbilitiesController,
     CharacterSessionSpritesController,
     SessionCharacterResourcesController,
+    SessionDiceRollsController,
   ],
   providers: [
     SessionsService,
     SessionCharacterService,
     SessionCharacterResourceService,
+    DiceRollService,
+    SessionDiceRollService,
     SessionImprovisedCharacterService,
     ImprovisedCharacterAgent,
     SessionImprovisedItemService,

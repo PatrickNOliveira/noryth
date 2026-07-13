@@ -1192,6 +1192,24 @@
       "endedPlayer": "The session was ended by the master.",
       "back": "Back to the campaign"
     },
+    "dice": {
+      "title": "Roll Dice",
+      "die": "Die",
+      "quantity": "Quantity",
+      "quantityHint": "Between {{min}} and {{max}} dice.",
+      "visibility": "Visibility",
+      "public": "Public",
+      "secret": "Secret",
+      "roll": "Roll",
+      "cancel": "Cancel",
+      "close": "Close",
+      "total": "Total",
+      "results": "Results",
+      "secretRoll": "Secret roll",
+      "rolledBy": "{{name}} rolled",
+      "masterFallback": "Master",
+      "error": "Could not roll the dice."
+    },
     "sheet": {
       "open": "Open sheet",
       "title": "Character sheet",
